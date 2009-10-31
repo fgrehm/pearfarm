@@ -1,6 +1,131 @@
 <?php
+namespace PEAR\PearFarm;
+
 require_once('PEAR/PackageFileManager2.php');
-PEAR::setErrorHandling(PEAR_ERROR_DIE);
+\PEAR::setErrorHandling(PEAR_ERROR_DIE);
+
+interface Task {
+	public function run($args);
+	public function showHelp();
+	public function getAliases();
+	public function getName();
+	public function getDescription();
+}
+
+class PlantTask implements Task {
+	public function run($args) {
+		
+	}
+	public function showHelp() {
+		
+	}
+	public function getName() {
+		return "plant";
+	}
+	public function getAliases() {
+		return array("p", "pl");
+	}
+	public function getDescription() {
+		return "creates the package";
+	}
+}
+
+class CollectTask implements Task {
+	public function run($args) {
+		
+	}
+	public function showHelp() {
+		
+	}
+	public function getName() {
+		return "collect";
+	}
+	public function getAliases() {
+		return array();
+	}
+	public function getDescription() {
+		return "builds the package";
+	}
+}
+
+class TryTask implements Task {
+	public function run($args) {
+		
+	}
+	public function showHelp() {
+		
+	}
+	public function getName() {
+		return "try";
+	}
+	public function getAliases() {
+		return array();
+	}
+	public function getDescription() {
+		return "installs the package for testing purposes";
+	}
+}
+
+class DeliverTask implements Task {
+	public function run($args) {
+		
+	}
+	public function showHelp() {
+		
+	}
+	public function getName() {
+		return "deliver";
+	}
+	public function getAliases() {
+		return array();
+	}
+	public function getDescription() {
+		return "sends the package to pearfarm.org";
+	}
+}
+
+class PFarm {
+	private $args;
+	private $tasks;
+	private $verbs;
+	
+	public function __construct(array $args, $registrations) {
+		$this->args = $args;
+		$registrations($this);
+	}
+	public function run() {
+		if(!isset($argv[1])) {
+			$this->showHelp();
+		}
+	}
+	public function showHelp() {
+		echo("usage: pfarm COMMAND [ARGS]\n\nThe pfarm commands are:\n");
+		foreach($this->tasks as $task) {
+			$aliases = implode(", ", $task->getAliases());
+			if(!empty($aliases)) {
+				$aliases = " (".$aliases.")";
+			}
+			echo str_pad($task->getName().$aliases, 20, " ", STR_PAD_LEFT)."\t".$task->getDescription()."\n";
+		}
+		echo("\n");	
+	}
+	public function register(Task $task) {
+		$this->tasks[$task->getName()] = $task;
+		foreach($task->getAliases() as $verb) {
+			$this->verbs[$verb] = $task;
+		}
+	}
+}
+
+$pfarm = new PFarm($argv, function($pfarm) {
+	$pfarm->register(new PlantTask());
+	$pfarm->register(new CollectTask());
+	$pfarm->register(new TryTask());
+	$pfarm->register(new DeliverTask());
+});
+$pfarm->run();
+
+die();
 
 //TODO: We should make this nicer
 switch($argv[1]) {
