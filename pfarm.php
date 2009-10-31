@@ -12,12 +12,36 @@ interface Task {
 	public function getDescription();
 }
 
+class TaskArgumentException extends \Exception {
+	
+}
+
 class PlantTask implements Task {
 	public function run($args) {
-		
+		if(!isset($args[2])) {
+			throw new TaskArgumentException("You must specify a package name.\n");
+		}
+		//TODO: check if there is already a directory with that name
+		//TODO: what should we do if we don't have write permissions?
+		//TODO: validate package name
+		$packageName = $args[2];
+		mkdir($packageName);
+		mkdir($packageName . DIRECTORY_SEPARATOR . 'src');
+		mkdir($packageName . DIRECTORY_SEPARATOR . 'data');
+		mkdir($packageName . DIRECTORY_SEPARATOR . 'tests');
+		mkdir($packageName . DIRECTORY_SEPARATOR . 'doc');
+		mkdir($packageName . DIRECTORY_SEPARATOR . 'www');
+		mkdir($packageName . DIRECTORY_SEPARATOR . 'examples');
+
+		// create default class
+		// TODO: add doc block to class
+		file_put_contents($packageName . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . ucfirst($packageName) . '.php', "<?php\nclass " . ucfirst($packageName) . " {\n\n\n}");
+
+		//TODO: generate package spesification file
+
 	}
 	public function showHelp() {
-		
+		echo "TODO: Print some help.\n";
 	}
 	public function getName() {
 		return "plant";
@@ -32,10 +56,10 @@ class PlantTask implements Task {
 
 class CollectTask implements Task {
 	public function run($args) {
-		
+
 	}
 	public function showHelp() {
-		
+
 	}
 	public function getName() {
 		return "collect";
@@ -50,10 +74,10 @@ class CollectTask implements Task {
 
 class TryTask implements Task {
 	public function run($args) {
-		
+
 	}
 	public function showHelp() {
-		
+
 	}
 	public function getName() {
 		return "try";
@@ -68,10 +92,10 @@ class TryTask implements Task {
 
 class DeliverTask implements Task {
 	public function run($args) {
-		
+
 	}
 	public function showHelp() {
-		
+
 	}
 	public function getName() {
 		return "deliver";
@@ -88,14 +112,26 @@ class PFarm {
 	private $args;
 	private $tasks;
 	private $verbs;
-	
+
 	public function __construct(array $args, $registrations) {
 		$this->args = $args;
 		$registrations($this);
 	}
 	public function run() {
-		if(!isset($argv[1])) {
+		if(!isset($this->args[1]) || !isset($this->verbs[$this->args[1]])) {
 			$this->showHelp();
+			//TODO: define exit codes
+			exit(-1);
+		}
+		$task = $this->verbs[$this->args[1]];
+		try {
+			$task->run($this->args);
+			exit();
+		} catch(TaskArgumentException $ex) {
+			echo $ex->getMessage()."\n";
+			$task->showHelp();
+			//TODO: define exit codes
+			exit(-2);
 		}
 	}
 	public function showHelp() {
@@ -107,10 +143,11 @@ class PFarm {
 			}
 			echo str_pad($task->getName().$aliases, 20, " ", STR_PAD_LEFT)."\t".$task->getDescription()."\n";
 		}
-		echo("\n");	
+		echo("\n");
 	}
 	public function register(Task $task) {
 		$this->tasks[$task->getName()] = $task;
+		$this->verbs[$task->getName()] = $task;
 		foreach($task->getAliases() as $verb) {
 			$this->verbs[$verb] = $task;
 		}
@@ -127,75 +164,24 @@ $pfarm->run();
 
 die();
 
-//TODO: We should make this nicer
-switch($argv[1]) {
-  case "plant": {
-    if(!isset($argv[2])) {
-      echo "You must specify a package name.\n";
-      //TODO: define exit codes
-      exit(-1);
-    }
-    //TODO: check if there is already a directory with that name
-    //TODO: what should we do if we don't have write permissions?
-    //TODO: validate package name
-    $packageName = $argv[2];
-    mkdir($packageName);
-    mkdir($packageName . DIRECTORY_SEPARATOR . 'src');
-    mkdir($packageName . DIRECTORY_SEPARATOR . 'data');
-    mkdir($packageName . DIRECTORY_SEPARATOR . 'tests');
-    mkdir($packageName . DIRECTORY_SEPARATOR . 'doc');
-    mkdir($packageName . DIRECTORY_SEPARATOR . 'www');
-    mkdir($packageName . DIRECTORY_SEPARATOR . 'examples');
-    
-    // create default class
-    // TODO: add doc block to class
-    file_put_contents($packageName . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . ucfirst($packageName) . '.php', "<?php\nclass " . ucfirst($packageName) . " {\n\n\n}");
-    
-    //TODO: generate package spesification file
-    
-  } break;
-  case "collect": {
-    //TODO: do it! ;)
-  } break;
-  case "try": {
-    //TODO: do it! ;)
-  } break;
-  case "deliver": {
-    //TODO: do it! ;)
-  } break;
-  default: {
-    echo <<<EOT
-usage: pfarm COMMAND [ARGS]
-
-The pfarm commands are:
-    plant       creates the package
-    collect     builds the package
-    try         installs the package for testing purposes
-    deliver     sends the package to pearfarm.org
-
-
-EOT;
-  }
-}
-
 /*
 
 THIS IS AN EXAMPLE OF HOW TO GENERATE THE XML PACKAGE FILE
 $pfm = new PEAR_PackageFileManager2();
- 
+
 //TODO: Define defaults for most of these parameters and decide which one we will require from the user.
 $e = $pfm->setOptions(
-     array(
-       'baseinstalldir' => '',
-        'packagedirectory' => '.',
-        //TODO: find a good way to add ignore files for .svn or .git, etc.
-       'filelistgenerator' => 'file', //this should be file, because other options are svn or cvs, but I think it doesn't really make sense
-       'ignore' => array(),
-      'installexceptions' => array(),
-      'dir_roles' => array(),
-      'exceptions' => array()
-     )
-   ); // same for the license
+array(
+'baseinstalldir' => '',
+'packagedirectory' => '.',
+//TODO: find a good way to add ignore files for .svn or .git, etc.
+'filelistgenerator' => 'file', //this should be file, because other options are svn or cvs, but I think it doesn't really make sense
+'ignore' => array(),
+'installexceptions' => array(),
+'dir_roles' => array(),
+'exceptions' => array()
+)
+); // same for the license
 $pfm->setPackage('MyPackage');
 $pfm->setSummary('this is my package');
 $pfm->setDescription('this is my package description');
