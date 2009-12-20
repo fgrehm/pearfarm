@@ -34,12 +34,16 @@ class PEARFarm_Specification
     {
     }
 
-    public function addFiles($files = array())
+    public function addFile(PEARFarm_Specification_File $f)
+    {
+        $this->files[$f->getFilePath()] = $f;
+    }
+
+    public function addFilesSimple($files = array(), $role = 'php', $options = array())
     {
         foreach ($files as $f) {
-            $this->files[] = $f;
+            $this->addFile( new PEARFarm_Specification_File($f, $role, $options) );
         }
-
         return $this;
     }
 
@@ -56,7 +60,7 @@ class PEARFarm_Specification
         $lastLine = exec('git ls-files', $output, $result);
         if ($result != 0) throw( new Exception("Error ($result) running git ls-files: " . join("\n", $output)) );
 
-        $this->addFiles($output);
+        $this->addFilesSimple($output);
 
         return $this;
     }
@@ -99,6 +103,7 @@ class PEARFarm_Specification
     public function writePackageFile()
     {
         // http://pear.php.net/manual/en/guide.developers.package2.php
+        // unfortunately, order matters in package.xml, so don't mess with it!
         $xml = simplexml_load_string('<package/>', 'SuperSimpleXMLElement');
         $xml->addAttribute('version', '2.0');
         foreach (array('name', 'channel', 'summary', 'description') as $property) {
@@ -137,12 +142,163 @@ class PEARFarm_Specification
         }
 
         $contentsNode = $xml->addChild('contents');
+        // baseinstalldir = "name" of package --- prevents conflicts i suppose
+        $rootDirObj = new PEARFarm_Specification_Dir('.', array(PEARFarm_Specification_Dir::BASEINSTALLDIR => $this->name));
+
+        // build all dir & file blocks
+        ksort($this->files);
+        $dirs = array('.' => $rootDirObj);    // dirPath => object PEARFarm_Specification_Dir
+        foreach ($this->files as $filePath => $fileObj) {
+            $fileDirPath = dirname($filePath);
+            print "Adding $filePath from dir $fileDirPath\n";
+
+            // make sure all dirs up to this point are represented
+            $allDirs = explode(DIRECTORY_SEPARATOR, ltrim($fileDirPath, DIRECTORY_SEPARATOR));
+            $dirPath = NULL;
+            $lastDirObj = $rootDirObj;
+            foreach ($allDirs as $dir) {
+                $dirPath .= $dir;
+                if (isset($dirs[$dirPath])) continue;
+                print "Dealing with $dirPath\n";
+
+                // create directory
+                $dirObj = new PEARFarm_Specification_Dir($dirPath);
+                $dirs[$dirPath] = $dirObj;
+                // wire directory into hierarchy
+                $lastDirObj->addItem($dirObj);
+                $lastDirObj = $dirObj;
+
+                $dirPath .= DIRECTORY_SEPARATOR;
+                $depth = 1;
+            }
+            // add files
+            $lastDirObj->addItem($fileObj);
+        }
+        xdebug_break();
+        $rootDirObj->addXMLAsChild($contentsNode);
 
         $depsNode = $xml->addChild('dependencies');
 
         $phpReleaseNode = $xml->addChild('phprelease');
 
         file_put_contents('package.xml', $xml->asXML());
+    }
+}
+
+class PEARFarm_Specification_Item
+{
+    protected $nodeName;
+    protected $requiredAttributes;
+    protected $attributes;
+
+    public function __construct($nodeName, $requiredAttributes)
+    {
+        $this->nodeName = $nodeName;
+        $this->requiredAttributes = $requiredAttributes;
+    }
+
+    public function setAttribute($k, $v)
+    {
+        $this->attributes[$k] = $v;
+        return $this;
+    }
+
+    public function setAttributes($attrs)
+    {
+        foreach ($attrs as $k => $v) {
+            $this->setAttribute($k, $v);
+        }
+        return $this;
+    }
+
+    public function addXMLAsChild($parentNode)
+    {
+        $node = $parentNode->addChild($this->nodeName);
+        foreach ($this->attributes as $k => $v) {
+            if ($v === NULL and in_array($k, $this->requiredAttributes)) throw new Exception("Attribute {$k} is required for {get_class($this)}.");
+            if ($v === NULL) continue;  // skip optional attributes
+            $node->addAttribute($k, $v);
+        }
+        return $node;
+    }
+}
+class PEARFarm_Specification_Dir extends PEARFarm_Specification_Item
+{
+    const BASEINSTALLDIR        = 'baseinstalldir';
+
+    // relative path to dir
+    private $dirPath;
+    private $items; // all items contained in this dir
+
+    public function __construct($dirPath, $options = array())
+    {
+        parent::__construct('dir', array('name'));
+
+        // internal stuff
+        $this->dirPath = $dirPath;
+
+        // required attrs
+        // The "root" dir . is called / in pear
+        $baseDirName = basename($dirPath);
+        if ($baseDirName === '.')
+        {
+            $baseDirName = '/';
+        }
+        $this->setAttribute('name', $baseDirName);
+        
+        // optional attrs
+        $options = array_merge($options, array(
+                    self::BASEINSTALLDIR => NULL,
+                    )
+                );
+        $this->setAttributes($options);
+    }
+
+    public function addItem($item)
+    {
+        if (!($item instanceof PEARFarm_Specification_Dir) and !($item instanceof PEARFarm_Specification_File)) throw new Exception("PEARFarm_Specification_Dir can only contain PEARFarm_Specification_Dir and PEARFarm_Specification_File objects.");
+        $this->items[] = $item;
+    }
+
+    public function addXMLAsChild($parentNode)
+    {
+        $node = parent::addXMLAsChild($parentNode);
+        foreach ($this->items as $item) {
+            $childNode = $item->addXMLAsChild($node);
+        }
+        return $node;
+    }
+}
+
+class PEARFarm_Specification_File extends PEARFarm_Specification_Item
+{
+    const BASEINSTALLDIR        = 'baseinstalldir';
+
+    // relative path to File
+    private $filePath;
+
+    public function __construct($filePath, $role = 'php', $options = array())
+    {
+        parent::__construct('file', array('name', 'role'));
+
+        // internal stuff
+        $this->filePath = $filePath;
+
+        // required attrs
+        $this->setAttribute('name', basename($filePath));
+        $this->setAttribute('role', $role);
+
+        // optional attrs
+        $options = array_merge($options, array(
+                    self::BASEINSTALLDIR => NULL,
+                    )
+                );
+        $this->setAttributes($options);
+    }
+
+    public function getFilePath()
+    {
+        return $this->filePath;
     }
 }
 

@@ -14,4 +14,5 @@ $spec = PEARFarm_Specification::newSpec()
             ->setDependsOnPHPVersion('5.0.0')
             ->setDependsOnPearInstallerVersion('1.4.0')
             ->addMaintainer('lead', 'Alan Pinstein', 'apinstein', 'apinstein@mac.com')
-            ->addGitFiles();
+            ->addGitFiles()
+            ->addFilesSimple(array('a/b/c.php'));

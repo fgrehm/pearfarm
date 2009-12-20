@@ -26,6 +26,4 @@ if (!isset($spec))
     exit(1);
 }
 
-print_r($spec);
-
 $spec->writePackageFile();
