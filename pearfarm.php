@@ -18,8 +18,15 @@ class PEARFarm_Specification
     protected $maintainers      = array();
 
     // dependencies
-    protected $dependsOnPHPVersion              = NULL;
-    protected $dependsOnPearInstallerVersion    = NULL;
+    protected $dependsOnPHPVersionMin           = '5.0.0';
+    protected $dependsOnPHPVersionMax           = NULL;
+    protected $dependsOnPHPVersionExclude       = array();
+
+    protected $dependsOnPearInstallerVersionMin         = '1.4.0';
+    protected $dependsOnPearInstallerVersionMax         = NULL;
+    protected $dependsOnPearInstallerVersionRecommended = NULL;
+    protected $dependsOnPearInstallerVersionExclude     = array();
+
     protected $dependsOnExtensions              = array();
     protected $dependsOnPEARPackages            = array();
 
@@ -50,6 +57,25 @@ class PEARFarm_Specification
     public function addMaintainer($type, $name, $user, $email, $active = true)
     {
         $this->maintainers[$type][] = array('name' => $name, 'user' => $user, 'email' => $email, 'active' => $active);
+        return $this;
+    }
+
+    public function setDependsOnPHPVersion($min, $max = NULL, $exclude = array())
+    {
+        $this->dependsOnPHPVersionMin = $min;
+        $this->dependsOnPHPVersionMax = $max;
+        $this->dependsOnPHPVersionExclude = $exclude;
+
+        return $this;
+    }
+
+    public function setDependsOnPearInstallerVersion($min, $max = NULL, $recommended = NULL, $exclude = array())
+    {
+        $this->dependsOnPearInstallerVersionMin = $min;
+        $this->dependsOnPearInstallerVersionMax = $max;
+        $this->dependsOnPearInstallerVersionRecommended = $recommended;
+        $this->dependsOnPearInstallerVersionExclude = $exclude;
+
         return $this;
     }
 
@@ -176,14 +202,43 @@ class PEARFarm_Specification
         }
         $rootDirObj->addXMLAsChild($contentsNode);
 
+        // deps
         $depsNode = $xml->addChild('dependencies');
+        // required
         $reqNode = $depsNode->addChild('required');
+        // php
         $phpNode = $reqNode->addChild('php');
-        $phpNode->addChild('min', $this->dependsOnPHPVersion);
+        $phpNode->addChild('min', $this->dependsOnPHPVersionMin);
+        if ($this->dependsOnPHPVersionMax !== NULL)
+        {
+            $phpNode->addChild('max', $this->dependsOnPHPVersionMax);
+        }
+        foreach ($this->dependsOnPHPVersionExclude as $excludeVersion) {
+            $phpNode->addChild('exclude', $excludeVersion);
+        }
+        // pear installer
         $pearInstallerNode = $reqNode->addChild('pearinstaller');
-        $pearInstallerNode->addChild('min', $this->dependsOnPearInstallerVersion);
+        $pearInstallerNode->addChild('min', $this->dependsOnPearInstallerVersionMin);
+        if ($this->dependsOnPearInstallerVersionMax !== NULL)
+        {
+            $pearInstallerNode->addChild('max', $this->dependsOnPearInstallerVersionMax);
+        }
+        if ($this->dependsOnPearInstallerVersionMax !== NULL)
+        {
+            $pearInstallerNode->addChild('max', $this->dependsOnPearInstallerVersionMax);
+        }
+        if ($this->dependsOnPearInstallerVersionRecommended !== NULL)
+        {
+            $pearInstallerNode->addChild('recommended', $this->dependsOnPearInstallerVersionRecommended);
+        }
+        foreach ($this->dependsOnPearInstallerVersionExclude as $excludeVersion) {
+            $pearInstallerNode->addChild('exclude', $excludeVersion);
+        }
+
+        // optional deps
         $optNode = $depsNode->addChild('optional');
 
+        // ????
         $phpReleaseNode = $xml->addChild('phprelease');
 
         file_put_contents('package.xml', $xml->asXML());
