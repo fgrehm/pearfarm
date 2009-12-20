@@ -190,7 +190,7 @@ class PEARFarm_Specification
     }
 }
 
-class PEARFarm_Specification_Item
+abstract class PEARFarm_Specification_Item
 {
     protected $nodeName;
     protected $requiredAttributes;
@@ -278,6 +278,7 @@ class PEARFarm_Specification_Dir extends PEARFarm_Specification_Item
 class PEARFarm_Specification_File extends PEARFarm_Specification_Item
 {
     const BASEINSTALLDIR        = 'baseinstalldir';
+    const MD5SUM                = 'md5sum';
 
     // relative path to File
     private $filePath;
@@ -296,9 +297,15 @@ class PEARFarm_Specification_File extends PEARFarm_Specification_Item
         // optional attrs
         $options = array_merge($options, array(
                     self::BASEINSTALLDIR => NULL,
+                    self::MD5SUM => NULL
                     )
                 );
         $this->setAttributes($options);
+
+        if (file_exists($filePath))
+        {
+            $this->setAttribute(self::MD5SUM, md5_file($filePath));
+        }
     }
 
     public function getFilePath()
