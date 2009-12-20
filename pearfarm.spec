@@ -10,6 +10,6 @@ $spec = PEARFarm_Specification::newSpec()
             ->setApiVersion('1.0.0')
             ->setApiStability('stable')
             ->setLicense(PEARFarm_Specification::LICENSE_MIT)
-            ->setNotes('boo notes should not be required')
+            ->setNotes('First release of iphp.')
             ->addMaintainer('lead', 'Alan Pinstein', 'apinstein', 'apinstein@mac.com')
             ->addGitFiles();

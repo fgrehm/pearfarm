@@ -176,7 +176,6 @@ class PEARFarm_Specification
         $dirs = array('.' => $rootDirObj);    // dirPath => object PEARFarm_Specification_Dir
         foreach ($this->files as $filePath => $fileObj) {
             $fileDirPath = dirname($filePath);
-            print "Adding $filePath from dir $fileDirPath\n";
 
             // make sure all dirs up to this point are represented
             $allDirs = explode(DIRECTORY_SEPARATOR, ltrim($fileDirPath, DIRECTORY_SEPARATOR));
@@ -185,7 +184,6 @@ class PEARFarm_Specification
             foreach ($allDirs as $dir) {
                 $dirPath .= $dir;
                 if (isset($dirs[$dirPath])) continue;
-                print "Dealing with $dirPath\n";
 
                 // create directory
                 $dirObj = new PEARFarm_Specification_Dir($dirPath);
