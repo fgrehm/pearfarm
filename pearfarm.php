@@ -15,6 +15,7 @@ class PEARFarm_Specification
     protected $apiStability     = NULL;
     protected $license          = NULL;
     protected $notes            = NULL;
+    protected $maintainers      = array();
 
     // dependencies
     protected $dependsOnPHPVersion              = NULL;
@@ -26,7 +27,7 @@ class PEARFarm_Specification
     protected $files            = array();
 
     private static $licenseData = array(
-        self::LICENSE_MIT => array('name' => 'MIT', 'url' => 'http://www.opensource.org/licenses/mit-license.html')
+        self::LICENSE_MIT => array('name' => 'MIT', 'uri' => 'http://www.opensource.org/licenses/mit-license.html')
     );
 
     public function __construct($options = array())
@@ -39,6 +40,12 @@ class PEARFarm_Specification
             $this->files[] = $f;
         }
 
+        return $this;
+    }
+
+    public function addMaintainer($type, $name, $user, $email, $active = true)
+    {
+        $this->maintainers[$type][] = array('name' => $name, 'user' => $user, 'email' => $email, 'active' => $active);
         return $this;
     }
 
@@ -93,7 +100,48 @@ class PEARFarm_Specification
     {
         // http://pear.php.net/manual/en/guide.developers.package2.php
         $xml = simplexml_load_string('<package/>', 'SuperSimpleXMLElement');
-        $xml->addTextNode('name', $this->name);
+        $xml->addAttribute('version', '2.0');
+        foreach (array('name', 'channel', 'summary', 'description') as $property) {
+            $xml->addTextNode($property, htmlentities($this->$property));
+        }
+
+        // need to sort by leads, developers, contributors, helpers
+        foreach ($this->maintainers as $type => $maintainers) {
+            foreach ($maintainers as $maintainer) {
+                $typeNode = $xml->addChild($type);
+                $typeNode->addChild('name', $maintainer['name']);
+                $typeNode->addChild('user', $maintainer['user']);
+                $typeNode->addChild('email', $maintainer['email']);
+                $typeNode->addChild('active', $maintainer['active'] ? 'yes' : 'no');
+            }
+        }
+
+        $now = time();
+        $xml->addTextNode('date', date('Y-m-d', $now));
+        $xml->addTextNode('time', date('H:i:s', $now));
+
+        $version = $xml->addChild('version');
+        $version->addTextNode('release', $this->releaseVersion);
+        $version->addTextNode('api', $this->apiVersion);
+
+        $stability = $xml->addChild('stability');
+        $stability->addTextNode('release', $this->releaseStability);
+        $stability->addTextNode('api', $this->apiStability);
+
+        $licenseData = $this->getLicense();
+        $license = $xml->addTextNode('license', $licenseData['name']);
+        $license->addAttribute('uri', $licenseData['uri']);
+
+        foreach (array('notes') as $property) {
+            $xml->addTextNode($property, htmlentities($this->$property));
+        }
+
+        $contentsNode = $xml->addChild('contents');
+
+        $depsNode = $xml->addChild('dependencies');
+
+        $phpReleaseNode = $xml->addChild('phprelease');
+
         file_put_contents('package.xml', $xml->asXML());
     }
 }
