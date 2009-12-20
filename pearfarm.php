@@ -4,6 +4,7 @@ class PEARFarm_Specification
 {
     const LICENSE_MIT           = 'mit';
 
+    // core settings
     protected $name             = NULL;
     protected $channel          = NULL;
     protected $summary          = NULL;
@@ -15,14 +16,14 @@ class PEARFarm_Specification
     protected $license          = NULL;
     protected $notes            = NULL;
 
-    // contents
-    protected $files            = array();
-
     // dependencies
     protected $dependsOnPHPVersion              = NULL;
     protected $dependsOnPearInstallerVersion    = NULL;
     protected $dependsOnExtensions              = array();
     protected $dependsOnPEARPackages            = array();
+
+    // package contents
+    protected $files            = array();
 
     private static $licenseData = array(
         self::LICENSE_MIT => array('name' => 'MIT', 'url' => 'http://www.opensource.org/licenses/mit-license.html')
@@ -90,7 +91,19 @@ class PEARFarm_Specification
 
     public function writePackageFile()
     {
-        $xml = '<xml>';
-        file_put_contents('package.xml', $xml);
+        // http://pear.php.net/manual/en/guide.developers.package2.php
+        $xml = simplexml_load_string('<package/>', 'SuperSimpleXMLElement');
+        $xml->addTextNode('name', $this->name);
+        file_put_contents('package.xml', $xml->asXML());
+    }
+}
+
+class SuperSimpleXMLElement extends SimpleXMLElement
+{
+    public function addTextNode($entityName, $text)
+    {
+        $newNode = $this->addChild($entityName);
+        $newNode[0] = $text;
+        return $newNode;
     }
 }
