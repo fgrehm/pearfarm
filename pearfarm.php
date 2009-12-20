@@ -79,6 +79,46 @@ class PEARFarm_Specification
         return $this;
     }
 
+    /**
+     * 
+     *
+     * @param string The name of the dependency
+     * @param string Either a channel name, or a URI.
+     * @return
+     */
+    public function addPackageDependency($name, $pkgSpec, $options = array())
+    {
+        $depInfo = array_merge(array(
+            // order here matters!!! do not rearrange
+            'required'          => true,
+            'name'              => $name,
+            'channel'           => NULL,
+            'uri'               => NULL,
+            'min'               => NULL,
+            'max'               => NULL,
+            'recommended'       => NULL,
+            'recommendedMin'    => NULL,
+            'recommendedMax'    => NULL,
+            'exclude'           => array(),
+            'conflicts'         => NULL,
+        ), $options);
+        if (preg_match('/http[s]?:\/\.*/', $pkgSpec))
+        {
+            $depInfo['uri'] = $pkgSpec;
+        }
+        else
+        {
+            $depInfo['channel'] = $pkgSpec;
+        }
+        if ($depInfo['conflicts'] === true)
+        {
+            $depInfo['conflicts'] = '';
+        }
+        $this->dependsOnPEARPackages[] = $depInfo;
+
+        return $this;
+    }
+
     public function addGitFiles($exclude = array())
     {
         $result = NULL;
@@ -202,8 +242,10 @@ class PEARFarm_Specification
 
         // deps
         $depsNode = $xml->addChild('dependencies');
-        // required
         $reqNode = $depsNode->addChild('required');
+        $optNode = $depsNode->addChild('optional');
+        
+        // php & pear installer HAVE to be there
         // php
         $phpNode = $reqNode->addChild('php');
         $phpNode->addChild('min', $this->dependsOnPHPVersionMin);
@@ -233,8 +275,26 @@ class PEARFarm_Specification
             $pearInstallerNode->addChild('exclude', $excludeVersion);
         }
 
-        // optional deps
-        $optNode = $depsNode->addChild('optional');
+        // all other deps
+        foreach ($this->dependsOnPEARPackages as $dep) {
+            $addToNode = $dep['required'] ? $reqNode : $optNode;
+            $pkgNode = $addToNode->addChild('package');
+            foreach ($dep as $k => $v) {
+                if ($v === NULL) continue;
+                if ($k === 'required') continue;
+                if ($k === 'recommendedMin' or $k === 'recommendedMax') continue;   // not sure where <compatible> goes yet
+                if (is_array($v))
+                {
+                    foreach ($v as $arrayVal) {
+                        $pkgNode->addTextNode($k, $arrayVal);
+                    }
+                }
+                else
+                {
+                    $pkgNode->addTextNode($k, $v);
+                }
+            }
+        }
 
         // ????
         $phpReleaseNode = $xml->addChild('phprelease');
