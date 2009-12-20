@@ -2,6 +2,8 @@
 
 class PEARFarm_Specification
 {
+    const LICENSE_MIT           = 'mit';
+
     protected $name             = NULL;
     protected $channel          = NULL;
     protected $summary          = NULL;
@@ -11,6 +13,7 @@ class PEARFarm_Specification
     protected $apiVersion       = NULL;
     protected $apiStability     = NULL;
     protected $license          = NULL;
+    protected $notes            = NULL;
 
     // contents
     protected $files            = array();
@@ -20,6 +23,10 @@ class PEARFarm_Specification
     protected $dependsOnPearInstallerVersion    = NULL;
     protected $dependsOnExtensions              = array();
     protected $dependsOnPEARPackages            = array();
+
+    private static $licenseData = array(
+        self::LICENSE_MIT => array('name' => 'MIT', 'url' => 'http://www.opensource.org/licenses/mit-license.html')
+    );
 
     public function __construct($options = array())
     {
@@ -51,6 +58,15 @@ class PEARFarm_Specification
         return new PEARFarm_Specification($options);
     }
 
+    public function getLicense()
+    {
+        if (is_array($this->license))
+        {
+            return $this->license;
+        }
+        return self::$licenseData[$this->license];
+    }
+
     public function __call($name, $value)
     {
         switch (substr($name, 0, 3)) {
@@ -59,7 +75,7 @@ class PEARFarm_Specification
                 $varName[0] = strtolower($varName[0]);
                 //if (isset($this->$varName)) // not sure how to test (w/o reflection) to make sure $this->$varName exists.
                 //{
-                    $this->$varName = $value;
+                    $this->$varName = $value[0];
                     return $this;
                 //}
                 break;
@@ -71,60 +87,10 @@ class PEARFarm_Specification
         }
         throw new Exception("Function $name does not exist.");
     }
-}
 
-class PEARFarm_Builder
-{
-    protected $spec = NULL;
-
-    public function __construct(PEARFarm_Specification $spec)
+    public function writePackageFile()
     {
-        $this->spec = $spec;
-    }
-
-    public function build()
-    {
-        $spec = $this->spec;
-
-        require_once('PEAR/PackageFileManager2.php');
-        PEAR::setErrorHandling(PEAR_ERROR_DIE);
-        //require_once 'PEAR/Config.php';
-        //PEAR_Config::singleton('/path/to/unusualpearconfig.ini');
-        // use the above lines if the channel information is not validating
-        $packagexml = new PEAR_PackageFileManager2;
-#        $e = $packagexml->setOptions(
-#            array(
-#             'baseinstalldir' => 'PhpDocumentor',
-#             'packagedirectory' => '/',
-#             'ignore' => array('TODO', 'tests/'), // ignore TODO, all files in tests/
-#             'installexceptions' => array('phpdoc' => '/*'), // baseinstalldir ="/" for phpdoc
-#             'dir_roles' => array('tutorials' => 'doc'),
-#             'exceptions' => array('README' => 'doc', // README would be data, now is doc
-#                                   'PHPLICENSE.txt' => 'doc') // same for the license
-#            )
-#        );
-        $packagexml->setPackage($spec->getName());
-        $packagexml->setChannel($spec->getChannel());
-        $packagexml->setSummary($spec->getSummary());
-        $packagexml->setDescription($spec->getDescription());
-        $packagexml->setReleaseVersion($spec->getReleaseVersion());
-        $packagexml->setReleaseStability($spec->getReleaseStability());
-        $packagexml->setAPIVersion($spec->getApiVersion());
-        $packagexml->setAPIStability($spec->getApiStability());
-        $packagexml->setPhpDep($spec->getDependsOnPHPVersion());
-        $packagexml->setPearinstallerDep($spec->getDependsOnPearInstallerVersion());
-        //$packagexml->addMaintainer('lead', 'cellog', 'Greg Beaver', 'cellog@php.net');
-        $packagexml->setLicense($spec->getLicense());
-        $packagexml->generateContents(); // create the <contents> tag
-        $pkg = &$packagexml->exportCompatiblePackageFile1(); // get a PEAR_PackageFile object
-        // note use of {@link debugPackageFile()} - this is VERY important
-        if (isset($_GET['make']) || (isset($_SERVER['argv']) && @$_SERVER['argv'][1] == 'make')) {
-            $pkg->writePackageFile();
-            $packagexml->writePackageFile();
-        } else {
-            $pkg->debugPackageFile();
-            $packagexml->debugPackageFile();
-        }
+        $xml = '<xml>';
+        file_put_contents('package.xml', $xml);
     }
 }
-

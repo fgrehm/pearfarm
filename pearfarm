@@ -28,6 +28,4 @@ if (!isset($spec))
 
 print_r($spec);
 
-$pb = new PEARFarm_Builder($spec);
-$pb->build();
-
+$spec->writePackageFile();
