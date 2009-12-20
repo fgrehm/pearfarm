@@ -305,10 +305,9 @@ class PEARFarm_Specification_Dir extends PEARFarm_Specification_Item
         $this->setAttribute('name', $baseDirName);
         
         // optional attrs
-        $options = array_merge($options, array(
+        $options = array_merge(array(
                     self::BASEINSTALLDIR => NULL,
-                    )
-                );
+                    ), $options);
         $this->setAttributes($options);
     }
 
@@ -348,11 +347,10 @@ class PEARFarm_Specification_File extends PEARFarm_Specification_Item
         $this->setAttribute('role', $role);
 
         // optional attrs
-        $options = array_merge($options, array(
+        $options = array_merge(array(
                     self::BASEINSTALLDIR => NULL,
                     self::MD5SUM => NULL
-                    )
-                );
+                    ), $options);
         $this->setAttributes($options);
 
         if (file_exists($filePath))
