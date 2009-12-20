@@ -174,10 +174,15 @@ class PEARFarm_Specification
             // add files
             $lastDirObj->addItem($fileObj);
         }
-        xdebug_break();
         $rootDirObj->addXMLAsChild($contentsNode);
 
         $depsNode = $xml->addChild('dependencies');
+        $reqNode = $depsNode->addChild('required');
+        $phpNode = $reqNode->addChild('php');
+        $phpNode->addChild('min', $this->dependsOnPHPVersion);
+        $pearInstallerNode = $reqNode->addChild('pearinstaller');
+        $pearInstallerNode->addChild('min', $this->dependsOnPearInstallerVersion);
+        $optNode = $depsNode->addChild('optional');
 
         $phpReleaseNode = $xml->addChild('phprelease');
 
