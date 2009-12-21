@@ -22,6 +22,10 @@ class PEARFarm_Specification
     const PLATFORM_ANY          = 'any';
     const PLATFORM_WIN          = 'windows';
 
+    const OPT_BASEDIR           = 'basedir';
+
+    protected $options          = array();
+
     // core settings
     protected $name             = NULL;
     protected $channel          = NULL;
@@ -58,6 +62,9 @@ class PEARFarm_Specification
 
     public function __construct($options = array())
     {
+        $this->options = array_merge(array(
+                self::OPT_BASEDIR     => '.',
+        ), $options);
     }
 
     public function addFile(PEARFarm_Specification_File $f)
@@ -155,7 +162,7 @@ class PEARFarm_Specification
     {
         $result = NULL;
         $output = array();
-        $lastLine = exec('git ls-files', $output, $result);
+        $lastLine = exec("cd {$this->options[self::OPT_BASEDIR]} && git ls-files", $output, $result);
         if ($result != 0) throw( new Exception("Error ($result) running git ls-files: " . join("\n", $output)) );
 
         $this->addFilesSimple($output);
@@ -362,7 +369,7 @@ class PEARFarm_Specification
             $xml->addChild('phprelease');
         }
 
-        file_put_contents('package.xml', $xml->asXML());
+        file_put_contents("{$this->options[self::OPT_BASEDIR]}/package.xml", $xml->asXML());
     }
 }
 
