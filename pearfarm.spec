@@ -1,6 +1,6 @@
 <?php
 
-$spec = PEARFarm_Specification::newSpec()
+$spec = PEARFarm_Specification::newSpec(array(PEARFarm_Specification::OPT_BASEDIR => __DIR__))
             ->setName('iphp')
             ->setChannel('pear.nimblize.com')
             ->setSummary('PHP Shell')
