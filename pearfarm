@@ -22,7 +22,7 @@ if (!file_exists($specfile))
 include $specfile;
 if (!isset($spec))
 {
-    print "specfile didn't create a local variable named '\$spec'.";
+    print "specfile didn't create a local variable named '\$spec'.\n";
     exit(1);
 }
 
