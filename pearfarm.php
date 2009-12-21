@@ -275,7 +275,7 @@ class PEARFarm_Specification
         // deps
         $depsNode = $xml->addChild('dependencies');
         $reqNode = $depsNode->addChild('required');
-        $optNode = $depsNode->addChild('optional');
+        $optNode = NULL;
         
         // php & pear installer HAVE to be there
         // php
@@ -309,7 +309,18 @@ class PEARFarm_Specification
 
         // all other deps
         foreach ($this->dependsOnPEARPackages as $dep) {
-            $addToNode = $dep['required'] ? $reqNode : $optNode;
+            if ($dep['required'])
+            {
+                $addToNode = $reqNode;
+            }
+            else
+            {
+                if ($optNode === NULL)
+                {
+                    $optNode = $depsNode->addChild('optional');
+                }
+                $addToNode = $optNode;
+            }
             $pkgNode = $addToNode->addChild('package');
             foreach ($dep as $k => $v) {
                 if ($v === NULL) continue;
