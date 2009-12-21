@@ -113,6 +113,8 @@ class PEARFarm_Specification
         // convert fileObj to role=script and set up to install in bin/
         $fileObj->setAttribute('role', 'script');
         $fileObj->setAttribute('baseinstalldir', '/');
+        $fileObj->addReplaceTask('pear-config', '/usr/bin/env php', 'php_bin');
+        $fileObj->addReplaceTask('pear-config', '@php_bin@', 'php_bin');
         if ($renameTo === NULL)
         {
             $renameTo = basename($scriptFilePath);
@@ -213,7 +215,14 @@ class PEARFarm_Specification
     {
         // http://pear.php.net/manual/en/guide.developers.package2.php
         // unfortunately, order matters in package.xml, so don't mess with it!
-        $xml = simplexml_load_string('<package/>', 'SuperSimpleXMLElement');
+        $xml = simplexml_load_string('<package
+                xmlns="http://pear.php.net/dtd/package-2.0"
+                xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+                                    http://pear.php.net/dtd/tasks-1.0.xsd
+                                    http://pear.php.net/dtd/package-2.0
+                                    http://pear.php.net/dtd/package-2.0.xsd"/>', 'SuperSimpleXMLElement');
         $xml->addAttribute('version', '2.0');
         foreach (array('name', 'channel', 'summary', 'description') as $property) {
             $xml->addTextNode($property, htmlentities($this->$property));
@@ -468,6 +477,7 @@ class PEARFarm_Specification_File extends PEARFarm_Specification_Item
 
     // relative path to File
     private $filePath;
+    protected $replaceTasks = array();
 
     public function __construct($filePath, $role = 'php', $options = array())
     {
@@ -493,9 +503,36 @@ class PEARFarm_Specification_File extends PEARFarm_Specification_Item
         }
     }
 
+    /**
+     * Add a <tasks:replace>, see http://pear.php.net/manual/en/guide.developers.package2.tasks.php
+     *
+     * @param string one of package-info, pear-config
+     * @param string from string, traditionally @search@
+     * @param string to string, the "abstract" variable from "type" for the replacement.
+     * @return this for fluent interface
+     */
+    public function addReplaceTask($type, $from, $to)
+    {
+        $this->replaceTasks[] = array('type' => $type, 'from' => $from, 'to' => $to);
+
+        return $this;
+    }
+
     public function getFilePath()
     {
         return $this->filePath;
+    }
+
+    public function addXMLAsChild($parentNode)
+    {
+        $node = parent::addXMLAsChild($parentNode);
+        foreach ($this->replaceTasks as $task) {
+            $taskNode = $node->addChild('replace', NULL, 'http://pear.php.net/dtd/tasks-1.0');
+            $taskNode->addAttribute('type', $task['type']);
+            $taskNode->addAttribute('from', $task['from']);
+            $taskNode->addAttribute('to', $task['to']);
+        }
+        return $node;
     }
 }
 
