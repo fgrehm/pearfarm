@@ -108,7 +108,11 @@ class PEARFarm_Specification
     public function addExecutable($scriptFilePath, $renameTo = NULL, $platform = self::PLATFORM_ANY)
     {
         if (!isset($this->files[$scriptFilePath])) throw new Exception("File {$scriptFilePath} does not exist.");
+
         $fileObj = $this->files[$scriptFilePath];
+        // convert fileObj to role=script and set up to install in bin/
+        $fileObj->setAttribute('role', 'script');
+        $fileObj->setAttribute('baseinstalldir', '/');
         if ($renameTo === NULL)
         {
             $renameTo = basename($scriptFilePath);
