@@ -12,4 +12,6 @@ $spec = PEARFarm_Specification::newSpec()
             ->setLicense(PEARFarm_Specification::LICENSE_MIT)
             ->setNotes('First release of iphp.')
             ->addMaintainer('lead', 'Alan Pinstein', 'apinstein', 'apinstein@mac.com')
-            ->addGitFiles();
+            ->addGitFiles()
+            ->addExecutable('pearfarm')
+            ;

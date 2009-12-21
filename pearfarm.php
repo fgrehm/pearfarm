@@ -1,8 +1,26 @@
 <?php
 
+/**
+ * PEARFarm_Specification is a simplified DSL for creating basic pear pacakges.
+ *
+ * Instead of having to learn about the complexities of PEAR you can just specify a few basic facts and PEARFarm will build you a reasonable package.xml.
+ *
+ * You can the call "pear package" to build your official PEAR package.
+ *
+ * NOTE: this code was hacked up quickly one weekend and isn't particularly pretty. I was learning PEAR architecture at the same time. My apologies in advance.
+ */
 class PEARFarm_Specification
 {
     const LICENSE_MIT           = 'mit';
+
+    const ROLE_PHP              = 'php';
+    const ROLE_SCRIPT           = 'script';
+    const ROLE_DOC              = 'doc';
+    const ROLE_TEST             = 'test';
+    const ROLE_DATA             = 'data';
+
+    const PLATFORM_ANY          = 'any';
+    const PLATFORM_WIN          = 'windows';
 
     // core settings
     protected $name             = NULL;
@@ -32,6 +50,7 @@ class PEARFarm_Specification
 
     // package contents
     protected $files            = array();
+    protected $executables      = array();
 
     private static $licenseData = array(
         self::LICENSE_MIT => array('name' => 'MIT', 'uri' => 'http://www.opensource.org/licenses/mit-license.html')
@@ -75,6 +94,19 @@ class PEARFarm_Specification
         $this->dependsOnPearInstallerVersionMax = $max;
         $this->dependsOnPearInstallerVersionRecommended = $recommended;
         $this->dependsOnPearInstallerVersionExclude = $exclude;
+
+        return $this;
+    }
+
+    public function addExecutable($scriptFilePath, $renameTo = NULL, $platform = self::PLATFORM_ANY)
+    {
+        if (!isset($this->files[$scriptFilePath])) throw new Exception("File {$scriptFilePath} does not exist.");
+        $fileObj = $this->files[$scriptFilePath];
+        if ($renameTo === NULL)
+        {
+            $renameTo = basename($scriptFilePath);
+        }
+        $this->executables[$platform][] = array('name' => $scriptFilePath, 'as' => $renameTo);
 
         return $this;
     }
@@ -296,8 +328,28 @@ class PEARFarm_Specification
             }
         }
 
-        // ????
-        $phpReleaseNode = $xml->addChild('phprelease');
+        // create a "phprelease" tag
+        $hasReleaseNode = false;
+        foreach ($this->executables as $platform => $executables) {
+            $hasReleaseNode = true;
+            $phpReleaseNode = $xml->addChild('phprelease');
+            if ($platform !== self::PLATFORM_ANY)
+            {
+                $installConditionNode = $phpReleaseNode->addChild('installconditions');
+                $osNode = $installConditionNode->addChild('os');
+                $osNode->addTextNode('name', $platform);
+            }
+            $fileListNode = $phpReleaseNode->addChild('filelist');
+            foreach ($executables as $executable) {
+                $installNode = $fileListNode->addChild('install');
+                $installNode->addAttribute('as', $executable['as']);
+                $installNode->addAttribute('name', $executable['name']);
+            }
+        }
+        if (!$hasReleaseNode)
+        {
+            $xml->addChild('phprelease');
+        }
 
         file_put_contents('package.xml', $xml->asXML());
     }
