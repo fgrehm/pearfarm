@@ -34,3 +34,5 @@ if (!isset($spec))
 }
 
 $spec->writePackageFile();
+
+print "The package.xml file was written successfully.\n";
