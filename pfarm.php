@@ -1,8 +1,5 @@
 <?php
-namespace PEAR\PearFarm;
 
-require_once('PEAR/PackageFileManager2.php');
-\PEAR::setErrorHandling(PEAR_ERROR_DIE);
 
 interface Task {
 	public function run($args);
@@ -12,7 +9,7 @@ interface Task {
 	public function getDescription();
 }
 
-class TaskArgumentException extends \Exception {
+class TaskArgumentException extends Exception {
 	
 }
 
@@ -21,25 +18,42 @@ class PlantTask implements Task {
 		if(!isset($args[2])) {
 			throw new TaskArgumentException("You must specify a package name.\n");
 		}
+                echo "Creating folders...\n";
 		//TODO: check if there is already a directory with that name
 		//TODO: what should we do if we don't have write permissions?
 		//TODO: validate package name
+                $sep = DIRECTORY_SEPARATOR;
 		$packageName = $args[2];
+                echo "Creating $packageName folders...\n";
+                
 		mkdir($packageName);
+                echo "  created $packageName{$sep}\n";
+
 		mkdir($packageName . DIRECTORY_SEPARATOR . 'src');
+                echo "  created $packageName{$sep}src\n";
+
 		mkdir($packageName . DIRECTORY_SEPARATOR . 'data');
+                echo "  created $packageName{$sep}data\n";
+
 		mkdir($packageName . DIRECTORY_SEPARATOR . 'tests');
+                echo "  created $packageName{$sep}tests\n";
+
 		mkdir($packageName . DIRECTORY_SEPARATOR . 'doc');
+                echo "  created $packageName{$sep}doc\n";
+
 		mkdir($packageName . DIRECTORY_SEPARATOR . 'www');
+                echo "  created $packageName{$sep}www\n";
+
 		mkdir($packageName . DIRECTORY_SEPARATOR . 'examples');
+                echo "  created $packageName{$sep}examples\n";
 
 		// create default class
 		// TODO: add doc block to class
 		file_put_contents($packageName . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . ucfirst($packageName) . '.php', "<?php\nclass " . ucfirst($packageName) . " {\n\n\n}");
-
-		//TODO: generate package spesification file
+                echo "  created $packageName{$sep}src{$sep}" . ucfirst($packageName) . ".php\n";
 
 	}
+
 	public function showHelp() {
 		echo "TODO: Print some help.\n";
 	}
@@ -113,9 +127,8 @@ class PFarm {
 	private $tasks;
 	private $verbs;
 
-	public function __construct(array $args, $registrations) {
+	public function __construct(array $args) {
 		$this->args = $args;
-		$registrations($this);
 	}
 	public function run() {
 		if(!isset($this->args[1]) || !isset($this->verbs[$this->args[1]])) {
@@ -154,58 +167,11 @@ class PFarm {
 	}
 }
 
-$pfarm = new PFarm($argv, function($pfarm) {
-	$pfarm->register(new PlantTask());
-	$pfarm->register(new CollectTask());
-	$pfarm->register(new TryTask());
-	$pfarm->register(new DeliverTask());
-});
+$pfarm = new PFarm($argv);
+$pfarm->register(new PlantTask());
+$pfarm->register(new CollectTask());
+$pfarm->register(new TryTask());
+$pfarm->register(new DeliverTask());
 $pfarm->run();
 
 die();
-
-/*
-
-THIS IS AN EXAMPLE OF HOW TO GENERATE THE XML PACKAGE FILE
-$pfm = new PEAR_PackageFileManager2();
-
-//TODO: Define defaults for most of these parameters and decide which one we will require from the user.
-$e = $pfm->setOptions(
-array(
-'baseinstalldir' => '',
-'packagedirectory' => '.',
-//TODO: find a good way to add ignore files for .svn or .git, etc.
-'filelistgenerator' => 'file', //this should be file, because other options are svn or cvs, but I think it doesn't really make sense
-'ignore' => array(),
-'installexceptions' => array(),
-'dir_roles' => array(),
-'exceptions' => array()
-)
-); // same for the license
-$pfm->setPackage('MyPackage');
-$pfm->setSummary('this is my package');
-$pfm->setDescription('this is my package description');
-
-//TODO: By default we should put pearfarm channel here
-$pfm->setChannel('pear.php.net');
-
-//what's api version?????
-$pfm->setAPIVersion('1.0.0');
-$pfm->setReleaseVersion('1.2.1');
-$pfm->setReleaseStability('stable');
-
-//again api???
-$pfm->setAPIStability('stable');
-$pfm->setNotes("We've implemented many new and exciting features");
-
-//should we care about this?
-$pfm->setPackageType('php'); // this is a PEAR-style php script package
-$pfm->setOSInstallCondition('windows');
-$pfm->setPhpDep('4.2.0');
-$pfm->setPearinstallerDep('1.4.0a12');
-$pfm->addMaintainer('lead', 'cellog', 'Greg Beaver', 'cellog@php.net');
-$pfm->setLicense('PHP License', 'http://www.php.net/license');
-$pfm->generateContents(); // create the <contents> tag
-$pfm->debugPackageFile(); //show the xml
-$pfm->writePackageFile(); //write the xml
-//*/
