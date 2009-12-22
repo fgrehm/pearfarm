@@ -15,4 +15,5 @@ $spec = PEARFarm_Specification::newSpec(array(PEARFarm_Specification::OPT_BASEDI
             ->addMaintainer('lead', 'Fábio Rehm', 'fgrehm', 'fgrehm@gmail.com')
             ->addGitFiles()
             ->addExecutable('pearfarm')
+            ->addExecutable('pfarm')
             ;
