@@ -12,6 +12,7 @@ $spec = PEARFarm_Specification::newSpec(array(PEARFarm_Specification::OPT_BASEDI
             ->setLicense(PEARFarm_Specification::LICENSE_MIT)
             ->setNotes('Initial release.')
             ->addMaintainer('lead', 'Alan Pinstein', 'apinstein', 'apinstein@mac.com')
+            ->addMaintainer('lead', 'Fábio Rehm', 'fgrehm', 'fgrehm@gmail.com')
             ->addGitFiles()
             ->addExecutable('pearfarm')
             ;

@@ -18,7 +18,7 @@ class PlantTask implements Task {
 		if(!isset($args[2])) {
 			throw new TaskArgumentException("You must specify a package name.\n");
 		}
-                echo "Creating folders...\n";
+                
 		//TODO: check if there is already a directory with that name
 		//TODO: what should we do if we don't have write permissions?
 		//TODO: validate package name
@@ -28,6 +28,9 @@ class PlantTask implements Task {
                 
 		mkdir($packageName);
                 echo "  created $packageName{$sep}\n";
+
+                file_put_contents($packageName . DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR . $packageName . '.spec', $this->basicSpecFile($packageName));
+                echo "  created $packageName{$sep}$packageName.spec\n";
 
 		mkdir($packageName . DIRECTORY_SEPARATOR . 'src');
                 echo "  created $packageName{$sep}src\n";
@@ -54,6 +57,34 @@ class PlantTask implements Task {
 
 	}
 
+	public function basicSpecFile($packageName) {
+		$creatorName = 'TODO: Your name here';
+                $creatorEmail = 'TODO: Your email here';
+                $user = 'TODO: Your username here';
+                $channel = 'TODO: Release channel here';
+                $summary = 'TODO: One-line summary of your PEAR package';
+                $description = 'TODO: Longer description of your PEAR package';
+
+		return <<<STR
+<?php
+
+\$spec = PEARFarm_Specification::newSpec(array(PEARFarm_Specification::OPT_BASEDIR => dirname(__FILE__)))
+            ->setName('{$packageName}')
+            ->setChannel('{$channel}')
+            ->setSummary('{$summary}')
+            ->setDescription('{$description}')
+            ->setReleaseVersion('0.0.1')
+            ->setReleaseStability('alpha')
+            ->setApiVersion('0.0.1')
+            ->setApiStability('alpha')
+            ->setLicense(PEARFarm_Specification::LICENSE_MIT)
+            ->setNotes('Initial release.')
+            ->addMaintainer('lead', '{$creatorName}', '{$user}', '{$creatorEmail}')
+            ->addGitFiles()
+            ->addExecutable('{$packageName}')
+            ;
+STR;
+	}
 	public function showHelp() {
 		echo "TODO: Print some help.\n";
 	}
@@ -70,7 +101,34 @@ class PlantTask implements Task {
 
 class CollectTask implements Task {
 	public function run($args) {
+		if (strpos('@php_bin@', '@php_bin') === 0)  // not a pear install
+			require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'pearfarm.php';
+		else
+			require 'pearfarm'.DIRECTORY_SEPARATOR.'pearfarm.php';
 
+		if (isset($argv[1]))
+    			$specfile = $argv[1];
+		else
+    			$specfile = getcwd() . '/pearfarm.spec';
+
+		print "Reading specfile at {$specfile}...\n";
+		if (!file_exists($specfile)) {
+    			print "{$specfile} is not a pearfarm.spec file.\n";
+    			exit(1);
+		}
+
+		include $specfile;
+		if (!isset($spec)) {
+			print "specfile didn't create a local variable named '\$spec'.\n";
+			exit(1);
+		}
+
+		$spec->writePackageFile();
+
+		print "The package.xml file was written successfully, executing 'pear package'...\n";
+		exec('pear package');
+
+		print "The package was generated successfully.\n";
 	}
 	public function showHelp() {
 
