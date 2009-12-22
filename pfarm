@@ -1,4 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-include dirname(__FILE__).DIRECTORY_SEPARATOR.'pfarm.php';
+if (strpos('@php_bin@', '@php_bin') === 0)  // not a pear install
+        require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'pfarm.php';
+else
+        require 'pearfarm'.DIRECTORY_SEPARATOR.'pfarm.php';
