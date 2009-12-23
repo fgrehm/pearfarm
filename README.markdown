@@ -4,7 +4,7 @@ INSTALATION
 
  $ cd pearfarm
 
- $ ./pearfarm try
+ $ php pearfarm try
 
 
 NEW PROJECTS
