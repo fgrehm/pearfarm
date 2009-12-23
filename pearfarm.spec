@@ -14,5 +14,6 @@ $spec = PackageSpec::create(array(PackageSpec::OPT_BASEDIR => dirname(__FILE__))
             ->addMaintainer('lead', 'Alan Pinstein', 'apinstein', 'apinstein@mac.com')
             ->addMaintainer('lead', 'Fábio Rehm', 'fgrehm', 'fgrehm@gmail.com')
             ->addGitFiles()
+            ->addExcludeFiles('.gitignore')
             ->addExecutable('pearfarm')
             ;
