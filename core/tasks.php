@@ -163,8 +163,9 @@ class CollectTask implements Task {
 
 class TryTask implements Task {
 	public function run($args) {
-		print "Building package...\n";
-		exec('pearfarm build');
+                $cmd = PEARFARM_CMD . ' build';
+		print "Building package with $cmd...\n";
+		exec($cmd);
 
 		require dirname(__FILE__).DIRECTORY_SEPARATOR.'builder.php';
 
