@@ -2,7 +2,18 @@
 <?php
 
 if (strpos('@php_bin@', '@php_bin') === 0) {  // not a pear install
-    require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'pearfarm-cli.php';
+    $prefix = dirname(__FILE__);
 } else {
-    require 'pearfarm'.DIRECTORY_SEPARATOR.'pearfarm-cli.php';
+    $prefix = 'pearfarm';
 }
+
+require "{$prefix}/core/cli.php";
+require "{$prefix}/core/tasks.php";
+
+$cli = new PearfarmCLIController($argv);
+$cli->register(new PlantTask());
+$cli->register(new CollectTask());
+$cli->register(new TryTask());
+$cli->register(new DeliverTask());
+$cli->run();
+exit(0);

@@ -98,7 +98,7 @@ STR;
 
 class CollectTask implements Task {
 	public function run($args) {
-        require dirname(__FILE__).DIRECTORY_SEPARATOR.'core/builder.php';
+        require dirname(__FILE__).DIRECTORY_SEPARATOR.'builder.php';
 
 		if (isset($argv[1]))
     			$specfile = $argv[1];
@@ -174,55 +174,3 @@ class DeliverTask implements Task {
 	}
 }
 
-class PearfarmCLIController {
-	private $args;
-	private $tasks;
-	private $verbs;
-
-	public function __construct(array $args) {
-		$this->args = $args;
-	}
-	public function run() {
-		if(!isset($this->args[1]) || !isset($this->verbs[$this->args[1]])) {
-			$this->showHelp();
-			//TODO: define exit codes
-			exit(-1);
-		}
-		$task = $this->verbs[$this->args[1]];
-		try {
-			$task->run($this->args);
-			exit();
-		} catch(TaskArgumentException $ex) {
-			echo $ex->getMessage()."\n";
-			$task->showHelp();
-			//TODO: define exit codes
-			exit(-2);
-		}
-	}
-	public function showHelp() {
-		echo("usage: pfarm COMMAND [ARGS]\n\nThe pfarm commands are:\n");
-		foreach($this->tasks as $task) {
-			$aliases = implode(", ", $task->getAliases());
-			if(!empty($aliases)) {
-				$aliases = " (".$aliases.")";
-			}
-			echo str_pad($task->getName().$aliases, 20, " ", STR_PAD_LEFT)."\t".$task->getDescription()."\n";
-		}
-		echo("\n");
-	}
-	public function register(Task $task) {
-		$this->tasks[$task->getName()] = $task;
-		$this->verbs[$task->getName()] = $task;
-		foreach($task->getAliases() as $verb) {
-			$this->verbs[$verb] = $task;
-		}
-	}
-}
-
-$cli = new PearfarmCLIController($argv);
-$cli->register(new PlantTask());
-$cli->register(new CollectTask());
-$cli->register(new TryTask());
-$cli->register(new DeliverTask());
-$cli->run();
-exit(0);
