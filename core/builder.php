@@ -65,21 +65,65 @@ class PackageSpec
         $this->options = array_merge(array(
                 self::OPT_BASEDIR     => '.',
         ), $options);
+
+        $this->options[self::OPT_BASEDIR] = realpath($this->options[self::OPT_BASEDIR]);
     }
 
+    // VARIOUS WAYS TO ADD FILES
     public function addFile(PackageSpecFile $f)
     {
         $this->files[$f->getFilePath()] = $f;
     }
 
-    public function addFilesSimple($files = array(), $role = 'php', $options = array())
+    public function addFilesSimple($files, $role = self::ROLE_PHP, $options = array())
     {
+        if (!is_array($files))
+        {
+            $files = array($files);
+        }
         foreach ($files as $f) {
             $this->addFile( new PackageSpecFile($f, $role, $options) );
         }
         return $this;
     }
+    
+    /**
+     * Add files to the PEAR package based on regex filter of file paths.
+     *
+     * @param mixed A string regex pattern (must include //) or an array of patterns.
+     * @param string The "role" of the file for PEAR's benefit; one of PackageSpec::ROLE_*
+     * @param array An array of options to pass to new PackageSpecFile().
+     * @return object PackageSpec for fluent interface
+     */
+    public function addFilesRegex($regexs, $role = self::ROLE_PHP, $options = array())
+    {
+        if (!is_array($regexs))
+        {
+            $regexs = array($regexs);
+        }
+        $basedirOffset = strlen($this->options[self::OPT_BASEDIR]);
+        foreach ($regexs as $regex) {
+            foreach (new RecursiveFileRegexFilterIterator($this->options[self::OPT_BASEDIR], $regex) as $addFile) {
+                $addFileRelPath = substr($addFile->getPathname(), $basedirOffset);
+                $this->addFile( new PackageSpecFile($addFileRelPath, $role, $options) );
+            }
+        }
+        return $this;
+    }
 
+    public function addGitFiles()
+    {
+        $result = NULL;
+        $output = array();
+        $lastLine = exec("cd {$this->options[self::OPT_BASEDIR]} && git ls-files", $output, $result);
+        if ($result != 0) throw( new Exception("Error ($result) running git ls-files: " . join("\n", $output)) );
+
+        $this->addFilesSimple($output);
+
+        return $this;
+    }
+
+    // OTHER METADATA
     public function addMaintainer($type, $name, $user, $email, $active = true)
     {
         $this->maintainers[$type][] = array('name' => $name, 'user' => $user, 'email' => $email, 'active' => $active);
@@ -162,23 +206,6 @@ class PackageSpec
         $this->dependsOnPEARPackages[] = $depInfo;
 
         return $this;
-    }
-
-    public function addGitFiles($exclude = array())
-    {
-        $result = NULL;
-        $output = array();
-        $lastLine = exec("cd {$this->options[self::OPT_BASEDIR]} && git ls-files", $output, $result);
-        if ($result != 0) throw( new Exception("Error ($result) running git ls-files: " . join("\n", $output)) );
-
-        $this->addFilesSimple($output);
-
-        return $this;
-    }
-
-    public static function create($options = array())
-    {
-        return new PackageSpec($options);
     }
 
     public function getLicense()
@@ -384,6 +411,17 @@ class PackageSpec
 
         file_put_contents("{$this->options[self::OPT_BASEDIR]}/package.xml", $xml->asXML());
     }
+
+    /**
+     * Fluent interface bootstrap static constructor.
+     *
+     * @param array Options hash to be passed to constructor.
+     * @return object PackageSpec
+     */
+    public static function create($options = array())
+    {
+        return new PackageSpec($options);
+    }
 }
 
 abstract class PackageSpecItem
@@ -545,3 +583,63 @@ class SuperSimpleXMLElement extends SimpleXMLElement
         return $newNode;
     }
 }
+
+// thanks http://shiflett.org/blog/2007/dec/php-advent-calendar-day-7
+class RecursiveFileIterator extends RecursiveIteratorIterator
+{
+    /**
+     * Takes a path to a directory, checks it, and then recurses into it.
+     * @param $path directory to iterate
+     */
+    public function __construct($path)
+    {
+        // Use realpath() and make sure it exists; this is probably overkill, but I'm anal.
+        $path = realpath($path);
+
+        if (!file_exists($path)) {
+            throw new Exception("Path $path could not be found.");
+        } elseif (!is_dir($path)) {
+            throw new Exception("Path $path is not a directory.");
+        }
+
+        // Use RecursiveDirectoryIterator() to drill down into subdirectories.
+        parent::__construct(new RecursiveDirectoryIterator($path));
+    }
+}
+
+class RecursiveFileRegexFilterIterator extends FilterIterator
+{
+    /**
+     * acceptable extensions - array of strings
+     */
+    protected $regex = NULL;
+
+    /**
+     * Takes a path and shoves it into our earlier class.
+     * Turns $ext into an array.
+     * @param $path directory to iterate
+     * @param $ext comma delimited list of acceptable extensions
+     */
+    public function __construct($path, $regex)
+    {
+        parent::__construct(new RecursiveFileIterator($path));
+        $this->regex = $regex;
+    }
+
+    /**
+     * Makes sure that the path matches the regex.
+     */
+    public function accept()
+    {
+        $item = $this->getInnerIterator();
+
+        // If it's not a file, accept it.
+        if (!$item->isFile()) {
+            return TRUE;
+        }
+
+        // If it is a file, test the path against the regex
+        return preg_match($this->regex, $item->getFilename());
+    }
+}
+
