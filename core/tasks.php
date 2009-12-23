@@ -182,6 +182,8 @@ class TryTask implements Task {
 
                 if (strstr($result[0], 'install ok') !== false)
                     print "The package was installed successfully.\n";
+                elseif (strstr($result[0], 'upgrade ok') !== false)
+                    print "The package was upgraded successfully.\n";
                 else {
                     $help = $isUpgrade ? '' : ' Try running with -u option to upgrade.';
                     print "\n\nThere were errors installing the package.$help\n  PEAR output:\n    " . join("\n    ", $result) . "\n";

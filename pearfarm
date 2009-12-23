@@ -3,10 +3,10 @@
 
 if (strpos('@php_bin@', '@php_bin') === 0) {  // not a pear install
     $prefix = dirname(__FILE__);
-    define(PEARFARM_CMD, 'php pearfarm');
+    define('PEARFARM_CMD', 'php pearfarm');
 } else {
     $prefix = 'pearfarm';
-    define(PEARFARM_CMD, 'pearfarm');
+    define('PEARFARM_CMD', 'pearfarm');
 }
 
 require "{$prefix}/core/cli.php";
