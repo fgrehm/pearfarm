@@ -156,7 +156,7 @@ class CollectTask implements Task {
 		return "collect";
 	}
 	public function getAliases() {
-		return array();
+		return array('build');
 	}
 	public function getDescription() {
 		return "builds the package";
