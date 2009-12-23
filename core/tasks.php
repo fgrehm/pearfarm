@@ -102,7 +102,7 @@ class InitTask extends PlantTask {
     if(!isset($args[2])) {
 			throw new TaskArgumentException("You must specify a package name.\n");
 		}
-    $packageName = $args[2];
+    $specfile = getcwd() . '/pearfarm.spec';
     file_put_contents($packageName . '.spec', $this->basicSpecFile($packageName));
     echo "  created $packageName.spec\n";
   }
