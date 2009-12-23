@@ -1,15 +1,15 @@
 <?php
 
 /**
- * PEARFarm_Specification is a simplified DSL for creating basic pear pacakges.
+ * PackageSpec is a simplified DSL for creating basic pear pacakges.
  *
- * Instead of having to learn about the complexities of PEAR you can just specify a few basic facts and PEARFarm will build you a reasonable package.xml.
+ * Instead of having to learn about the complexities of PEAR you can just specify a few basic facts and Pearfarm will build you a reasonable package.xml.
  *
  * You can the call "pear package" to build your official PEAR package.
  *
  * NOTE: this code was hacked up quickly one weekend and isn't particularly pretty. I was learning PEAR architecture at the same time. My apologies in advance.
  */
-class PEARFarm_Specification
+class PackageSpec
 {
     const LICENSE_MIT           = 'mit';
 
@@ -67,7 +67,7 @@ class PEARFarm_Specification
         ), $options);
     }
 
-    public function addFile(PEARFarm_Specification_File $f)
+    public function addFile(PackageSpecFile $f)
     {
         $this->files[$f->getFilePath()] = $f;
     }
@@ -75,7 +75,7 @@ class PEARFarm_Specification
     public function addFilesSimple($files = array(), $role = 'php', $options = array())
     {
         foreach ($files as $f) {
-            $this->addFile( new PEARFarm_Specification_File($f, $role, $options) );
+            $this->addFile( new PackageSpecFile($f, $role, $options) );
         }
         return $this;
     }
@@ -176,9 +176,9 @@ class PEARFarm_Specification
         return $this;
     }
 
-    public static function newSpec($options = array())
+    public static function create($options = array())
     {
-        return new PEARFarm_Specification($options);
+        return new PackageSpec($options);
     }
 
     public function getLicense()
@@ -261,11 +261,11 @@ class PEARFarm_Specification
 
         $contentsNode = $xml->addChild('contents');
         // baseinstalldir = "name" of package --- prevents conflicts i suppose
-        $rootDirObj = new PEARFarm_Specification_Dir('.', array(PEARFarm_Specification_Dir::BASEINSTALLDIR => $this->name));
+        $rootDirObj = new PackageSpecDir('.', array(PackageSpecDir::BASEINSTALLDIR => $this->name));
 
         // build all dir & file blocks
         ksort($this->files);
-        $dirs = array('.' => $rootDirObj);    // dirPath => object PEARFarm_Specification_Dir
+        $dirs = array('.' => $rootDirObj);    // dirPath => object PackageSpecDir
         foreach ($this->files as $filePath => $fileObj) {
             $fileDirPath = dirname($filePath);
 
@@ -278,7 +278,7 @@ class PEARFarm_Specification
                 if (isset($dirs[$dirPath])) continue;
 
                 // create directory
-                $dirObj = new PEARFarm_Specification_Dir($dirPath);
+                $dirObj = new PackageSpecDir($dirPath);
                 $dirs[$dirPath] = $dirObj;
                 // wire directory into hierarchy
                 $lastDirObj->addItem($dirObj);
@@ -386,7 +386,7 @@ class PEARFarm_Specification
     }
 }
 
-abstract class PEARFarm_Specification_Item
+abstract class PackageSpecItem
 {
     protected $nodeName;
     protected $requiredAttributes;
@@ -423,7 +423,7 @@ abstract class PEARFarm_Specification_Item
         return $node;
     }
 }
-class PEARFarm_Specification_Dir extends PEARFarm_Specification_Item
+class PackageSpecDir extends PackageSpecItem
 {
     const BASEINSTALLDIR        = 'baseinstalldir';
 
@@ -456,7 +456,7 @@ class PEARFarm_Specification_Dir extends PEARFarm_Specification_Item
 
     public function addItem($item)
     {
-        if (!($item instanceof PEARFarm_Specification_Dir) and !($item instanceof PEARFarm_Specification_File)) throw new Exception("PEARFarm_Specification_Dir can only contain PEARFarm_Specification_Dir and PEARFarm_Specification_File objects.");
+        if (!($item instanceof PackageSpecDir) and !($item instanceof PackageSpecFile)) throw new Exception("PackageSpecDir can only contain PackageSpecDir and PackageSpecFile objects.");
         $this->items[] = $item;
     }
 
@@ -470,7 +470,7 @@ class PEARFarm_Specification_Dir extends PEARFarm_Specification_Item
     }
 }
 
-class PEARFarm_Specification_File extends PEARFarm_Specification_Item
+class PackageSpecFile extends PackageSpecItem
 {
     const BASEINSTALLDIR        = 'baseinstalldir';
     const MD5SUM                = 'md5sum';

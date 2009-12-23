@@ -1,6 +1,5 @@
 <?php
 
-
 interface Task {
 	public function run($args);
 	public function showHelp();
@@ -9,9 +8,7 @@ interface Task {
 	public function getDescription();
 }
 
-class TaskArgumentException extends Exception {
-	
-}
+class TaskArgumentException extends Exception {}
 
 class PlantTask implements Task {
 	public function run($args) {
@@ -68,7 +65,7 @@ class PlantTask implements Task {
 		return <<<STR
 <?php
 
-\$spec = PEARFarm_Specification::newSpec(array(PEARFarm_Specification::OPT_BASEDIR => dirname(__FILE__)))
+\$spec = PackageSpec::create(array(PackageSpec::OPT_BASEDIR => dirname(__FILE__)))
             ->setName('{$packageName}')
             ->setChannel('{$channel}')
             ->setSummary('{$summary}')
@@ -77,7 +74,7 @@ class PlantTask implements Task {
             ->setReleaseStability('alpha')
             ->setApiVersion('0.0.1')
             ->setApiStability('alpha')
-            ->setLicense(PEARFarm_Specification::LICENSE_MIT)
+            ->setLicense(PackageSpec::LICENSE_MIT)
             ->setNotes('Initial release.')
             ->addMaintainer('lead', '{$creatorName}', '{$user}', '{$creatorEmail}')
             ->addGitFiles()
@@ -101,10 +98,7 @@ STR;
 
 class CollectTask implements Task {
 	public function run($args) {
-		if (strpos('@php_bin@', '@php_bin') === 0)  // not a pear install
-			require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'pearfarm.php';
-		else
-			require 'pearfarm'.DIRECTORY_SEPARATOR.'pearfarm.php';
+        require dirname(__FILE__).DIRECTORY_SEPARATOR.'core/builder.php';
 
 		if (isset($argv[1]))
     			$specfile = $argv[1];
@@ -180,7 +174,7 @@ class DeliverTask implements Task {
 	}
 }
 
-class PFarm {
+class PearfarmCLIController {
 	private $args;
 	private $tasks;
 	private $verbs;
@@ -225,11 +219,10 @@ class PFarm {
 	}
 }
 
-$pfarm = new PFarm($argv);
-$pfarm->register(new PlantTask());
-$pfarm->register(new CollectTask());
-$pfarm->register(new TryTask());
-$pfarm->register(new DeliverTask());
-$pfarm->run();
-
-die();
+$cli = new PearfarmCLIController($argv);
+$cli->register(new PlantTask());
+$cli->register(new CollectTask());
+$cli->register(new TryTask());
+$cli->register(new DeliverTask());
+$cli->run();
+exit(0);
