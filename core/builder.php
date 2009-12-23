@@ -78,12 +78,28 @@ class PackageSpec
     }
 
     // VARIOUS WAYS TO ADD FILES
+    /**
+     * Add a PackageSpecFile to the list of files to add to the package.
+     *
+     * @param object PackageSpecFile
+     * @return object PackageSpec for fluent interface
+     */
     public function addFile(PackageSpecFile $f)
     {
         $this->debug("Adding file {$f->getFilePath()}");
         $this->files[$f->getFilePath()] = $f;
     }
 
+    /**
+     * Add a file or files to the package based on simple paths.
+     *
+     * Paths should be relative to project root, ie: path/to/myfile.php.
+     *
+     * @param mixed A string filename, or an array of filenames
+     * @param string The "role" of the file for PEAR's benefit; one of PackageSpec::ROLE_*
+     * @param array An array of options to pass to new PackageSpecFile()
+     * @return object PackageSpec for fluent interface
+     */
     public function addFilesSimple($files, $role = self::ROLE_PHP, $options = array())
     {
         if (!is_array($files))
@@ -121,6 +137,12 @@ class PackageSpec
         return $this;
     }
 
+    /**
+     * Add a regex pattern which will cause a file that has been included previously to be excluded from the final package.
+     *
+     * @param mixed A string regex pattern (must include //) or an array of patterns.
+     * @return object PackageSpec for fluent interface
+     */
     public function addExcludeFilesRegex($regexs)
     {
         if (!is_array($regexs))
@@ -131,6 +153,12 @@ class PackageSpec
         return $this;
     }
 
+    /**
+     * Add a file path which will cause a file that has been included previously to be excluded from the final package.
+     *
+     * @param mixed A filepath to a file to exclude, must be relative to project root, aka path/to/myfiletoexclude.php
+     * @return object PackageSpec for fluent interface
+     */
     public function addExcludeFiles($excludeFiles)
     {
         if (!is_array($excludeFiles))
@@ -143,6 +171,12 @@ class PackageSpec
         return $this;
     }
 
+    /**
+     * Add all files that git knows about to the package.
+     *
+     * @return object PackageSpec for fluent interface
+     * @throws
+     */
     public function addGitFiles()
     {
         $result = NULL;
