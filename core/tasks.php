@@ -119,10 +119,9 @@ class InitTask extends PlantTask {
 	}
 }
 
-
 class CollectTask implements Task {
 	public function run($args) {
-        require dirname(__FILE__).DIRECTORY_SEPARATOR.'builder.php';
+		require dirname(__FILE__).DIRECTORY_SEPARATOR.'builder.php';
 
 		if (isset($argv[1]))
     			$specfile = $argv[1];
@@ -164,7 +163,28 @@ class CollectTask implements Task {
 
 class TryTask implements Task {
 	public function run($args) {
+		print "Building package...\n";
+		exec('pearfarm build');
 
+		require dirname(__FILE__).DIRECTORY_SEPARATOR.'builder.php';
+
+		$specfile = getcwd() . '/pearfarm.spec';
+		include $specfile;
+                print "Installing {$spec->getName()} {$spec->getReleaseVersion()}...\n";
+
+                $isUpgrade = (isset($args[2]) && $args[2] == '-u');
+                $cmd = $isUpgrade ? 'upgrade' : 'install';
+
+                $result = array();
+                $output = '';
+		exec("pear $cmd {$spec->getName()}-{$spec->getReleaseVersion()}.tgz", $result, $output);
+
+                if (strstr($result[0], 'install ok') !== false)
+                    print "The package was installed successfully.\n";
+                else {
+                    $help = $isUpgrade ? '' : ' Try running with -u option to upgrade.';
+                    print "\n\nThere were errors installing the package.$help\n  PEAR output:\n    " . join("\n    ", $result) . "\n";
+                }
 	}
 	public function showHelp() {
 
@@ -176,7 +196,7 @@ class TryTask implements Task {
 		return array();
 	}
 	public function getDescription() {
-		return "installs the package for testing purposes";
+		return "installs the package for testing purposes (-u to upgrade the package)";
 	}
 }
 
