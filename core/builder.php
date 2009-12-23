@@ -368,8 +368,8 @@ class PackageSpec
                 $dirPath .= DIRECTORY_SEPARATOR;
                 $depth = 1;
             }
-            // add files
-            $lastDirObj->addItem($fileObj);
+            // add files to proper dir
+            $dirs[$fileDirPath]->addItem($fileObj);
         }
         $rootDirObj->addXMLAsChild($contentsNode);
 
