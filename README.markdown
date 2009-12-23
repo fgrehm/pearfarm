@@ -1,7 +1,9 @@
 INSTALATION
 =======
  $ git clone git://github.com/fgrehm/pearfarm.git
+
  $ cd pearfarm
+
  $ ./pearfarm try
 
 
