@@ -1,3 +1,5 @@
 package.xml
 pearfarm-*.tgz
 nbproject
+*.swp
+*.swo
