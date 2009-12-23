@@ -26,8 +26,8 @@ class PlantTask implements Task {
 		mkdir($packageName);
                 echo "  created $packageName{$sep}\n";
 
-                file_put_contents($packageName . DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR . $packageName . '.spec', $this->basicSpecFile($packageName));
-                echo "  created $packageName{$sep}$packageName.spec\n";
+                file_put_contents($packageName . DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR . 'pearfarm.spec', $this->basicSpecFile($packageName));
+                echo "  created $packageName{$sep}pearfarm.spec\n";
 
 		mkdir($packageName . DIRECTORY_SEPARATOR . 'src');
                 echo "  created $packageName{$sep}src\n";
@@ -98,14 +98,13 @@ STR;
 
 
 class InitTask extends PlantTask {
-  public function run($args) {
-    if(!isset($args[2])) {
+	public function run($args) {
+		if(!isset($args[2]))
 			throw new TaskArgumentException("You must specify a package name.\n");
-		}
-    $specfile = getcwd() . '/pearfarm.spec';
-    file_put_contents($packageName . '.spec', $this->basicSpecFile($packageName));
-    echo "  created $packageName.spec\n";
-  }
+		$specfile = getcwd() . '/pearfarm.spec';
+		file_put_contents($specfile, $this->basicSpecFile($args[2]));
+		echo "  created $specfile\n";
+	}
 	public function showHelp() {
 	  
 	}
