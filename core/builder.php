@@ -23,6 +23,7 @@ class PackageSpec
     const PLATFORM_WIN          = 'windows';
 
     const OPT_BASEDIR           = 'basedir';
+    const OPT_DEBUG             = 'debug';
 
     protected $options          = array();
 
@@ -53,8 +54,9 @@ class PackageSpec
     protected $dependsOnPEARPackages            = array();
 
     // package contents
-    protected $files            = array();
-    protected $executables      = array();
+    protected $files                = array();
+    protected $excludeFilesRegexs   = array();
+    protected $executables          = array();
 
     private static $licenseData = array(
         self::LICENSE_MIT => array('name' => 'MIT', 'uri' => 'http://www.opensource.org/licenses/mit-license.html')
@@ -63,15 +65,22 @@ class PackageSpec
     public function __construct($options = array())
     {
         $this->options = array_merge(array(
-                self::OPT_BASEDIR     => '.',
+                self::OPT_BASEDIR       => '.',
+                self::OPT_DEBUG         => true,
         ), $options);
 
         $this->options[self::OPT_BASEDIR] = realpath($this->options[self::OPT_BASEDIR]);
     }
 
+    private function debug($msg)
+    {
+        if ($this->options[self::OPT_DEBUG]) print "$msg\n";
+    }
+
     // VARIOUS WAYS TO ADD FILES
     public function addFile(PackageSpecFile $f)
     {
+        $this->debug("Adding file {$f->getFilePath()}");
         $this->files[$f->getFilePath()] = $f;
     }
 
@@ -101,12 +110,35 @@ class PackageSpec
         {
             $regexs = array($regexs);
         }
-        $basedirOffset = strlen($this->options[self::OPT_BASEDIR]);
+        $basedirOffset = strlen($this->options[self::OPT_BASEDIR]) + 1; // +1 for dirsep
         foreach ($regexs as $regex) {
             foreach (new RecursiveFileRegexFilterIterator($this->options[self::OPT_BASEDIR], $regex) as $addFile) {
+                $this->debug("Adding file regex '{$regex}' matched: {$addFile->getPathname()}");
                 $addFileRelPath = substr($addFile->getPathname(), $basedirOffset);
                 $this->addFile( new PackageSpecFile($addFileRelPath, $role, $options) );
             }
+        }
+        return $this;
+    }
+
+    public function addExcludeFilesRegex($regexs)
+    {
+        if (!is_array($regexs))
+        {
+            $regexs = array($regexs);
+        }
+        $this->excludeFilesRegexs = array_merge($this->excludeFilesRegexs, $regexs);
+        return $this;
+    }
+
+    public function addExcludeFiles($excludeFiles)
+    {
+        if (!is_array($excludeFiles))
+        {
+            $excludeFiles = array($excludeFiles);
+        }
+        foreach ($excludeFiles as $excludeFile) {
+            $this->addExcludeFilesRegex("/^\Q{$excludeFile}\E$/");
         }
         return $this;
     }
@@ -238,6 +270,28 @@ class PackageSpec
         throw new Exception("Function $name does not exist.");
     }
 
+    private function prepareFiles()
+    {
+        $removeTheseFiles = array();
+
+        foreach ($this->files as $file => $fileObj) {
+            // filter out excludes
+            foreach ($this->excludeFilesRegexs as $excludeRegex) {
+                if (preg_match($excludeRegex, $file))
+                {
+                    $this->debug("Excluding file regex '{$excludeRegex}' matched: {$file}");
+                    $removeTheseFiles[] = $file;
+                    break; // no need to process further, it's already excluded
+                }
+            }
+        }
+        foreach ($removeTheseFiles as $removeThisFile) {
+            unset($this->files[$removeThisFile]);
+        }
+        ksort($this->files);
+        return $this->files;
+    }
+
     public function writePackageFile()
     {
         // http://pear.php.net/manual/en/guide.developers.package2.php
@@ -291,7 +345,7 @@ class PackageSpec
         $rootDirObj = new PackageSpecDir('.', array(PackageSpecDir::BASEINSTALLDIR => $this->name));
 
         // build all dir & file blocks
-        ksort($this->files);
+        $this->prepareFiles();
         $dirs = array('.' => $rootDirObj);    // dirPath => object PackageSpecDir
         foreach ($this->files as $filePath => $fileObj) {
             $fileDirPath = dirname($filePath);
