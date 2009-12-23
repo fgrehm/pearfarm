@@ -96,6 +96,31 @@ STR;
 	}
 }
 
+
+class InitTask extends PlantTask {
+  public function run($args) {
+    if(!isset($args[2])) {
+			throw new TaskArgumentException("You must specify a package name.\n");
+		}
+    $packageName = $args[2];
+    file_put_contents($packageName . '.spec', $this->basicSpecFile($packageName));
+    echo "  created $packageName.spec\n";
+  }
+	public function showHelp() {
+	  
+	}
+	public function getAliases() {
+	  return array();
+	}
+	public function getName() {
+	  return 'init';
+	}
+	public function getDescription() {
+	  return "creates just a pearfarm.spec file";
+	}
+}
+
+
 class CollectTask implements Task {
 	public function run($args) {
         require dirname(__FILE__).DIRECTORY_SEPARATOR.'builder.php';

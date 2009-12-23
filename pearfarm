@@ -15,5 +15,6 @@ $cli->register(new PlantTask());
 $cli->register(new CollectTask());
 $cli->register(new TryTask());
 $cli->register(new DeliverTask());
+$cli->register(new InitTask());
 $cli->run();
 exit(0);
