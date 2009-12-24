@@ -84,7 +84,7 @@ class Pearfarm_PackageSpec
      * @param object PackageSpecFile
      * @return object PackageSpec for fluent interface
      */
-    public function addFile(PackageSpecFile $f)
+    public function addFile(Pearfarm_PackageSpecFile $f)
     {
         $this->debug("Adding file {$f->getFilePath()}");
         $this->files[$f->getFilePath()] = $f;
@@ -107,7 +107,7 @@ class Pearfarm_PackageSpec
             $files = array($files);
         }
         foreach ($files as $f) {
-            $this->addFile( new PackageSpecFile($f, $role, $options) );
+            $this->addFile( new Pearfarm_PackageSpecFile($f, $role, $options) );
         }
         return $this;
     }
@@ -131,7 +131,7 @@ class Pearfarm_PackageSpec
             foreach (new RecursiveFileRegexFilterIterator($this->options[self::OPT_BASEDIR], $regex) as $addFile) {
                 $this->debug("Adding file regex '{$regex}' matched: {$addFile->getPathname()}");
                 $addFileRelPath = substr($addFile->getPathname(), $basedirOffset);
-                $this->addFile( new PackageSpecFile($addFileRelPath, $role, $options) );
+                $this->addFile( new Pearfarm_PackageSpecFile($addFileRelPath, $role, $options) );
             }
         }
         return $this;
@@ -376,7 +376,7 @@ class Pearfarm_PackageSpec
 
         $contentsNode = $xml->addChild('contents');
         // baseinstalldir = "name" of package --- prevents conflicts i suppose
-        $rootDirObj = new PackageSpecDir('.', array(PackageSpecDir::BASEINSTALLDIR => $this->name));
+        $rootDirObj = new Pearfarm_PackageSpecDir('.', array(Pearfarm_PackageSpecDir::BASEINSTALLDIR => $this->name));
 
         // build all dir & file blocks
         $this->prepareFiles();
@@ -393,7 +393,7 @@ class Pearfarm_PackageSpec
                 if (isset($dirs[$dirPath])) continue;
 
                 // create directory
-                $dirObj = new PackageSpecDir($dirPath);
+                $dirObj = new Pearfarm_PackageSpecDir($dirPath);
                 $dirs[$dirPath] = $dirObj;
                 // wire directory into hierarchy
                 $lastDirObj->addItem($dirObj);
@@ -508,11 +508,11 @@ class Pearfarm_PackageSpec
      */
     public static function create($options = array())
     {
-        return new PackageSpec($options);
+        return new Pearfarm_PackageSpec($options);
     }
 }
 
-abstract class PackageSpecItem
+abstract class Pearfarm_PackageSpecItem
 {
     protected $nodeName;
     protected $requiredAttributes;
@@ -549,7 +549,8 @@ abstract class PackageSpecItem
         return $node;
     }
 }
-class PackageSpecDir extends PackageSpecItem
+
+class Pearfarm_PackageSpecDir extends Pearfarm_PackageSpecItem
 {
     const BASEINSTALLDIR        = 'baseinstalldir';
 
@@ -582,7 +583,7 @@ class PackageSpecDir extends PackageSpecItem
 
     public function addItem($item)
     {
-        if (!($item instanceof PackageSpecDir) and !($item instanceof PackageSpecFile)) throw new Exception("PackageSpecDir can only contain PackageSpecDir and PackageSpecFile objects.");
+        if (!($item instanceof Pearfarm_PackageSpecDir) and !($item instanceof Pearfarm_PackageSpecFile)) throw new Exception("PackageSpecDir can only contain PackageSpecDir and PackageSpecFile objects.");
         $this->items[] = $item;
     }
 
@@ -596,7 +597,7 @@ class PackageSpecDir extends PackageSpecItem
     }
 }
 
-class PackageSpecFile extends PackageSpecItem
+class Pearfarm_PackageSpecFile extends Pearfarm_PackageSpecItem
 {
     const BASEINSTALLDIR        = 'baseinstalldir';
     const MD5SUM                = 'md5sum';
