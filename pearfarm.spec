@@ -1,6 +1,6 @@
 <?php
 
-$spec = PackageSpec::create(array(PackageSpec::OPT_BASEDIR => dirname(__FILE__)))
+$spec = Pearfarm_PackageSpec::create(array(Pearfarm_PackageSpec::OPT_BASEDIR => dirname(__FILE__)))
             ->setName('pearfarm')
             ->setChannel('pear.nimblize.com')
             ->setSummary('Build and distribute PEAR packages easily.')
@@ -10,7 +10,7 @@ $spec = PackageSpec::create(array(PackageSpec::OPT_BASEDIR => dirname(__FILE__))
             ->setReleaseStability('alpha')
             ->setApiVersion('0.0.5')
             ->setApiStability('alpha')
-            ->setLicense(PackageSpec::LICENSE_MIT)
+            ->setLicense(Pearfarm_PackageSpec::LICENSE_MIT)
             ->addMaintainer('lead', 'Alan Pinstein', 'apinstein', 'apinstein@mac.com')
             ->addMaintainer('lead', 'Fábio Rehm', 'fgrehm', 'fgrehm@gmail.com')
             ->addMaintainer('lead', 'Jonathan Leibiusky', 'xetorthio', 'ionathan@gmail.com')

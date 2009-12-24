@@ -9,7 +9,7 @@
  *
  * NOTE: this code was hacked up quickly one weekend and isn't particularly pretty. I was learning PEAR architecture at the same time. My apologies in advance.
  */
-class PackageSpec
+class Pearfarm_PackageSpec
 {
     const LICENSE_MIT           = 'mit';
 

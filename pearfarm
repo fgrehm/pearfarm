@@ -9,14 +9,32 @@ if (strpos('@php_bin@', '@php_bin') === 0) {  // not a pear install
     define('PEARFARM_CMD', 'pearfarm');
 }
 
-require "{$prefix}/core/cli.php";
-require "{$prefix}/core/tasks.php";
+function Pearfarm_Autoloader($class) {
+  // set class file name
+  $file = str_replace('_', '/', str_replace('\\', '/', $class)) . '.php';
+  
+  // checks all the include paths to see if the file exist
+  $paths = explode(PATH_SEPARATOR, get_include_path());
+  foreach ($paths as $path) {
+    if (file_exists($path . '/' . $file)) {
+      require $path . '/' . $file;
+      return true;
+    }
+  }
+}
 
-$cli = new PearfarmCLIController($argv);
-$cli->register(new PlantTask());
-$cli->register(new CollectTask());
-$cli->register(new TryTask());
-$cli->register(new DeliverTask());
-$cli->register(new InitTask());
+spl_autoload_register('Pearfarm_Autoloader');
+
+set_include_path(
+  dirname(__FILE__) . '/core/' . PATH_SEPARATOR .
+  get_include_path()
+);
+
+$cli = new Pearfarm_CLIController($argv);
+$cli->register(new Pearfarm_Task_Plant());
+$cli->register(new Pearfarm_Task_Collect());
+$cli->register(new Pearfarm_Task_Try());
+$cli->register(new Pearfarm_Task_Deliver());
+$cli->register(new Pearfarm_Task_Init());
 $cli->run();
 exit(0);
