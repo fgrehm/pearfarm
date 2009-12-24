@@ -5,44 +5,32 @@ class Pearfarm_Task_Plant implements Pearfarm_ITask {
     if(!isset($args[2])) {
       throw new Pearfarm_TaskArgumentException("You must specify a package name.\n");
     }
-                
+
     //TODO: check if there is already a directory with that name
     //TODO: what should we do if we don't have write permissions?
     //TODO: validate package name
-                $sep = DIRECTORY_SEPARATOR;
     $packageName = $args[2];
-                echo "Creating $packageName folders...\n";
-                
-    mkdir($packageName);
-                echo "  created $packageName{$sep}\n";
-
-                file_put_contents($packageName . DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR . 'pearfarm.spec', $this->basicSpecFile($packageName));
-                echo "  created $packageName{$sep}pearfarm.spec\n";
-
-    mkdir($packageName . DIRECTORY_SEPARATOR . 'src');
-                echo "  created $packageName{$sep}src\n";
-
-    mkdir($packageName . DIRECTORY_SEPARATOR . 'data');
-                echo "  created $packageName{$sep}data\n";
-
-    mkdir($packageName . DIRECTORY_SEPARATOR . 'tests');
-                echo "  created $packageName{$sep}tests\n";
-
-    mkdir($packageName . DIRECTORY_SEPARATOR . 'doc');
-                echo "  created $packageName{$sep}doc\n";
-
-    mkdir($packageName . DIRECTORY_SEPARATOR . 'www');
-                echo "  created $packageName{$sep}www\n";
-
-    mkdir($packageName . DIRECTORY_SEPARATOR . 'examples');
-                echo "  created $packageName{$sep}examples\n";
-
-    // create default class
-    // TODO: add doc block to class
-    file_put_contents($packageName . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . ucfirst($packageName) . '.php', "<?php\nclass " . ucfirst($packageName) . " {\n\n\n}");
-                echo "  created $packageName{$sep}src{$sep}" . ucfirst($packageName) . ".php\n";
-
+     print("Creating $packageName folders...\n");
+		foreach(array('src', 'data', 'tests', 'doc', 'www', 'examples') as $folder) {
+			$path = implode(DIRECTORY_SEPARATOR, array($packageName, $folder));
+			mkdir($path, 0777, true);
+			print("  created $path\n");
+		}
+		$spec_path = implode(DIRECTORY_SEPARATOR, array($packageName, 'pearfarm.spec'));
+    file_put_contents($spec_path, $this->basicSpecFile($packageName));					
+    print("  created $spec_path\n");
+		
+		$this->generateClass($packageName);
   }
+
+	public function generateClass($name) {
+		 //create default class
+     //TODO: add doc block to class
+		$file_name = str_replace('/', '_', basename($name)); //do not remove this it ensures that the vfsstream tests pass
+		$class_path = implode(DIRECTORY_SEPARATOR, array($name, 'src', ucfirst($file_name) . '.php'));
+   	file_put_contents($class_path, "<?php\nclass " . ucfirst($name) . " {\n\n\n}");
+   	print("  created $class_path\n");
+	}
 
   public function basicSpecFile($packageName) {
     $creatorName = 'TODO: Your name here';
@@ -76,12 +64,12 @@ STR;
     echo "TODO: Print some help.\n";
   }
   public function getName() {
-    return "plant";
+    return "bootstrap";
   }
   public function getAliases() {
-    return array("p", "pl");
+    return array("plant", "pl", "p");
   }
   public function getDescription() {
-    return "creates the package";
+    return "creates the package directory and file";
   }
 }

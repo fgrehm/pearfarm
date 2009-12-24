@@ -27,7 +27,7 @@ class Pearfarm_CLIController {
   }
   
   public function showHelp() {
-    echo("usage: pfarm COMMAND [ARGS]\n\nThe pfarm commands are:\n");
+    echo("usage: pearfarm COMMAND [ARGS]\n\nThe pfarm commands are:\n");
     foreach($this->tasks as $task) {
       $aliases = implode(", ", $task->getAliases());
       if(!empty($aliases)) {

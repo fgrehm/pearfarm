@@ -1,12 +1,15 @@
 <?php
+
+require_once(implode(DIRECTORY_SEPARATOR, array(dirname(__FILE__), '..', 'PackageSpec.php')));
+
 class Pearfarm_Task_Collect implements Pearfarm_ITask {
   public function run($args) {
-    require dirname(__FILE__).DIRECTORY_SEPARATOR.'builder.php';
  
-    if (isset($argv[1]))
-          $specfile = $argv[1];
-    else
-          $specfile = getcwd() . '/pearfarm.spec';
+    if(isset($args[1])) {
+    	$specfile = $args[1];
+    }else {
+    	$specfile = getcwd() . '/pearfarm.spec';
+		}
  
     print "Reading specfile at {$specfile}...\n";
     if (!file_exists($specfile)) {
