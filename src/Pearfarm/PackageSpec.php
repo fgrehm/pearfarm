@@ -1,5 +1,7 @@
 <?php
 
+/* vim: set expandtab tabstop=2 shiftwidth=2: */
+
 /**
  * PackageSpec is a simplified DSL for creating basic pear pacakges.
  *
@@ -382,29 +384,32 @@ class Pearfarm_PackageSpec
         $this->prepareFiles();
         $dirs = array('.' => $rootDirObj);    // dirPath => object PackageSpecDir
         foreach ($this->files as $filePath => $fileObj) {
+            //print "processing $filePath\n";
             $fileDirPath = dirname($filePath);
 
             // make sure all dirs up to this point are represented
             $allDirs = explode(DIRECTORY_SEPARATOR, ltrim($fileDirPath, DIRECTORY_SEPARATOR));
             $dirPath = NULL;
-            $lastDirObj = $rootDirObj;
             foreach ($allDirs as $dir) {
                 $dirPath .= $dir;
-                if (isset($dirs[$dirPath])) continue;
-
-                // create directory
-                $dirObj = new Pearfarm_PackageSpecDir($dirPath);
-                $dirs[$dirPath] = $dirObj;
-                // wire directory into hierarchy
-                $lastDirObj->addItem($dirObj);
-                $lastDirObj = $dirObj;
+                if (!isset($dirs[$dirPath]))
+                {
+                    // create directory
+                    $dirObj = new Pearfarm_PackageSpecDir($dirPath);
+                    $dirs[$dirPath] = $dirObj;
+                    // wire directory into hierarchy
+                    $parentDir = $dirs[dirname($dirPath)];
+                    //print "adding dir $dirPath to dir {$parentDir}\n";
+                    $parentDir->addItem($dirObj);
+                }
 
                 $dirPath .= DIRECTORY_SEPARATOR;
-                $depth = 1;
             }
             // add files to proper dir
+            //print "adding file $filePath to dir $fileDirPath\n";
             $dirs[$fileDirPath]->addItem($fileObj);
         }
+        //print_r($rootDirObj);
         $rootDirObj->addXMLAsChild($contentsNode);
 
         // deps
@@ -540,12 +545,14 @@ abstract class Pearfarm_PackageSpecItem
 
     public function addXMLAsChild($parentNode)
     {
+        //print_r($parentNode);
         $node = $parentNode->addChild($this->nodeName);
         foreach ($this->attributes as $k => $v) {
             if ($v === NULL and in_array($k, $this->requiredAttributes)) throw new Exception("Attribute {$k} is required for {get_class($this)}.");
             if ($v === NULL) continue;  // skip optional attributes
             $node->addAttribute($k, $v);
         }
+        //print "adding $this->nodeName {$node['name']} to {$parentNode['name']} \n";
         return $node;
     }
 }
@@ -581,6 +588,11 @@ class Pearfarm_PackageSpecDir extends Pearfarm_PackageSpecItem
         $this->setAttributes($options);
     }
 
+    public function __toString()
+    {
+        return $this->dirPath;
+    }
+
     public function addItem($item)
     {
         if (!($item instanceof Pearfarm_PackageSpecDir) and !($item instanceof Pearfarm_PackageSpecFile)) throw new Exception("PackageSpecDir can only contain PackageSpecDir and PackageSpecFile objects.");
@@ -589,8 +601,10 @@ class Pearfarm_PackageSpecDir extends Pearfarm_PackageSpecItem
 
     public function addXMLAsChild($parentNode)
     {
+        //print "adding xml nodes for {$this->dirPath}\n";
         $node = parent::addXMLAsChild($parentNode);
         foreach ($this->items as $item) {
+            //print "  [{$this->dirPath}] adding child {$item->nodeName} {$item} to {$node['name']} \n";
             $childNode = $item->addXMLAsChild($node);
         }
         return $node;
@@ -628,6 +642,11 @@ class Pearfarm_PackageSpecFile extends Pearfarm_PackageSpecItem
         {
             $this->setAttribute(self::MD5SUM, md5_file($filePath));
         }
+    }
+
+    public function __toString()
+    {
+        return $this->filePath;
     }
 
     /**
