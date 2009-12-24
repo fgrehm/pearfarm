@@ -1,5 +1,5 @@
 <?php
-require_once(implode(DIRECTORY_SEPARATOR, array(dirname(__FILE__), 'Plant.php')));
+require_once(dirname(__FILE__) . '/Plant.php');
 class Pearfarm_Task_Init extends Pearfarm_Task_Plant {
   
   public function run($args) {

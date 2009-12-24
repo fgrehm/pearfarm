@@ -17,10 +17,10 @@ class InitTest extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testCreatesFile() {
-		//ob_start();
+		ob_start();
 		$args = array('', '', vfsStream::url('root/pearfarm.spec'));
 		$this->class->run($args);
 		$this->assertTrue(file_exists(vfsStream::url('root/pearfarm.spec')));
-		//ob_get_clean();		
+		ob_get_clean();		
 	}
 }
