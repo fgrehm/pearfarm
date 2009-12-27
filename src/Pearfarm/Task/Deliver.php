@@ -17,7 +17,7 @@ class Pearfarm_Task_Deliver extends Pearfarm_AbstractTask {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $postResult = curl_exec($ch);
     curl_close($ch);
-    print "$postResult";
+    print "{$postResult}\n";
 
     exit(0);
   }
