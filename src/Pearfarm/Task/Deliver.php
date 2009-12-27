@@ -52,7 +52,7 @@ class Pearfarm_Task_Deliver extends Pearfarm_AbstractTask {
   // NOTE: to get your public key from a rsa.pub style formatted string, run 'openssl rsa -in ~/.ssh/privatekey -pubout'
   // we probably want to do this on a server so people need only cat ~/.ssh/privatekey.pub and copy/paste to us
   /*
-  $pubKey = openssl_get_publickey("
+    $pubKey = openssl_get_publickey("
 -----BEGIN PUBLIC KEY-----
 MIIBIDANBgkqhkiG9w0BAQEFAAOCAQ0AMIIBCAKCAQEAurW+d5EKeSv/C73yYYOV
 PXy1ZPqULmxwTKDVg7MzHRcB9nawFpn6NBYlOhnzzuf9XV44qjB3ItZ1fb57+J6E
@@ -62,19 +62,20 @@ yu0/wFdwRFzBwKDOd340fruSK95KxFU3/2yRBKY1w/My9BWS1qY3Ok9T8/kVf/IU
 IFXxFAGQQcePveXv/upMFR6cNQdY15WV8TPCLR0iYZlKvQ6/GfnAz1xE/jan59lT
 uQIBIw==
 -----END PUBLIC KEY-----
-  ");
-  $res = openssl_verify(file_get_contents($pkgTgzPath), base64_decode($signatureBase64), $pubKey, OPENSSL_ALGO_SHA1);
-  switch ($res) {
-    case 1:
-      print 'CORRECT';
-      break;
-    case 0:
-      print 'INCORRECT';
-      break;
-    case -1:
-      print 'ERROR';
-      break;
-  }
+");
+    $res = openssl_verify(sha1_file($pkgTgzPath, true), base64_decode($signatureBase64), $pubKey, OPENSSL_ALGO_SHA1);
+    switch ($res) {
+      case 1:
+        print 'CORRECT';
+        break;
+      case 0:
+        print 'INCORRECT';
+        break;
+      case -1:
+        print 'ERROR';
+        break;
+    }
+    openssl_pkey_free($pubKey);
   */
   /**
    * Get a base64 encoded signature for the package being delivered.
@@ -85,16 +86,16 @@ uQIBIw==
    */
   protected function calculatePackageSignature($pkgTgzPath)
   {
+    $binhash = sha1_file($pkgTgzPath, true);
     $keyfile = "file://{$this->config[Pearfarm_AbstractTask::CONFIG_KEYFILE]}";
     $key = openssl_get_privatekey($keyfile, prompt_silent("Password for {$this->config[Pearfarm_AbstractTask::CONFIG_KEYFILE]} [enter for none]: "));
     if ($key === false) throw new Exception("Keyfile at {$keyfile} didn't work: " . openssl_error_string());
     $signature = NULL;
-    $ok = openssl_sign(file_get_contents($pkgTgzPath), $signature , $key, OPENSSL_ALGO_SHA1);
+    $ok = openssl_sign($binhash, $signature , $key, OPENSSL_ALGO_SHA1);
     openssl_pkey_free($key);
     $signatureBase64 = base64_encode($signature);
     return $signatureBase64;
   }
-
 }
 
 /**
