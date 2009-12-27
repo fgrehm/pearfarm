@@ -28,7 +28,7 @@ abstract class Pearfarm_AbstractTask implements Pearfarm_ITask
         {
             print "WARNING: {$configFilePath} does not exist. Creating default one.";
             file_put_contents($configFilePath, "
-" . self::CONFIG_KEYFILE . " = " . getenv('HOME') . "/.ssh/id_dsa
+" . self::CONFIG_KEYFILE . " = " . getenv('HOME') . "/.ssh/id_rsa
 ");
         }
         $this->config = parse_ini_file($configFilePath);
