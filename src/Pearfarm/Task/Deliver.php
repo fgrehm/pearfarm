@@ -89,7 +89,8 @@ uQIBIw==
     $key = openssl_get_privatekey($keyfile, prompt_silent("Password for {$this->config[Pearfarm_AbstractTask::CONFIG_KEYFILE]} [enter for none]: "));
     if ($key === false) throw new Exception("Keyfile at {$keyfile} didn't work: " . openssl_error_string());
     $signature = NULL;
-    $ok = openssl_sign (file_get_contents($pkgTgzPath), $signature , $key, OPENSSL_ALGO_SHA1);
+    $ok = openssl_sign(file_get_contents($pkgTgzPath), $signature , $key, OPENSSL_ALGO_SHA1);
+    openssl_pkey_free($key);
     $signatureBase64 = base64_encode($signature);
     return $signatureBase64;
   }
