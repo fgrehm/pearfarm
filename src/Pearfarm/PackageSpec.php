@@ -68,7 +68,7 @@ class Pearfarm_PackageSpec
     {
         $this->options = array_merge(array(
                 self::OPT_BASEDIR       => '.',
-                self::OPT_DEBUG         => true,
+                self::OPT_DEBUG         => false,
         ), $options);
 
         $this->options[self::OPT_BASEDIR] = realpath($this->options[self::OPT_BASEDIR]);
@@ -131,7 +131,7 @@ class Pearfarm_PackageSpec
         $basedirOffset = strlen($this->options[self::OPT_BASEDIR]) + 1; // +1 for dirsep
         foreach ($regexs as $regex) {
             foreach (new RecursiveFileRegexFilterIterator($this->options[self::OPT_BASEDIR], $regex) as $addFile) {
-                $this->debug("Adding file regex '{$regex}' matched: {$addFile->getPathname()}");
+                $this->debug("[regex-match] {$addFile->getPathname()} matched {$regex}");
                 $addFileRelPath = substr($addFile->getPathname(), $basedirOffset);
                 $this->addFile( new Pearfarm_PackageSpecFile($addFileRelPath, $role, $options) );
             }
@@ -764,6 +764,8 @@ class RecursiveFileRegexFilterIterator extends FilterIterator
      * acceptable extensions - array of strings
      */
     protected $regex = NULL;
+    protected $pathPrefix = NULL;
+    protected $pathPrefixLen = NULL;
 
     /**
      * Takes a path and shoves it into our earlier class.
@@ -775,6 +777,11 @@ class RecursiveFileRegexFilterIterator extends FilterIterator
     {
         parent::__construct(new RecursiveFileIterator($path));
         $this->regex = $regex;
+
+        // normalize path
+        $path = rtrim($path, '/\\');
+        $this->pathPrefix = $path;
+        $this->pathPrefixLen = strlen($this->pathPrefix);
     }
 
     /**
@@ -783,14 +790,20 @@ class RecursiveFileRegexFilterIterator extends FilterIterator
     public function accept()
     {
         $item = $this->getInnerIterator();
+        $realPathToFile = $item->getRealPath();
 
-        // If it's not a file, accept it.
-        if (!$item->isFile()) {
-            return TRUE;
+        // there was a test for dirs in the sample code, but I don't think it can ever happen...
+        if (is_dir($item->getRealPath())) {
+          die("never is_dir, right?");
         }
 
-        // If it is a file, test the path against the regex
-        return preg_match($this->regex, $item->getFilename());
+        // assert this for a while so we can make sure it doesn't happen
+        if (substr($realPathToFile, 0, $this->pathPrefixLen) !== $this->pathPrefix) throw new Exception("Weird thing happened: {$realPathToFile} not inside of {$this->pathPrefix}.");
+
+        $normalizedFilePath = substr($realPathToFile, $this->pathPrefixLen + 1);
+
+        //print "Testing preg_match('{$this->regex}', '{$normalizedFilePath}')\n";
+        return preg_match($this->regex, $normalizedFilePath);
     }
 }
 

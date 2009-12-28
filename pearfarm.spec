@@ -1,6 +1,6 @@
 <?php
 
-$spec = Pearfarm_PackageSpec::create(array(Pearfarm_PackageSpec::OPT_BASEDIR => dirname(__FILE__)))
+$spec = Pearfarm_PackageSpec::create(array(Pearfarm_PackageSpec::OPT_BASEDIR => dirname(__FILE__), Pearfarm_PackageSpec::OPT_DEBUG => true ))
             ->setName('pearfarm')
             ->setChannel('apinstein.dev.pearfarm.org')
             ->setSummary('Build and distribute PEAR packages easily.')
