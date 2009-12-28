@@ -140,6 +140,21 @@ class Pearfarm_PackageSpec
     }
 
     /**
+     * Get the {@link object Pearfarm_PackageSpecFile} for the given path.
+     *
+     * @param string The path (relative to the project root, ie a/b/c.php)
+     * @return object Pearfarm_PackageSpecFile NULL if not found.
+     */
+    public function getFile($path)
+    {
+      if (isset($this->files[$path]))
+      {
+        return $this->files[$path];
+      }
+      return NULL;
+    }
+
+    /**
      * Add a regex pattern which will cause a file that has been included previously to be excluded from the final package.
      *
      * @param mixed A string regex pattern (must include //) or an array of patterns.
@@ -554,6 +569,34 @@ abstract class Pearfarm_PackageSpecItem
         }
         //print "adding $this->nodeName {$node['name']} to {$parentNode['name']} \n";
         return $node;
+    }
+
+    /**
+     * Add generic attribute accessors/mutators.
+     */
+    public function __call($name, $value)
+    {
+        switch (substr($name, 0, 3)) {
+            case 'set':
+                $attrName = substr($name, 3);
+                $attrName[0] = strtolower($attrName[0]);
+                if (isset($this->attributes[$attrName]))
+                {
+                    $this->setAttribute($attrName, $value[0]);
+                    return $this;
+                }
+                break;
+            case 'get':
+                $attrName = substr($name, 3);
+                $attrName[0] = strtolower($attrName[0]);
+                if (isset($this->attributes[$attrName]))
+                {
+                    $this->setAttribute($value[0]);
+                    return $this->attributes[$attrName];
+                }
+                break;
+        }
+        throw new Exception("Function $name does not exist.");
     }
 }
 
