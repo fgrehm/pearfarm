@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab tabstop=2 shiftwidth=2: */
 
-class Pearfarm_Task_Deliver extends Pearfarm_AbstractTask {
+class Pearfarm_Task_Push extends Pearfarm_AbstractTask {
   public function run($args) {
     if (!isset($args[2])) throw new Exception("No package filename specified. Please specify a valid package file.");
 
@@ -29,11 +29,11 @@ class Pearfarm_Task_Deliver extends Pearfarm_AbstractTask {
   }
 
   public function getName() {
-    return "deliver";
+    return "push";
   }
 
   public function getAliases() {
-    return array('push');
+    return array('upload');
   }
 
   public function getDescription() {

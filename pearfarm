@@ -42,7 +42,7 @@ $cli = new Pearfarm_CLIController($argv);
 $cli->register(new Pearfarm_Task_Plant());
 $cli->register(new Pearfarm_Task_Collect());
 $cli->register(new Pearfarm_Task_Try());
-$cli->register(new Pearfarm_Task_Deliver());
+$cli->register(new Pearfarm_Task_Push());
 $cli->register(new Pearfarm_Task_Init());
 $cli->register(new Pearfarm_Task_Keygen());
 try {
