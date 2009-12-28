@@ -48,7 +48,7 @@ class Pearfarm_Task_Plant implements Pearfarm_ITask {
     return <<<STR
 <?php
 
-\$spec = PackageSpec::create(array(PackageSpec::OPT_BASEDIR => dirname(__FILE__)))
+\$spec = Pearfarm_PackageSpec::create(array(Pearfarm_PackageSpec::OPT_BASEDIR => dirname(__FILE__)))
             ->setName('{$packageName}')
             ->setChannel('{$channel}')
             ->setSummary('{$summary}')
@@ -57,7 +57,7 @@ class Pearfarm_Task_Plant implements Pearfarm_ITask {
             ->setReleaseStability('alpha')
             ->setApiVersion('0.0.1')
             ->setApiStability('alpha')
-            ->setLicense(PackageSpec::LICENSE_MIT)
+            ->setLicense(Pearfarm_PackageSpec::LICENSE_MIT)
             ->setNotes('Initial release.')
             ->addMaintainer('lead', '{$creatorName}', '{$user}', '{$creatorEmail}')
             ->addGitFiles()
