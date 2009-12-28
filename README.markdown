@@ -4,17 +4,18 @@ INSTALATION
 
  $ cd pearfarm
 
- $ php pearfarm try
+ $ php pearfarm build
+
+ $ pear install pearfarm-0.1.0.tgz
 
 
-NEW PROJECTS
+
+DEPENDENCIES
 =======
+1. PHP >= 5
 
-1. pearfarm plant <package_name>
-
-2. update pearfarm.spec file
-
-3. run 'pearfarm collect' to build package .tgz
+2. cURL support enabled, for ubuntu this means:
+    sudo apt-get install php5-curl
 
 
 EXISTING PROJECTS
@@ -26,7 +27,7 @@ EXISTING PROJECTS
 
 3. update generated pearfarm.spec file
 
-3. run 'pearfarm collect' to build package .tgz
+3. run 'pearfarm build' to build package .tgz
 
 
 Enjoy!
