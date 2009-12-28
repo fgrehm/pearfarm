@@ -1,4 +1,6 @@
 <?php
+/* vim: set expandtab tabstop=2 shiftwidth=2: */
+
 class Pearfarm_Task_Plant implements Pearfarm_ITask {
   
   public function run($args) {
@@ -32,13 +34,16 @@ class Pearfarm_Task_Plant implements Pearfarm_ITask {
    	print("  created $class_path\n");
 	}
 
-  public function basicSpecFile($packageName) {
-    $creatorName = 'TODO: Your name here';
-                $creatorEmail = 'TODO: Your email here';
-                $user = 'TODO: Your username here';
-                $channel = 'TODO: Release channel here';
-                $summary = 'TODO: One-line summary of your PEAR package';
-                $description = 'TODO: Longer description of your PEAR package';
+  public function basicSpecFile($packageName = NULL) {
+      if ($packageName === NULL) {
+          $packageName = 'TODO; Your package name here';
+      }
+      $creatorName = 'TODO: Your name here';
+      $creatorEmail = 'TODO: Your email here';
+      $user = 'TODO: Your username here';
+      $channel = 'TODO: Release channel here';
+      $summary = 'TODO: One-line summary of your PEAR package';
+      $description = 'TODO: Longer description of your PEAR package';
 
     return <<<STR
 <?php
