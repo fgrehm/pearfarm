@@ -6,7 +6,7 @@ $spec = Pearfarm_PackageSpec::create(array(Pearfarm_PackageSpec::OPT_BASEDIR => 
             ->setSummary('Build and distribute PEAR packages easily.')
             ->setDescription('Pearfarm makes it easy to create PEAR packages for your projects and host them on a channel server.')
             ->setNotes('See http://github.com/fgrehm/pearfarm for changelog, docs, etc.')
-            ->setReleaseVersion('0.0.5')
+            ->setReleaseVersion('0.0.6')
             ->setReleaseStability('alpha')
             ->setApiVersion('0.0.5')
             ->setApiStability('alpha')

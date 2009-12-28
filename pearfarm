@@ -1,34 +1,44 @@
 #!/usr/bin/env php
 <?php
+/* vim: set expandtab tabstop=2 shiftwidth=2: */
 
 if (strpos('@php_bin@', '@php_bin') === 0) {  // not a pear install
-    $prefix = dirname(__FILE__);
-    define('PEARFARM_CMD', 'php pearfarm');
+  define('PEARFARM_INCLUDE_PREFIX', dirname(__FILE__));
+  define('PEARFARM_CMD', 'php pearfarm');
 } else {
-    $prefix = 'pearfarm';
-    define('PEARFARM_CMD', 'pearfarm');
+  define('PEARFARM_INCLUDE_PREFIX', 'pearfarm');
+  define('PEARFARM_CMD', 'pearfarm');
 }
 
 function Pearfarm_Autoloader($class) {
-  // set class file name
-  $file = str_replace('_', '/', str_replace('\\', '/', $class)) . '.php';
-  
-  // checks all the include paths to see if the file exist
-  $paths = explode(PATH_SEPARATOR, get_include_path());
-  foreach ($paths as $path) {
-    if (file_exists($path . '/' . $file)) {
-      require $path . '/' . $file;
+  $prefix = PEARFARM_INCLUDE_PREFIX;
+  // convert classname to filename
+  $fileContainingClass = str_replace('_', '/', str_replace('\\', '/', $class)) . '.php';
+  $tryFilePath =  "{$prefix}/src/{$fileContainingClass}";
+
+  if ($prefix[0] === '/')
+  {
+    if (file_exists($tryFilePath)) {
+      require $tryFilePath;
       return true;
     }
   }
+  else
+  {
+    $paths = explode(PATH_SEPARATOR, get_include_path());
+    foreach ($paths as $path) {
+      $absFilePath = "{$path}/{$tryFilePath}";
+      if (file_exists($absFilePath)) {
+        require $absFilePath;
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 spl_autoload_register('Pearfarm_Autoloader');
 
-set_include_path(
-  dirname(__FILE__) . '/src/' . PATH_SEPARATOR .
-  get_include_path()
-);
 
 $cli = new Pearfarm_CLIController($argv);
 $cli->register(new Pearfarm_Task_Plant());
