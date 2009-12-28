@@ -20,7 +20,7 @@ class Pearfarm_Task_Init extends Pearfarm_Task_Plant {
   }
 
   public function getAliases() {
-    return array();
+    return array('create-spec');
   }
 
   public function getName() {
