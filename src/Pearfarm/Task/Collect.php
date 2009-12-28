@@ -28,7 +28,22 @@ class Pearfarm_Task_Collect implements Pearfarm_ITask {
     $spec->writePackageFile();
 
     print "The package.xml file was written successfully, executing 'pear package'...\n";
-    exec('pear package');
+
+    $command = 'pear package';
+    $result = NULL;
+    $output = array();
+    $lastLine = exec($command, $output, $result);
+    if ($result !== 0)
+    {
+      if (strpos(join("\n", $output), 'Unknown channel') !== false) {
+        $channel = $spec->getChannel();
+        $discoverCommand = "pear channel-discover {$channel}";
+        print "You need to run the following command (probably as root/sudo) to add this package's channel to pear, which is required for pear to package your app.\n\n{$discoverCommand}\n\n";
+        exit(1);
+      } else {
+        throw( new Exception("Error ($result) running '{$command}': " . join("\n", $output)) );
+      }
+    }
 
     print "The package was generated successfully.\n";
   }
