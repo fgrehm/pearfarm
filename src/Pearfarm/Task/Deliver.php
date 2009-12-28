@@ -33,7 +33,7 @@ class Pearfarm_Task_Deliver extends Pearfarm_AbstractTask {
   }
 
   public function getAliases() {
-    return array();
+    return array('push');
   }
 
   public function getDescription() {
