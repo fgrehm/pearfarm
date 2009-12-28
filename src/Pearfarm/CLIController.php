@@ -7,7 +7,7 @@ class Pearfarm_CLIController {
   public function __construct(array $args) {
     $this->args = $args;
   }
-  
+
   public function run() {
     if(!isset($this->args[1]) || !isset($this->verbs[$this->args[1]])) {
       $this->showHelp();
@@ -25,7 +25,7 @@ class Pearfarm_CLIController {
       exit(-2);
     }
   }
-  
+
   public function showHelp() {
     echo("usage: pearfarm COMMAND [ARGS]\n\nThe pfarm commands are:\n");
     foreach($this->tasks as $task) {
@@ -37,7 +37,7 @@ class Pearfarm_CLIController {
     }
     echo("\n");
   }
-  
+
   public function register(Pearfarm_ITask $task) {
     $this->tasks[$task->getName()] = $task;
     $this->verbs[$task->getName()] = $task;

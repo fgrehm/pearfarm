@@ -12,10 +12,10 @@ class Pearfarm_Task_Deliver extends Pearfarm_AbstractTask {
 
     $ch = curl_init("http://{$channel}/upload.xml");
     curl_setopt($ch, CURLOPT_POSTFIELDS, array(
-          'file'            => "@{$pkgTgzPath}",
-          'signatureBase64' => $signatureBase64
-          )
-        );
+            'file'            => "@{$pkgTgzPath}",
+            'signatureBase64' => $signatureBase64
+            )
+    );
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $postResult = curl_exec($ch);
     curl_close($ch);
@@ -40,8 +40,7 @@ class Pearfarm_Task_Deliver extends Pearfarm_AbstractTask {
     return "sends the package to pearfarm.org";
   }
 
-  protected function readChannelFromPackage($pkgTgzPath)
-  {
+  protected function readChannelFromPackage($pkgTgzPath) {
     require_once 'Archive/Tar.php';
 
     $archive = new Archive_Tar($pkgTgzPath);
@@ -81,13 +80,12 @@ uQIBIw==
   */
   /**
    * Get a base64 encoded signature for the package being delivered.
-   * 
+   *
    * @param string Path to the package.tgz file to be uploaded.
    * @return string base64-encoded signature file
    * @throws object Exception on error
    */
-  protected function calculatePackageSignature($pkgTgzPath)
-  {
+  protected function calculatePackageSignature($pkgTgzPath) {
     $binhash = sha1_file($pkgTgzPath, true);
     $keyfile = "file://{$this->config[Pearfarm_AbstractTask::CONFIG_KEYFILE]}";
     $key = openssl_get_privatekey($keyfile, prompt_silent("Password for {$this->config[Pearfarm_AbstractTask::CONFIG_KEYFILE]} [enter for none]: "));
@@ -110,9 +108,9 @@ function prompt_silent($prompt = "Enter Password:") {
   if (preg_match('/^win/i', PHP_OS)) {
     $vbscript = sys_get_temp_dir() . 'prompt_password.vbs';
     file_put_contents(
-      $vbscript, 'wscript.echo(InputBox("'
-      . addslashes($prompt)
-      . '", "", "password here"))');
+            $vbscript, 'wscript.echo(InputBox("'
+            . addslashes($prompt)
+            . '", "", "password here"))');
     $command = "cscript //nologo " . escapeshellarg($vbscript);
     $password = rtrim(shell_exec($command));
     unlink($vbscript);
@@ -124,8 +122,8 @@ function prompt_silent($prompt = "Enter Password:") {
       return;
     }
     $command = "/usr/bin/env bash -c 'read -s -p \""
-      . addslashes($prompt)
-      . "\" mypassword && echo \$mypassword'";
+            . addslashes($prompt)
+            . "\" mypassword && echo \$mypassword'";
     $password = rtrim(shell_exec($command));
     echo "\n";
     return $password;

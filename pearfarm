@@ -16,15 +16,13 @@ function Pearfarm_Autoloader($class) {
   $fileContainingClass = str_replace('_', '/', str_replace('\\', '/', $class)) . '.php';
   $tryFilePath =  "{$prefix}/src/{$fileContainingClass}";
 
-  if ($prefix[0] === '/')
-  {
+  if ($prefix[0] === '/') {
     if (file_exists($tryFilePath)) {
       require $tryFilePath;
       return true;
     }
   }
-  else
-  {
+  else {
     $paths = explode(PATH_SEPARATOR, get_include_path());
     foreach ($paths as $path) {
       $absFilePath = "{$path}/{$tryFilePath}";

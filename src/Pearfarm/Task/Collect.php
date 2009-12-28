@@ -33,8 +33,7 @@ class Pearfarm_Task_Collect implements Pearfarm_ITask {
     $result = NULL;
     $output = array();
     $lastLine = exec($command, $output, $result);
-    if ($result !== 0)
-    {
+    if ($result !== 0) {
       if (strpos(join("\n", $output), 'Unknown channel') !== false) {
         $channel = $spec->getChannel();
         $discoverCommand = "pear channel-discover {$channel}";
