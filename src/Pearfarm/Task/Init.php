@@ -4,7 +4,7 @@ class Pearfarm_Task_Init extends Pearfarm_Task_Plant {
 
   public function run($args) {
     if (isset($args[2])) {
-      $specfile = getcwd() . '/' . $args[2];
+      $specfile = $args[2];
     } else {
       $specfile = getcwd() . '/pearfarm.spec';
     }
