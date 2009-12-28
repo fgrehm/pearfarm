@@ -3,6 +3,8 @@
 
 class Pearfarm_Task_Deliver extends Pearfarm_AbstractTask {
   public function run($args) {
+    if (!isset($args[2])) throw new Exception("No package filename specified. Please specify a valid package file.");
+
     $pkgTgzPath = getcwd() . "/{$args[2]}";
 
     $channel = $this->readChannelFromPackage($pkgTgzPath);
