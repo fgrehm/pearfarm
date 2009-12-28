@@ -47,5 +47,11 @@ $cli->register(new Pearfarm_Task_Try());
 $cli->register(new Pearfarm_Task_Deliver());
 $cli->register(new Pearfarm_Task_Init());
 $cli->register(new Pearfarm_Task_Keygen());
-$cli->run();
-exit(0);
+try {
+  $cli->run();
+  exit(0);
+} catch (Exception $e) {
+  print $e->getMessage();
+  print "\n";
+  exit(1);
+}
