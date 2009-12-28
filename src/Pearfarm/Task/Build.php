@@ -4,7 +4,7 @@
 
 require_once(dirname(__FILE__).'/../PackageSpec.php');
 
-class Pearfarm_Task_Collect implements Pearfarm_ITask {
+class Pearfarm_Task_Build implements Pearfarm_ITask {
   public function run($args) {
 
     if (isset($args[2])) {
@@ -50,10 +50,10 @@ class Pearfarm_Task_Collect implements Pearfarm_ITask {
 
   }
   public function getName() {
-    return "collect";
+    return "build";
   }
   public function getAliases() {
-    return array('build');
+    return array();
   }
   public function getDescription() {
     return "builds the package";
