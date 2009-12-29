@@ -1,7 +1,6 @@
 <?php
 require_once('PHPUnit/Framework.php');
 require_once(dirname(__FILE__) . '/../src/Pearfarm/ITask.php');
-require_once(dirname(__FILE__) . '/../src/Pearfarm/Task/Plant.php');
 require_once(dirname(__FILE__) . '/../src/Pearfarm/Task/Init.php');
 /**
  * Requires vfsstream for filesystem mocking
