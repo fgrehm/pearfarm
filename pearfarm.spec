@@ -6,7 +6,7 @@ $spec = Pearfarm_PackageSpec::create(array(Pearfarm_PackageSpec::OPT_BASEDIR => 
             ->setSummary('Build and distribute PEAR packages easily.')
             ->setDescription('Pearfarm makes it easy to create PEAR packages for your projects and host them on a channel server.')
             ->setNotes('See http://github.com/fgrehm/pearfarm for changelog, docs, etc.')
-            ->setReleaseVersion('0.1.0')
+            ->setReleaseVersion('0.1.1')
             ->setReleaseStability('alpha')
             ->setApiVersion('0.1.0')
             ->setApiStability('alpha')
@@ -15,7 +15,8 @@ $spec = Pearfarm_PackageSpec::create(array(Pearfarm_PackageSpec::OPT_BASEDIR => 
             ->addMaintainer('lead', 'Fábio Rehm', 'fgrehm', 'fgrehm@gmail.com')
             ->addMaintainer('lead', 'Jonathan Leibiusky', 'xetorthio', 'ionathan@gmail.com')
             ->addMaintainer('lead', 'Scott Davis', 'jetviper21', 'jetviper21@gmail.com ')
-            ->addGitFiles()
+            ->addFilesRegex(array('/src/', '/test/', '/pearfarm$/', '/^README.markdown$/'))
+            ->addExcludeFilesRegex(array('/\.git/'))
             ->addExcludeFiles(array('.gitignore', 'pearfarm.spec'))
             ->addExecutable('pearfarm')
             ;

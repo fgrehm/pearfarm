@@ -794,7 +794,7 @@ class RecursiveFileRegexFilterIterator extends FilterIterator
 
     // there was a test for dirs in the sample code, but I don't think it can ever happen...
     if (is_dir($item->getRealPath())) {
-      die("never is_dir, right?");
+      return false;
     }
 
     // assert this for a while so we can make sure it doesn't happen
@@ -802,7 +802,7 @@ class RecursiveFileRegexFilterIterator extends FilterIterator
 
     $normalizedFilePath = substr($realPathToFile, $this->pathPrefixLen + 1);
 
-    //print "Testing preg_match('{$this->regex}', '{$normalizedFilePath}')\n";
+//    print "Testing preg_match('{$this->regex}', '{$normalizedFilePath}')\n";
     return preg_match($this->regex, $normalizedFilePath);
   }
 }
