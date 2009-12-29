@@ -5,6 +5,8 @@ class Pearfarm_Task_Push extends Pearfarm_AbstractTask {
   public function run($args) {
     if (!isset($args[2])) throw new Exception("No package filename specified. Please specify a valid package file.");
 
+    if (!function_exists('curl_init')) throw new Exception("cURL extension not enabled");
+
     $pkgTgzPath = getcwd() . "/{$args[2]}";
 
     $channel = $this->readChannelFromPackage($pkgTgzPath);
