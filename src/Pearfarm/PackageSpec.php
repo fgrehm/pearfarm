@@ -11,7 +11,8 @@
  *
  * NOTE: this code was hacked up quickly one weekend and isn't particularly pretty. I was learning PEAR architecture at the same time. My apologies in advance.
  */
-class Pearfarm_PackageSpec {
+class Pearfarm_PackageSpec
+{
   const LICENSE_MIT           = 'mit';
 
   const ROLE_PHP              = 'php';
@@ -60,19 +61,21 @@ class Pearfarm_PackageSpec {
   protected $executables          = array();
 
   private static $licenseData = array(
-          self::LICENSE_MIT => array('name' => 'MIT', 'uri' => 'http://www.opensource.org/licenses/mit-license.html')
-  );
+      self::LICENSE_MIT => array('name' => 'MIT', 'uri' => 'http://www.opensource.org/licenses/mit-license.html')
+      );
 
-  public function __construct($options = array()) {
+  public function __construct($options = array())
+  {
     $this->options = array_merge(array(
-            self::OPT_BASEDIR       => '.',
-            self::OPT_DEBUG         => true,
-            ), $options);
+          self::OPT_BASEDIR       => '.',
+          self::OPT_DEBUG         => false,
+          ), $options);
 
     $this->options[self::OPT_BASEDIR] = realpath($this->options[self::OPT_BASEDIR]);
   }
 
-  private function debug($msg) {
+  private function debug($msg)
+  {
     if ($this->options[self::OPT_DEBUG]) print "$msg\n";
   }
 
@@ -83,7 +86,8 @@ class Pearfarm_PackageSpec {
    * @param object PackageSpecFile
    * @return object PackageSpec for fluent interface
    */
-  public function addFile(Pearfarm_PackageSpecFile $f) {
+  public function addFile(Pearfarm_PackageSpecFile $f)
+  {
     $this->debug("Adding file {$f->getFilePath()}");
     $this->files[$f->getFilePath()] = $f;
   }
@@ -98,8 +102,10 @@ class Pearfarm_PackageSpec {
    * @param array An array of options to pass to new PackageSpecFile()
    * @return object PackageSpec for fluent interface
    */
-  public function addFilesSimple($files, $role = self::ROLE_PHP, $options = array()) {
-    if (!is_array($files)) {
+  public function addFilesSimple($files, $role = self::ROLE_PHP, $options = array())
+  {
+    if (!is_array($files))
+    {
       $files = array($files);
     }
     foreach ($files as $f) {
@@ -116,14 +122,16 @@ class Pearfarm_PackageSpec {
    * @param array An array of options to pass to new PackageSpecFile().
    * @return object PackageSpec for fluent interface
    */
-  public function addFilesRegex($regexs, $role = self::ROLE_PHP, $options = array()) {
-    if (!is_array($regexs)) {
+  public function addFilesRegex($regexs, $role = self::ROLE_PHP, $options = array())
+  {
+    if (!is_array($regexs))
+    {
       $regexs = array($regexs);
     }
     $basedirOffset = strlen($this->options[self::OPT_BASEDIR]) + 1; // +1 for dirsep
     foreach ($regexs as $regex) {
       foreach (new RecursiveFileRegexFilterIterator($this->options[self::OPT_BASEDIR], $regex) as $addFile) {
-        $this->debug("Adding file regex '{$regex}' matched: {$addFile->getPathname()}");
+        $this->debug("[regex-match] {$addFile->getPathname()} matched {$regex}");
         $addFileRelPath = substr($addFile->getPathname(), $basedirOffset);
         $this->addFile( new Pearfarm_PackageSpecFile($addFileRelPath, $role, $options) );
       }
@@ -137,8 +145,10 @@ class Pearfarm_PackageSpec {
    * @param string The path (relative to the project root, ie a/b/c.php)
    * @return object Pearfarm_PackageSpecFile NULL if not found.
    */
-  public function getFile($path) {
-    if (isset($this->files[$path])) {
+  public function getFile($path)
+  {
+    if (isset($this->files[$path]))
+    {
       return $this->files[$path];
     }
     return NULL;
@@ -150,8 +160,10 @@ class Pearfarm_PackageSpec {
    * @param mixed A string regex pattern (must include //) or an array of patterns.
    * @return object PackageSpec for fluent interface
    */
-  public function addExcludeFilesRegex($regexs) {
-    if (!is_array($regexs)) {
+  public function addExcludeFilesRegex($regexs)
+  {
+    if (!is_array($regexs))
+    {
       $regexs = array($regexs);
     }
     $this->excludeFilesRegexs = array_merge($this->excludeFilesRegexs, $regexs);
@@ -164,8 +176,10 @@ class Pearfarm_PackageSpec {
    * @param mixed A filepath to a file to exclude, must be relative to project root, aka path/to/myfiletoexclude.php
    * @return object PackageSpec for fluent interface
    */
-  public function addExcludeFiles($excludeFiles) {
-    if (!is_array($excludeFiles)) {
+  public function addExcludeFiles($excludeFiles)
+  {
+    if (!is_array($excludeFiles))
+    {
       $excludeFiles = array($excludeFiles);
     }
     foreach ($excludeFiles as $excludeFile) {
@@ -180,7 +194,8 @@ class Pearfarm_PackageSpec {
    * @return object PackageSpec for fluent interface
    * @throws
    */
-  public function addGitFiles() {
+  public function addGitFiles()
+  {
     $result = NULL;
     $output = array();
     $lastLine = exec("cd {$this->options[self::OPT_BASEDIR]} && git ls-files", $output, $result);
@@ -192,12 +207,14 @@ class Pearfarm_PackageSpec {
   }
 
   // OTHER METADATA
-  public function addMaintainer($type, $name, $user, $email, $active = true) {
+  public function addMaintainer($type, $name, $user, $email, $active = true)
+  {
     $this->maintainers[$type][] = array('name' => $name, 'user' => $user, 'email' => $email, 'active' => $active);
     return $this;
   }
 
-  public function setDependsOnPHPVersion($min, $max = NULL, $exclude = array()) {
+  public function setDependsOnPHPVersion($min, $max = NULL, $exclude = array())
+  {
     $this->dependsOnPHPVersionMin = $min;
     $this->dependsOnPHPVersionMax = $max;
     $this->dependsOnPHPVersionExclude = $exclude;
@@ -205,7 +222,8 @@ class Pearfarm_PackageSpec {
     return $this;
   }
 
-  public function setDependsOnPearInstallerVersion($min, $max = NULL, $recommended = NULL, $exclude = array()) {
+  public function setDependsOnPearInstallerVersion($min, $max = NULL, $recommended = NULL, $exclude = array())
+  {
     $this->dependsOnPearInstallerVersionMin = $min;
     $this->dependsOnPearInstallerVersionMax = $max;
     $this->dependsOnPearInstallerVersionRecommended = $recommended;
@@ -214,7 +232,8 @@ class Pearfarm_PackageSpec {
     return $this;
   }
 
-  public function addExecutable($scriptFilePath, $renameTo = NULL, $platform = self::PLATFORM_ANY) {
+  public function addExecutable($scriptFilePath, $renameTo = NULL, $platform = self::PLATFORM_ANY)
+  {
     if (!isset($this->files[$scriptFilePath])) throw new Exception("File {$scriptFilePath} does not exist.");
 
     $fileObj = $this->files[$scriptFilePath];
@@ -223,7 +242,8 @@ class Pearfarm_PackageSpec {
     $fileObj->setAttribute('baseinstalldir', '/');
     $fileObj->addReplaceTask('pear-config', '/usr/bin/env php', 'php_bin');
     $fileObj->addReplaceTask('pear-config', '@php_bin@', 'php_bin');
-    if ($renameTo === NULL) {
+    if ($renameTo === NULL)
+    {
       $renameTo = basename($scriptFilePath);
     }
     $this->executables[$platform][] = array('name' => $scriptFilePath, 'as' => $renameTo);
@@ -232,34 +252,38 @@ class Pearfarm_PackageSpec {
   }
 
   /**
-   *
+   * 
    *
    * @param string The name of the dependency
    * @param string Either a channel name, or a URI.
    * @return
    */
-  public function addPackageDependency($name, $pkgSpec, $options = array()) {
+  public function addPackageDependency($name, $pkgSpec, $options = array())
+  {
     $depInfo = array_merge(array(
-            // order here matters!!! do not rearrange
-            'required'          => true,
-            'name'              => $name,
-            'channel'           => NULL,
-            'uri'               => NULL,
-            'min'               => NULL,
-            'max'               => NULL,
-            'recommended'       => NULL,
-            'recommendedMin'    => NULL,
-            'recommendedMax'    => NULL,
-            'exclude'           => array(),
-            'conflicts'         => NULL,
-            ), $options);
-    if (preg_match('/http[s]?:\/\.*/', $pkgSpec)) {
+          // order here matters!!! do not rearrange
+          'required'          => true,
+          'name'              => $name,
+          'channel'           => NULL,
+          'uri'               => NULL,
+          'min'               => NULL,
+          'max'               => NULL,
+          'recommended'       => NULL,
+          'recommendedMin'    => NULL,
+          'recommendedMax'    => NULL,
+          'exclude'           => array(),
+          'conflicts'         => NULL,
+          ), $options);
+    if (preg_match('/http[s]?:\/\.*/', $pkgSpec))
+    {
       $depInfo['uri'] = $pkgSpec;
     }
-    else {
+    else
+    {
       $depInfo['channel'] = $pkgSpec;
     }
-    if ($depInfo['conflicts'] === true) {
+    if ($depInfo['conflicts'] === true)
+    {
       $depInfo['conflicts'] = '';
     }
     $this->dependsOnPEARPackages[] = $depInfo;
@@ -267,14 +291,17 @@ class Pearfarm_PackageSpec {
     return $this;
   }
 
-  public function getLicense() {
-    if (is_array($this->license)) {
+  public function getLicense()
+  {
+    if (is_array($this->license))
+    {
       return $this->license;
     }
     return self::$licenseData[$this->license];
   }
 
-  public function __call($name, $value) {
+  public function __call($name, $value)
+  {
     switch (substr($name, 0, 3)) {
       case 'set':
         $varName = substr($name, 3);
@@ -294,13 +321,15 @@ class Pearfarm_PackageSpec {
     throw new Exception("Function $name does not exist.");
   }
 
-  private function prepareFiles() {
+  private function prepareFiles()
+  {
     $removeTheseFiles = array();
 
     foreach ($this->files as $file => $fileObj) {
       // filter out excludes
       foreach ($this->excludeFilesRegexs as $excludeRegex) {
-        if (preg_match($excludeRegex, $file)) {
+        if (preg_match($excludeRegex, $file))
+        {
           $this->debug("Excluding file regex '{$excludeRegex}' matched: {$file}");
           $removeTheseFiles[] = $file;
           break; // no need to process further, it's already excluded
@@ -314,18 +343,19 @@ class Pearfarm_PackageSpec {
     return $this->files;
   }
 
-  public function writePackageFile() {
+  public function writePackageFile()
+  {
     // http://pear.php.net/manual/en/guide.developers.package2.php
     // unfortunately, order matters in package.xml, so don't mess with it!
     $xml = simplexml_load_string('<package
-                xmlns="http://pear.php.net/dtd/package-2.0"
-                xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
-                                    http://pear.php.net/dtd/tasks-1.0.xsd
-                                    http://pear.php.net/dtd/package-2.0
-                                    http://pear.php.net/dtd/package-2.0.xsd"/>', 'SuperSimpleXMLElement');
-    $xml->addAttribute('version', '2.0');
+        xmlns="http://pear.php.net/dtd/package-2.0"
+        xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+        http://pear.php.net/dtd/tasks-1.0.xsd
+http://pear.php.net/dtd/package-2.0
+http://pear.php.net/dtd/package-2.0.xsd"/>', 'SuperSimpleXMLElement');
+      $xml->addAttribute('version', '2.0');
     foreach (array('name', 'channel', 'summary', 'description') as $property) {
       $xml->addTextNode($property, htmlentities($this->$property));
     }
@@ -377,7 +407,8 @@ class Pearfarm_PackageSpec {
       $dirPath = NULL;
       foreach ($allDirs as $dir) {
         $dirPath .= $dir;
-        if (!isset($dirs[$dirPath])) {
+        if (!isset($dirs[$dirPath]))
+        {
           // create directory
           $dirObj = new Pearfarm_PackageSpecDir($dirPath);
           $dirs[$dirPath] = $dirObj;
@@ -405,7 +436,8 @@ class Pearfarm_PackageSpec {
     // php
     $phpNode = $reqNode->addChild('php');
     $phpNode->addChild('min', $this->dependsOnPHPVersionMin);
-    if ($this->dependsOnPHPVersionMax !== NULL) {
+    if ($this->dependsOnPHPVersionMax !== NULL)
+    {
       $phpNode->addChild('max', $this->dependsOnPHPVersionMax);
     }
     foreach ($this->dependsOnPHPVersionExclude as $excludeVersion) {
@@ -414,13 +446,16 @@ class Pearfarm_PackageSpec {
     // pear installer
     $pearInstallerNode = $reqNode->addChild('pearinstaller');
     $pearInstallerNode->addChild('min', $this->dependsOnPearInstallerVersionMin);
-    if ($this->dependsOnPearInstallerVersionMax !== NULL) {
+    if ($this->dependsOnPearInstallerVersionMax !== NULL)
+    {
       $pearInstallerNode->addChild('max', $this->dependsOnPearInstallerVersionMax);
     }
-    if ($this->dependsOnPearInstallerVersionMax !== NULL) {
+    if ($this->dependsOnPearInstallerVersionMax !== NULL)
+    {
       $pearInstallerNode->addChild('max', $this->dependsOnPearInstallerVersionMax);
     }
-    if ($this->dependsOnPearInstallerVersionRecommended !== NULL) {
+    if ($this->dependsOnPearInstallerVersionRecommended !== NULL)
+    {
       $pearInstallerNode->addChild('recommended', $this->dependsOnPearInstallerVersionRecommended);
     }
     foreach ($this->dependsOnPearInstallerVersionExclude as $excludeVersion) {
@@ -429,11 +464,14 @@ class Pearfarm_PackageSpec {
 
     // all other deps
     foreach ($this->dependsOnPEARPackages as $dep) {
-      if ($dep['required']) {
+      if ($dep['required'])
+      {
         $addToNode = $reqNode;
       }
-      else {
-        if ($optNode === NULL) {
+      else
+      {
+        if ($optNode === NULL)
+        {
           $optNode = $depsNode->addChild('optional');
         }
         $addToNode = $optNode;
@@ -443,12 +481,14 @@ class Pearfarm_PackageSpec {
         if ($v === NULL) continue;
         if ($k === 'required') continue;
         if ($k === 'recommendedMin' or $k === 'recommendedMax') continue;   // not sure where <compatible> goes yet
-        if (is_array($v)) {
+        if (is_array($v))
+        {
           foreach ($v as $arrayVal) {
             $pkgNode->addTextNode($k, $arrayVal);
           }
         }
-        else {
+        else
+        {
           $pkgNode->addTextNode($k, $v);
         }
       }
@@ -459,7 +499,8 @@ class Pearfarm_PackageSpec {
     foreach ($this->executables as $platform => $executables) {
       $hasReleaseNode = true;
       $phpReleaseNode = $xml->addChild('phprelease');
-      if ($platform !== self::PLATFORM_ANY) {
+      if ($platform !== self::PLATFORM_ANY)
+      {
         $installConditionNode = $phpReleaseNode->addChild('installconditions');
         $osNode = $installConditionNode->addChild('os');
         $osNode->addTextNode('name', $platform);
@@ -471,7 +512,8 @@ class Pearfarm_PackageSpec {
         $installNode->addAttribute('name', $executable['name']);
       }
     }
-    if (!$hasReleaseNode) {
+    if (!$hasReleaseNode)
+    {
       $xml->addChild('phprelease');
     }
 
@@ -484,34 +526,40 @@ class Pearfarm_PackageSpec {
    * @param array Options hash to be passed to constructor.
    * @return object PackageSpec
    */
-  public static function create($options = array()) {
+  public static function create($options = array())
+  {
     return new Pearfarm_PackageSpec($options);
   }
 }
 
-abstract class Pearfarm_PackageSpecItem {
+abstract class Pearfarm_PackageSpecItem
+{
   protected $nodeName;
   protected $requiredAttributes;
   protected $attributes;
 
-  public function __construct($nodeName, $requiredAttributes) {
+  public function __construct($nodeName, $requiredAttributes)
+  {
     $this->nodeName = $nodeName;
     $this->requiredAttributes = $requiredAttributes;
   }
 
-  public function setAttribute($k, $v) {
+  public function setAttribute($k, $v)
+  {
     $this->attributes[$k] = $v;
     return $this;
   }
 
-  public function setAttributes($attrs) {
+  public function setAttributes($attrs)
+  {
     foreach ($attrs as $k => $v) {
       $this->setAttribute($k, $v);
     }
     return $this;
   }
 
-  public function addXMLAsChild($parentNode) {
+  public function addXMLAsChild($parentNode)
+  {
     //print_r($parentNode);
     $node = $parentNode->addChild($this->nodeName);
     foreach ($this->attributes as $k => $v) {
@@ -526,12 +574,14 @@ abstract class Pearfarm_PackageSpecItem {
   /**
    * Add generic attribute accessors/mutators.
    */
-  public function __call($name, $value) {
+  public function __call($name, $value)
+  {
     switch (substr($name, 0, 3)) {
       case 'set':
         $attrName = substr($name, 3);
         $attrName[0] = strtolower($attrName[0]);
-        if (isset($this->attributes[$attrName])) {
+        if (isset($this->attributes[$attrName]))
+        {
           $this->setAttribute($attrName, $value[0]);
           return $this;
         }
@@ -539,7 +589,8 @@ abstract class Pearfarm_PackageSpecItem {
       case 'get':
         $attrName = substr($name, 3);
         $attrName[0] = strtolower($attrName[0]);
-        if (isset($this->attributes[$attrName])) {
+        if (isset($this->attributes[$attrName]))
+        {
           $this->setAttribute($value[0]);
           return $this->attributes[$attrName];
         }
@@ -549,14 +600,16 @@ abstract class Pearfarm_PackageSpecItem {
   }
 }
 
-class Pearfarm_PackageSpecDir extends Pearfarm_PackageSpecItem {
+class Pearfarm_PackageSpecDir extends Pearfarm_PackageSpecItem
+{
   const BASEINSTALLDIR        = 'baseinstalldir';
 
   // relative path to dir
   private $dirPath;
   private $items; // all items contained in this dir
 
-  public function __construct($dirPath, $options = array()) {
+  public function __construct($dirPath, $options = array())
+  {
     parent::__construct('dir', array('name'));
 
     // internal stuff
@@ -565,28 +618,32 @@ class Pearfarm_PackageSpecDir extends Pearfarm_PackageSpecItem {
     // required attrs
     // The "root" dir . is called / in pear
     $baseDirName = basename($dirPath);
-    if ($baseDirName === '.') {
+    if ($baseDirName === '.')
+    {
       $baseDirName = '/';
     }
     $this->setAttribute('name', $baseDirName);
 
     // optional attrs
     $options = array_merge(array(
-            self::BASEINSTALLDIR => NULL,
-            ), $options);
+          self::BASEINSTALLDIR => NULL,
+          ), $options);
     $this->setAttributes($options);
   }
 
-  public function __toString() {
+  public function __toString()
+  {
     return $this->dirPath;
   }
 
-  public function addItem($item) {
+  public function addItem($item)
+  {
     if (!($item instanceof Pearfarm_PackageSpecDir) and !($item instanceof Pearfarm_PackageSpecFile)) throw new Exception("PackageSpecDir can only contain PackageSpecDir and PackageSpecFile objects.");
     $this->items[] = $item;
   }
 
-  public function addXMLAsChild($parentNode) {
+  public function addXMLAsChild($parentNode)
+  {
     //print "adding xml nodes for {$this->dirPath}\n";
     $node = parent::addXMLAsChild($parentNode);
     foreach ($this->items as $item) {
@@ -597,7 +654,8 @@ class Pearfarm_PackageSpecDir extends Pearfarm_PackageSpecItem {
   }
 }
 
-class Pearfarm_PackageSpecFile extends Pearfarm_PackageSpecItem {
+class Pearfarm_PackageSpecFile extends Pearfarm_PackageSpecItem
+{
   const BASEINSTALLDIR        = 'baseinstalldir';
   const MD5SUM                = 'md5sum';
 
@@ -605,7 +663,8 @@ class Pearfarm_PackageSpecFile extends Pearfarm_PackageSpecItem {
   private $filePath;
   protected $replaceTasks = array();
 
-  public function __construct($filePath, $role = 'php', $options = array()) {
+  public function __construct($filePath, $role = 'php', $options = array())
+  {
     parent::__construct('file', array('name', 'role'));
 
     // internal stuff
@@ -617,17 +676,19 @@ class Pearfarm_PackageSpecFile extends Pearfarm_PackageSpecItem {
 
     // optional attrs
     $options = array_merge(array(
-            self::BASEINSTALLDIR => NULL,
-            self::MD5SUM => NULL
-            ), $options);
+          self::BASEINSTALLDIR => NULL,
+          self::MD5SUM => NULL
+          ), $options);
     $this->setAttributes($options);
 
-    if (file_exists($filePath)) {
+    if (file_exists($filePath))
+    {
       $this->setAttribute(self::MD5SUM, md5_file($filePath));
     }
   }
 
-  public function __toString() {
+  public function __toString()
+  {
     return $this->filePath;
   }
 
@@ -639,17 +700,20 @@ class Pearfarm_PackageSpecFile extends Pearfarm_PackageSpecItem {
    * @param string to string, the "abstract" variable from "type" for the replacement.
    * @return this for fluent interface
    */
-  public function addReplaceTask($type, $from, $to) {
+  public function addReplaceTask($type, $from, $to)
+  {
     $this->replaceTasks[] = array('type' => $type, 'from' => $from, 'to' => $to);
 
     return $this;
   }
 
-  public function getFilePath() {
+  public function getFilePath()
+  {
     return $this->filePath;
   }
 
-  public function addXMLAsChild($parentNode) {
+  public function addXMLAsChild($parentNode)
+  {
     $node = parent::addXMLAsChild($parentNode);
     foreach ($this->replaceTasks as $task) {
       $taskNode = $node->addChild('replace', NULL, 'http://pear.php.net/dtd/tasks-1.0');
@@ -661,8 +725,10 @@ class Pearfarm_PackageSpecFile extends Pearfarm_PackageSpecItem {
   }
 }
 
-class SuperSimpleXMLElement extends SimpleXMLElement {
-  public function addTextNode($entityName, $text) {
+class SuperSimpleXMLElement extends SimpleXMLElement
+{
+  public function addTextNode($entityName, $text)
+  {
     $newNode = $this->addChild($entityName);
     $newNode[0] = $text;
     return $newNode;
@@ -670,12 +736,14 @@ class SuperSimpleXMLElement extends SimpleXMLElement {
 }
 
 // thanks http://shiflett.org/blog/2007/dec/php-advent-calendar-day-7
-class RecursiveFileIterator extends RecursiveIteratorIterator {
+class RecursiveFileIterator extends RecursiveIteratorIterator
+{
   /**
    * Takes a path to a directory, checks it, and then recurses into it.
    * @param $path directory to iterate
    */
-  public function __construct($path) {
+  public function __construct($path)
+  {
     // Use realpath() and make sure it exists; this is probably overkill, but I'm anal.
     $path = realpath($path);
 
@@ -690,11 +758,14 @@ class RecursiveFileIterator extends RecursiveIteratorIterator {
   }
 }
 
-class RecursiveFileRegexFilterIterator extends FilterIterator {
+class RecursiveFileRegexFilterIterator extends FilterIterator
+{
   /**
    * acceptable extensions - array of strings
    */
   protected $regex = NULL;
+  protected $pathPrefix = NULL;
+  protected $pathPrefixLen = NULL;
 
   /**
    * Takes a path and shoves it into our earlier class.
@@ -702,24 +773,37 @@ class RecursiveFileRegexFilterIterator extends FilterIterator {
    * @param $path directory to iterate
    * @param $ext comma delimited list of acceptable extensions
    */
-  public function __construct($path, $regex) {
+  public function __construct($path, $regex)
+  {
     parent::__construct(new RecursiveFileIterator($path));
     $this->regex = $regex;
+
+    // normalize path
+    $path = rtrim($path, '/\\');
+    $this->pathPrefix = $path;
+    $this->pathPrefixLen = strlen($this->pathPrefix);
   }
 
   /**
    * Makes sure that the path matches the regex.
    */
-  public function accept() {
+  public function accept()
+  {
     $item = $this->getInnerIterator();
+    $realPathToFile = $item->getRealPath();
 
-    // If it's not a file, accept it.
-    if (!$item->isFile()) {
-      return TRUE;
+    // there was a test for dirs in the sample code, but I don't think it can ever happen...
+    if (is_dir($item->getRealPath())) {
+      die("never is_dir, right?");
     }
 
-    // If it is a file, test the path against the regex
-    return preg_match($this->regex, $item->getFilename());
+    // assert this for a while so we can make sure it doesn't happen
+    if (substr($realPathToFile, 0, $this->pathPrefixLen) !== $this->pathPrefix) throw new Exception("Weird thing happened: {$realPathToFile} not inside of {$this->pathPrefix}.");
+
+    $normalizedFilePath = substr($realPathToFile, $this->pathPrefixLen + 1);
+
+    //print "Testing preg_match('{$this->regex}', '{$normalizedFilePath}')\n";
+    return preg_match($this->regex, $normalizedFilePath);
   }
 }
 
