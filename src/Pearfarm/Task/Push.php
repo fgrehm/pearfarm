@@ -3,15 +3,41 @@
 
 class Pearfarm_Task_Push extends Pearfarm_AbstractTask {
   public function run($args) {
-    if (!isset($args[2])) throw new Exception("No package filename specified. Please specify a valid package file.");
+    if (isset($args[2])) {
+      $pkgTgzPath = $args[2];
+    } else {
+      // calculate package path from spec
+      $specfile = getcwd() . '/pearfarm.spec';
+      print "Reading specfile at {$specfile}...\n";
+      if (!file_exists($specfile)) {
+        print "{$specfile} is not a pearfarm.spec file.\n";
+        exit(1);
+      }
 
-    if (!function_exists('curl_init')) throw new Exception("cURL extension not enabled");
+      include $specfile;
+      if (!isset($spec)) {
+        print "specfile didn't create a local variable named '\$spec'.\n";
+        exit(1);
+      }
 
-    $pkgTgzPath = getcwd() . "/{$args[2]}";
+      $pkgTgzPath = "{$spec->getName()}-{$spec->getReleaseVersion()}.tgz";
+      print "Pushing {$pkgTgzPath}\n";
+    }
 
+    if (!file_exists($pkgTgzPath)) {
+      print "Package file {$pkgTgzPath} does not exist.\n";
+      exit(1);
+    }
+
+    // absolutize path
+    $pkgTgzPath = getcwd() . "/{$pkgTgzPath}";
+
+    // build pkg metadata
     $channel = $this->readChannelFromPackage($pkgTgzPath);
     $signatureBase64 = $this->calculatePackageSignature($pkgTgzPath);
 
+    // upload
+    if (!function_exists('curl_init')) throw new Exception("cURL extension not enabled");
     $ch = curl_init("http://{$channel}/upload.xml");
     curl_setopt($ch, CURLOPT_POSTFIELDS, array(
             'file'            => "@{$pkgTgzPath}",
@@ -21,8 +47,8 @@ class Pearfarm_Task_Push extends Pearfarm_AbstractTask {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $postResult = curl_exec($ch);
     curl_close($ch);
-    print "{$postResult}\n";
 
+    print "{$postResult}\n";
     exit(0);
   }
 
