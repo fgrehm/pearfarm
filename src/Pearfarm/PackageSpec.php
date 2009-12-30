@@ -206,6 +206,32 @@ class Pearfarm_PackageSpec
     return $this;
   }
 
+  /**
+   * Add all files that svn knows about to the package.
+   *
+   * @return object PackageSpec for fluent interface
+   * @throws
+   */
+  public function addSvnFiles()
+  {
+    $result = NULL;
+    $output = array();
+    $lastLine = exec("cd {$this->options[self::OPT_BASEDIR]} && svn ls -R", $output, $result);
+    if ($result != 0) throw( new Exception("Error ($result) running svn ls -R: " . join("\n", $output)) );
+
+    $filesOnly = array();
+    foreach ($output as $svnItem) {
+      if (substr($svnItem, -1) === '/') continue; // skip dirs
+      {
+        $filesOnly[] = $svnItem;
+      }
+    }
+
+    $this->addFilesSimple($output);
+
+    return $this;
+  }
+
   // OTHER METADATA
   public function addMaintainer($type, $name, $user, $email, $active = true)
   {
