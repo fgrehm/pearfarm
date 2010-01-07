@@ -1,0 +1,1653 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class Pearfarm_PackageSpec</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name"><img src="../media/images/Class_logo.png"
+														alt=" Class"
+														title=" Class"
+														style="vertical-align: middle"> Pearfarm_PackageSpec</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+											<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+						
+			</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Pearfarm_PackageSpec is a simplified DSL for creating basic pear pacakges.</p>
+<p class="description"><p>Instead of having to learn about the complexities of PEAR you can just specify a few basic facts and Pearfarm will build you a reasonable package.xml.</p><p><strong>If you don't already have a pearfarm.spec file for your project, just run &quot;pearfarm init&quot; and an example spec file will be generated for you.</strong>  Then you need only edit the boilerplate in the pearfarm.spec file and customize it for your needs, using these docs as a reference.</p><p>To build a PEAR package based on your pearfarm.spec, run &quot;pear package&quot;. Pay careful attention to any errors and warnings you see; pearfarm itself  doesn't do much error checking since &quot;pear package&quot; already does a lot.</p><p>NOTE: this code was hacked up quickly one weekend and isn't particularly pretty. I was learning PEAR architecture at the same time. My apologies in advance.</p><p>NOTE: below are the meta-method docs for stuff done via __call. Phpdoc sucks so they don't show up very well. <ul><li>object Pearfarm_PackageSpec setName(string $value): Set the package name.</li><li>object Pearfarm_PackageSpec setChannel(string $value): Set the channel. If you are deploying via pearfarm, this should be &lt;pearfarm-username&gt;.pearfarm.org.</li><li>object Pearfarm_PackageSpec setSummary(string $value): Set the Summary of the pacakge.</li><li>object Pearfarm_PackageSpec setDescription(string $value): Set the detailed Description of the package.</li><li>object Pearfarm_PackageSpec setReleaseVersion(string $value): Set the release version string.</li><li>object Pearfarm_PackageSpec setReleaseStability(string $value): Set the release stability (devel, alpha, beta, stable)</li><li>object Pearfarm_PackageSpec setApiVersion(string $value): Set the API version string.</li><li>object Pearfarm_PackageSpec setApiStability(string $value): Set the API stability (devel, alpha, beta, stable)</li><li>object Pearfarm_PackageSpec setLicense(string $value): Set the license for the library, see Pearfarm_PackageSpec::LICENSE_*</li><li>object Pearfarm_PackageSpec setNotes(string $value): Set the notes for the package. Typically you should include a link to your project web site here.</li></ul></p></p>
+		<p class="notes">
+			Located in <a class="field" href="_PackageSpec.php.html">/PackageSpec.php</a> (line <span class="field">39</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+	<a name="sec-const-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constant Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Constants</span> (<a href="#sec-consts">details</a>)
+												<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<div class="const-summary">
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#LICENSE_MIT" title="details" class="const-name">LICENSE_MIT</a> = 					<span class="var-type"> 'mit'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#OPT_BASEDIR" title="details" class="const-name">OPT_BASEDIR</a> = 					<span class="var-type"> 'basedir'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#OPT_DEBUG" title="details" class="const-name">OPT_DEBUG</a> = 					<span class="var-type"> 'debug'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#PLATFORM_ANY" title="details" class="const-name">PLATFORM_ANY</a> = 					<span class="var-type"> 'any'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#PLATFORM_WIN" title="details" class="const-name">PLATFORM_WIN</a> = 					<span class="var-type"> 'windows'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#ROLE_DATA" title="details" class="const-name">ROLE_DATA</a> = 					<span class="var-type"> 'data'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#ROLE_DOC" title="details" class="const-name">ROLE_DOC</a> = 					<span class="var-type"> 'doc'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#ROLE_PHP" title="details" class="const-name">ROLE_PHP</a> = 					<span class="var-type"> 'php'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#ROLE_SCRIPT" title="details" class="const-name">ROLE_SCRIPT</a> = 					<span class="var-type"> 'script'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#ROLE_TEST" title="details" class="const-name">ROLE_TEST</a> = 					<span class="var-type"> 'test'</span>
+
+				</div>
+							</div>
+		</div>
+	</div>
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+															<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																																																																																																																																																																																																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$apiStability" title="details" class="var-name">$apiStability</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$apiVersion" title="details" class="var-name">$apiVersion</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$channel" title="details" class="var-name">$channel</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$dependsOnExtensions" title="details" class="var-name">$dependsOnExtensions</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$dependsOnPearInstallerVersionExclude" title="details" class="var-name">$dependsOnPearInstallerVersionExclude</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$dependsOnPearInstallerVersionMax" title="details" class="var-name">$dependsOnPearInstallerVersionMax</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$dependsOnPearInstallerVersionMin" title="details" class="var-name">$dependsOnPearInstallerVersionMin</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$dependsOnPearInstallerVersionRecommended" title="details" class="var-name">$dependsOnPearInstallerVersionRecommended</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$dependsOnPEARPackages" title="details" class="var-name">$dependsOnPEARPackages</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$dependsOnPHPVersionExclude" title="details" class="var-name">$dependsOnPHPVersionExclude</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$dependsOnPHPVersionMax" title="details" class="var-name">$dependsOnPHPVersionMax</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$dependsOnPHPVersionMin" title="details" class="var-name">$dependsOnPHPVersionMin</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$description" title="details" class="var-name">$description</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$excludeFilesRegexs" title="details" class="var-name">$excludeFilesRegexs</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$executables" title="details" class="var-name">$executables</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$files" title="details" class="var-name">$files</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$license" title="details" class="var-name">$license</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$maintainers" title="details" class="var-name">$maintainers</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$name" title="details" class="var-name">$name</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$notes" title="details" class="var-name">$notes</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$options" title="details" class="var-name">$options</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$releaseStability" title="details" class="var-name">$releaseStability</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$releaseVersion" title="details" class="var-name">$releaseVersion</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$summary" title="details" class="var-name">$summary</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																				<div class="method-definition">
+					<img src="../media/images/StaticMethod.png" alt=" "/>
+											static <span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+										<a href="#create" title="details" class="method-name">create</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">array()</span>])
+									</div>
+																																																				<div class="method-definition">
+					<img src="../media/images/Constructor.png" alt=" "/>
+											<span class="method-result">Pearfarm_PackageSpec</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+										<a href="#addExcludeFiles" title="details" class="method-name">addExcludeFiles</a>
+											(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$excludeFiles</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+										<a href="#addExcludeFilesRegex" title="details" class="method-name">addExcludeFilesRegex</a>
+											(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$regexs</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+										<a href="#addExecutable" title="details" class="method-name">addExecutable</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$scriptFilePath</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$renameTo</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$platform</span> = <span class="var-default">self::PLATFORM_ANY</span>])
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+										<a href="#addFile" title="details" class="method-name">addFile</a>
+											(<span class="var-type"><a href="../pearfarm/Pearfarm_PackageSpecFile.html">Pearfarm_PackageSpecFile</a></span>&nbsp;<span class="var-name">$f</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+										<a href="#addFilesRegex" title="details" class="method-name">addFilesRegex</a>
+											(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$regexs</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$role</span> = <span class="var-default">self::ROLE_PHP</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+										<a href="#addFilesSimple" title="details" class="method-name">addFilesSimple</a>
+											(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$files</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$role</span> = <span class="var-default">self::ROLE_PHP</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+										<a href="#addGitFiles" title="details" class="method-name">addGitFiles</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+										<a href="#addMaintainer" title="details" class="method-name">addMaintainer</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$type</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$user</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$email</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$active</span> = <span class="var-default">true</span>])
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+										<a href="#addPackageDependency" title="details" class="method-name">addPackageDependency</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$pkgSpec</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+										<a href="#addSvnFiles" title="details" class="method-name">addSvnFiles</a>
+										()
+									</div>
+																								<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpecFile.html">object Pearfarm_PackageSpecFile</a></span>
+										<a href="#getFile" title="details" class="method-name">getFile</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+										<a href="#setDependsOnPearInstallerVersion" title="details" class="method-name">setDependsOnPearInstallerVersion</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$min</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$max</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$recommended</span> = <span class="var-default">NULL</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$exclude</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+										<a href="#setDependsOnPHPVersion" title="details" class="method-name">setDependsOnPHPVersion</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$min</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$max</span> = <span class="var-default">NULL</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$exclude</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#writePackageFile" title="details" class="method-name">writePackageFile</a>
+										()
+									</div>
+											</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+												<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			
+<a name="var$apiStability" id="$apiStability"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$apiStability</span>
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">65</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$apiVersion" id="$apiVersion"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$apiVersion</span>
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">64</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$channel" id="$channel"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$channel</span>
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">59</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$dependsOnExtensions" id="$dependsOnExtensions"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$dependsOnExtensions</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">80</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$dependsOnPearInstallerVersionExclude" id="$dependsOnPearInstallerVersionExclude"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$dependsOnPearInstallerVersionExclude</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">78</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$dependsOnPearInstallerVersionMax" id="$dependsOnPearInstallerVersionMax"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$dependsOnPearInstallerVersionMax</span>
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">76</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$dependsOnPearInstallerVersionMin" id="$dependsOnPearInstallerVersionMin"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$dependsOnPearInstallerVersionMin</span>
+			 = <span class="var-default"> '1.4.0'</span>			(line <span class="line-number">75</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$dependsOnPearInstallerVersionRecommended" id="$dependsOnPearInstallerVersionRecommended"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$dependsOnPearInstallerVersionRecommended</span>
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">77</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$dependsOnPEARPackages" id="$dependsOnPEARPackages"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$dependsOnPEARPackages</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">81</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$dependsOnPHPVersionExclude" id="$dependsOnPHPVersionExclude"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$dependsOnPHPVersionExclude</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">73</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$dependsOnPHPVersionMax" id="$dependsOnPHPVersionMax"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$dependsOnPHPVersionMax</span>
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">72</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$dependsOnPHPVersionMin" id="$dependsOnPHPVersionMin"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$dependsOnPHPVersionMin</span>
+			 = <span class="var-default"> '5.0.0'</span>			(line <span class="line-number">71</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$description" id="$description"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$description</span>
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">61</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$excludeFilesRegexs" id="$excludeFilesRegexs"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$excludeFilesRegexs</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">85</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$executables" id="$executables"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$executables</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">86</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$files" id="$files"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$files</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">84</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$license" id="$license"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$license</span>
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">66</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$maintainers" id="$maintainers"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$maintainers</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">68</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$name" id="$name"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$name</span>
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">58</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$notes" id="$notes"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$notes</span>
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">67</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$options" id="$options"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$options</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">55</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$releaseStability" id="$releaseStability"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$releaseStability</span>
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">63</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$releaseVersion" id="$releaseVersion"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$releaseVersion</span>
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">62</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$summary" id="$summary"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$summary</span>
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">60</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+														<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="methodcreate" id="create"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/StaticMethod.png" />
+		<span class="method-title">static create</span> (line <span class="line-number">662</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Fluent interface bootstrap static constructor.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> For fluent interface.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+		<span class="method-name">
+			create
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$options</span><span class="var-description">: Options hash to be passed to constructor.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Constructor.png" />
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">97</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Pearfarm_PackageSpec constructor.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Pearfarm_PackageSpec</span>
+		<span class="method-name">
+			__construct
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$options</span><span class="var-description">: Options for the Pearfarm_PackageSpec object, see Pearfarm_PackageSpec::OPT_*</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddExcludeFiles" id="addExcludeFiles"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">addExcludeFiles</span> (line <span class="line-number">211</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add a file path which will cause a file that has been included previously to be excluded from the final package.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> For fluent interface.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+		<span class="method-name">
+			addExcludeFiles
+		</span>
+					(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$excludeFiles</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$excludeFiles</span><span class="var-description">: A filepath to a file to exclude, must be relative to project root, aka path/to/myfiletoexclude.php</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddExcludeFilesRegex" id="addExcludeFilesRegex"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">addExcludeFilesRegex</span> (line <span class="line-number">195</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add a regex pattern which will cause a file that has been included previously to be excluded from the final package.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> For fluent interface.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+		<span class="method-name">
+			addExcludeFilesRegex
+		</span>
+					(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$regexs</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$regexs</span><span class="var-description">: A string regex pattern (must include //) or an array of patterns.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddExecutable" id="addExecutable"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">addExecutable</span> (line <span class="line-number">353</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add an &quot;exectuable&quot; file to your package.</p>
+<p class="description"><p>The file must have already been added to the package; this function just makes a previously included file be tagged  as an executable in your packate so that when installed PEAR will place it in the bin/ directory.</p><p>This function is a high-level abstraction to the package.xml format for convenience reasons.</p><p>Executables added with this function get two replace-tasks added to them: <ol><li>'/usr/bin/env php' =&gt; pear-installation &quot;php_bin&quot; location</li><li>'@php_bin@'        =&gt; pear-installation &quot;php_bin&quot; location</li></ol>  This allows you to write your executable script in a way that makes it easy to run locally and when installed via pear  if you write your exectuables so that they have the following shbang line:  <div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-comm">#!/usr/bin/env&nbsp;php</span></div></li>
+</ol></div></p><p>And the following &quot;bootstrap&quot; code for require/include of other files:  <div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-key">if&nbsp;</span><span class="src-sym">(</span><a href="http://www.php.net/strpos">strpos</a><span class="src-sym">(</span><span class="src-str">'@php_bin@'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'@php_bin'</span><span class="src-sym">)&nbsp;</span>===&nbsp;<span class="src-num">0</span><span class="src-sym">)&nbsp;</span><span class="src-sym">{&nbsp;&nbsp;</span><span class="src-comm">//&nbsp;not&nbsp;a&nbsp;pear&nbsp;install</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/define">define</a><span class="src-sym">(</span><span class="src-str">'PEARFARM_INCLUDE_PREFIX'</span><span class="src-sym">,&nbsp;</span><span class="src-id">dirname</span><span class="src-sym">(</span>__FILE__<span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/define">define</a><span class="src-sym">(</span><span class="src-str">'PEARFARM_CMD'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'php&nbsp;pearfarm'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><span class="src-sym">{</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/define">define</a><span class="src-sym">(</span><span class="src-str">'PEARFARM_INCLUDE_PREFIX'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'pearfarm'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/define">define</a><span class="src-sym">(</span><span class="src-str">'PEARFARM_CMD'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'pearfarm'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line">&nbsp;<span class="src-sym">}</span></div></li>
+</ol></div></p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> For fluent interface.</li>
+				<li><span class="field">throws:</span> object Exception If the provided file path hasn't already been added to the spec.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+		<span class="method-name">
+			addExecutable
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$scriptFilePath</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$renameTo</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$platform</span> = <span class="var-default">self::PLATFORM_ANY</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$scriptFilePath</span><span class="var-description">: The project-relative path to the executable.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$renameTo</span><span class="var-description">: The name the executable should have once installed. Defaults to the name of the file.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$platform</span><span class="var-description">: One of the Pearfarm_PackageSpec::PLATFORM_* constants specificying which platform this executable runs on.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddFile" id="addFile"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">addFile</span> (line <span class="line-number">121</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add a Pearfarm_PackageSpecFile to the list of files to add to the package.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> For fluent interface.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+		<span class="method-name">
+			addFile
+		</span>
+					(<span class="var-type"><a href="../pearfarm/Pearfarm_PackageSpecFile.html">Pearfarm_PackageSpecFile</a></span>&nbsp;<span class="var-name">$f</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../pearfarm/Pearfarm_PackageSpecFile.html">object Pearfarm_PackageSpecFile</a></span>
+				<span class="var-name">$f</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddFilesRegex" id="addFilesRegex"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">addFilesRegex</span> (line <span class="line-number">157</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add files to the PEAR package based on regex filter of file paths.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> For fluent interface.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+		<span class="method-name">
+			addFilesRegex
+		</span>
+					(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$regexs</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$role</span> = <span class="var-default">self::ROLE_PHP</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$regexs</span><span class="var-description">: A string regex pattern (must include //) or an array of patterns.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$role</span><span class="var-description">: The &quot;role&quot; of the file for PEAR's benefit; one of Pearfarm_PackageSpec::ROLE_*</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$options</span><span class="var-description">: An array of options to pass to new Pearfarm_PackageSpecFile().</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddFilesSimple" id="addFilesSimple"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">addFilesSimple</span> (line <span class="line-number">137</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add a file or files to the package based on simple paths.</p>
+<p class="description"><p>Paths should be relative to project root, ie: path/to/myfile.php.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> For fluent interface.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+		<span class="method-name">
+			addFilesSimple
+		</span>
+					(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$files</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$role</span> = <span class="var-default">self::ROLE_PHP</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$files</span><span class="var-description">: A string filename, or an array of filenames</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$role</span><span class="var-description">: The &quot;role&quot; of the file for PEAR's benefit; one of Pearfarm_PackageSpec::ROLE_*</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$options</span><span class="var-description">: An array of options to pass to new Pearfarm_PackageSpecFile()</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddGitFiles" id="addGitFiles"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">addGitFiles</span> (line <span class="line-number">229</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add all files that git knows about to the package.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> For fluent interface.</li>
+				<li><span class="field">throws:</span> </li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+		<span class="method-name">
+			addGitFiles
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodaddMaintainer" id="addMaintainer"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">addMaintainer</span> (line <span class="line-number">276</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add a maintainer.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> For fluent interface.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+		<span class="method-name">
+			addMaintainer
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$type</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$user</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$email</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$active</span> = <span class="var-default">true</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$type</span><span class="var-description">: Type</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$name</span><span class="var-description">: Name</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$user</span><span class="var-description">: Username (I think this is the &quot;PEAR&quot; username, meaning it's n/a for pearfarm)</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$email</span><span class="var-description">: Email address</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$active</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddPackageDependency" id="addPackageDependency"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">addPackageDependency</span> (line <span class="line-number">382</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add a package dependency.</p>
+<p class="description"><p>If your package depends on another pear package, this is how to manifest it.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> For fluent interface.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+		<span class="method-name">
+			addPackageDependency
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$pkgSpec</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$name</span><span class="var-description">: The name of the dependency</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$pkgSpec</span><span class="var-description">: Either a channel name, or a URI.</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$options</span><span class="var-description">: Options hash. Pass any of required (bool), name, channel, uri, min, max, recommended, recommendedMin, recommendedMax, exclude (array of version strings), conflict (bool).</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddSvnFiles" id="addSvnFiles"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">addSvnFiles</span> (line <span class="line-number">247</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add all files that svn knows about to the package.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> For fluent interface.</li>
+				<li><span class="field">throws:</span> </li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+		<span class="method-name">
+			addSvnFiles
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetFile" id="getFile"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">getFile</span> (line <span class="line-number">180</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the <a href="../pearfarm/Pearfarm_PackageSpecFile.html">object Pearfarm_PackageSpecFile</a> for the given path.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> NULL if not found.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpecFile.html">object Pearfarm_PackageSpecFile</a></span>
+		<span class="method-name">
+			getFile
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$path</span><span class="var-description">: The path (relative to the project root, ie a/b/c.php)</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsetDependsOnPearInstallerVersion" id="setDependsOnPearInstallerVersion"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">setDependsOnPearInstallerVersion</span> (line <span class="line-number">308</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Set the PEAR installer version dependency info.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> For fluent interface.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+		<span class="method-name">
+			setDependsOnPearInstallerVersion
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$min</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$max</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$recommended</span> = <span class="var-default">NULL</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$exclude</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$min</span><span class="var-description">: Minimum version.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$max</span><span class="var-description">: Maximum version.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$recommended</span><span class="var-description">: Recommended version.</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$exclude</span><span class="var-description">: An array of strings of exact versions that the package is *not* compatible with.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsetDependsOnPHPVersion" id="setDependsOnPHPVersion"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">setDependsOnPHPVersion</span> (line <span class="line-number">290</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Set the php version dependency info.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> For fluent interface.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+		<span class="method-name">
+			setDependsOnPHPVersion
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$min</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$max</span> = <span class="var-default">NULL</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$exclude</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$min</span><span class="var-description">: Minimum version.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$max</span><span class="var-description">: Maximum version.</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$exclude</span><span class="var-description">: An array of strings of exact versions that the package is *not* compatible with.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodwritePackageFile" id="writePackageFile"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">writePackageFile</span> (line <span class="line-number">479</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Outputs the package.xml file to the location speficied in self::OPT_BASEDIR</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			writePackageFile
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+	<a name="sec-consts"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Constants</a> (<span class="disabled">details</span>)
+						
+			
+												<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+														| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="constLICENSE_MIT" id="LICENSE_MIT"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LICENSE_MIT</span>
+			 = <span class="const-default"> 'mit'</span>
+			(line <span class="line-number">41</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constOPT_BASEDIR" id="OPT_BASEDIR"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">OPT_BASEDIR</span>
+			 = <span class="const-default"> 'basedir'</span>
+			(line <span class="line-number">52</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constOPT_DEBUG" id="OPT_DEBUG"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">OPT_DEBUG</span>
+			 = <span class="const-default"> 'debug'</span>
+			(line <span class="line-number">53</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constPLATFORM_ANY" id="PLATFORM_ANY"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">PLATFORM_ANY</span>
+			 = <span class="const-default"> 'any'</span>
+			(line <span class="line-number">49</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constPLATFORM_WIN" id="PLATFORM_WIN"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">PLATFORM_WIN</span>
+			 = <span class="const-default"> 'windows'</span>
+			(line <span class="line-number">50</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constROLE_DATA" id="ROLE_DATA"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ROLE_DATA</span>
+			 = <span class="const-default"> 'data'</span>
+			(line <span class="line-number">47</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constROLE_DOC" id="ROLE_DOC"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ROLE_DOC</span>
+			 = <span class="const-default"> 'doc'</span>
+			(line <span class="line-number">45</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constROLE_PHP" id="ROLE_PHP"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ROLE_PHP</span>
+			 = <span class="const-default"> 'php'</span>
+			(line <span class="line-number">43</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constROLE_SCRIPT" id="ROLE_SCRIPT"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ROLE_SCRIPT</span>
+			 = <span class="const-default"> 'script'</span>
+			(line <span class="line-number">44</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constROLE_TEST" id="ROLE_TEST"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ROLE_TEST</span>
+			 = <span class="const-default"> 'test'</span>
+			(line <span class="line-number">46</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+						
+		</div>
+	</div>
+	
+	<p class="notes" id="credit">
+		Documentation generated on Thu, 07 Jan 2010 16:42:49 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>
