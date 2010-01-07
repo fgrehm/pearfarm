@@ -33,7 +33,9 @@ class Pearfarm_Task_Init implements Pearfarm_ITask {
 
   public function basicSpecFile($packageName = NULL) {
     if ($packageName === NULL) {
-      $packageName = 'TODO: Your package name here';
+      // guess from parent dir
+      $packageName = basename(getcwd());
+      $packageName = str_replace(' ', '_', $packageName);
     }
     $creatorName = 'TODO: Your name here';
     $creatorEmail = 'TODO: Your email here';
