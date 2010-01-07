@@ -1,0 +1,2 @@
+To build API docs for pearfarm.spec, run:
+phpdoc -t phpdocs -ti "pearfarm.spec" --output HTML:frames:earthli  -f Pearfarm/PackageSpec.php 

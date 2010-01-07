@@ -3,13 +3,38 @@
 /* vim: set expandtab tabstop=2 shiftwidth=2: */
 
 /**
- * PackageSpec is a simplified DSL for creating basic pear pacakges.
+ * Pearfarm_PackageSpec is the class that is used in pearfarm.spec files to specify PEAR packaging instructions.
+ *
+ * The API docs for Pearfarm_PackageSpec are very useful for creating PEAR packages with pearfarm.
+ *
+ * @package pearfarm
+ */
+
+/**
+ * Pearfarm_PackageSpec is a simplified DSL for creating basic pear pacakges.
  *
  * Instead of having to learn about the complexities of PEAR you can just specify a few basic facts and Pearfarm will build you a reasonable package.xml.
  *
- * You can the call "pear package" to build your official PEAR package.
+ * <b>If you don't already have a pearfarm.spec file for your project, just run "pearfarm init" and an example spec file will be generated for you.</b>
+ * Then you need only edit the boilerplate in the pearfarm.spec file and customize it for your needs, using these docs as a reference.
+ *
+ * To build a PEAR package based on your pearfarm.spec, run "pear package". Pay careful attention to any errors and warnings you see; pearfarm itself
+ * doesn't do much error checking since "pear package" already does a lot.
  *
  * NOTE: this code was hacked up quickly one weekend and isn't particularly pretty. I was learning PEAR architecture at the same time. My apologies in advance.
+ *
+ * NOTE: below are the meta-method docs for stuff done via __call. Phpdoc sucks so they don't show up very well.
+ * - object Pearfarm_PackageSpec setName(string $value): Set the package name.
+ * - object Pearfarm_PackageSpec setChannel(string $value): Set the channel. If you are deploying via pearfarm, this should be <pearfarm-username>.pearfarm.org.
+ * - object Pearfarm_PackageSpec setSummary(string $value): Set the Summary of the pacakge.
+ * - object Pearfarm_PackageSpec setDescription(string $value): Set the detailed Description of the package.
+ * - object Pearfarm_PackageSpec setReleaseVersion(string $value): Set the release version string.
+ * - object Pearfarm_PackageSpec setReleaseStability(string $value): Set the release stability (devel, alpha, beta, stable)
+ * - object Pearfarm_PackageSpec setApiVersion(string $value): Set the API version string.
+ * - object Pearfarm_PackageSpec setApiStability(string $value): Set the API stability (devel, alpha, beta, stable)
+ * - object Pearfarm_PackageSpec setLicense(string $value): Set the license for the library, see Pearfarm_PackageSpec::LICENSE_*
+ * - object Pearfarm_PackageSpec setNotes(string $value): Set the notes for the package. Typically you should include a link to your project web site here.
+ * @package pearfarm
  */
 class Pearfarm_PackageSpec
 {
@@ -64,6 +89,11 @@ class Pearfarm_PackageSpec
       self::LICENSE_MIT => array('name' => 'MIT', 'uri' => 'http://www.opensource.org/licenses/mit-license.html')
       );
 
+  /**
+   * Pearfarm_PackageSpec constructor.
+   *
+   * @param array Options for the Pearfarm_PackageSpec object, see Pearfarm_PackageSpec::OPT_*
+   */
   public function __construct($options = array())
   {
     $this->options = array_merge(array(
@@ -74,17 +104,19 @@ class Pearfarm_PackageSpec
     $this->options[self::OPT_BASEDIR] = realpath($this->options[self::OPT_BASEDIR]);
   }
 
+  /**
+   * @ignore
+   */
   private function debug($msg)
   {
     if ($this->options[self::OPT_DEBUG]) print "$msg\n";
   }
 
-  // VARIOUS WAYS TO ADD FILES
   /**
-   * Add a PackageSpecFile to the list of files to add to the package.
+   * Add a Pearfarm_PackageSpecFile to the list of files to add to the package.
    *
-   * @param object PackageSpecFile
-   * @return object PackageSpec for fluent interface
+   * @param object Pearfarm_PackageSpecFile
+   * @return object Pearfarm_PackageSpec For fluent interface.
    */
   public function addFile(Pearfarm_PackageSpecFile $f)
   {
@@ -98,9 +130,9 @@ class Pearfarm_PackageSpec
    * Paths should be relative to project root, ie: path/to/myfile.php.
    *
    * @param mixed A string filename, or an array of filenames
-   * @param string The "role" of the file for PEAR's benefit; one of PackageSpec::ROLE_*
-   * @param array An array of options to pass to new PackageSpecFile()
-   * @return object PackageSpec for fluent interface
+   * @param string The "role" of the file for PEAR's benefit; one of Pearfarm_PackageSpec::ROLE_*
+   * @param array An array of options to pass to new Pearfarm_PackageSpecFile()
+   * @return object Pearfarm_PackageSpec For fluent interface.
    */
   public function addFilesSimple($files, $role = self::ROLE_PHP, $options = array())
   {
@@ -118,9 +150,9 @@ class Pearfarm_PackageSpec
    * Add files to the PEAR package based on regex filter of file paths.
    *
    * @param mixed A string regex pattern (must include //) or an array of patterns.
-   * @param string The "role" of the file for PEAR's benefit; one of PackageSpec::ROLE_*
-   * @param array An array of options to pass to new PackageSpecFile().
-   * @return object PackageSpec for fluent interface
+   * @param string The "role" of the file for PEAR's benefit; one of Pearfarm_PackageSpec::ROLE_*
+   * @param array An array of options to pass to new Pearfarm_PackageSpecFile().
+   * @return object Pearfarm_PackageSpec For fluent interface.
    */
   public function addFilesRegex($regexs, $role = self::ROLE_PHP, $options = array())
   {
@@ -158,7 +190,7 @@ class Pearfarm_PackageSpec
    * Add a regex pattern which will cause a file that has been included previously to be excluded from the final package.
    *
    * @param mixed A string regex pattern (must include //) or an array of patterns.
-   * @return object PackageSpec for fluent interface
+   * @return object Pearfarm_PackageSpec For fluent interface.
    */
   public function addExcludeFilesRegex($regexs)
   {
@@ -174,7 +206,7 @@ class Pearfarm_PackageSpec
    * Add a file path which will cause a file that has been included previously to be excluded from the final package.
    *
    * @param mixed A filepath to a file to exclude, must be relative to project root, aka path/to/myfiletoexclude.php
-   * @return object PackageSpec for fluent interface
+   * @return object Pearfarm_PackageSpec For fluent interface.
    */
   public function addExcludeFiles($excludeFiles)
   {
@@ -191,7 +223,7 @@ class Pearfarm_PackageSpec
   /**
    * Add all files that git knows about to the package.
    *
-   * @return object PackageSpec for fluent interface
+   * @return object Pearfarm_PackageSpec For fluent interface.
    * @throws
    */
   public function addGitFiles()
@@ -209,7 +241,7 @@ class Pearfarm_PackageSpec
   /**
    * Add all files that svn knows about to the package.
    *
-   * @return object PackageSpec for fluent interface
+   * @return object Pearfarm_PackageSpec For fluent interface.
    * @throws
    */
   public function addSvnFiles()
@@ -232,13 +264,29 @@ class Pearfarm_PackageSpec
     return $this;
   }
 
-  // OTHER METADATA
+  /**
+   * Add a maintainer.
+   *
+   * @param string Type
+   * @param string Name
+   * @param string Username (I think this is the "PEAR" username, meaning it's n/a for pearfarm)
+   * @param string Email address
+   * @return object Pearfarm_PackageSpec For fluent interface.
+   */
   public function addMaintainer($type, $name, $user, $email, $active = true)
   {
     $this->maintainers[$type][] = array('name' => $name, 'user' => $user, 'email' => $email, 'active' => $active);
     return $this;
   }
 
+  /**
+   * Set the php version dependency info.
+   *
+   * @param string Minimum version.
+   * @param string Maximum version.
+   * @param array An array of strings of exact versions that the package is *not* compatible with.
+   * @return object Pearfarm_PackageSpec For fluent interface.
+   */
   public function setDependsOnPHPVersion($min, $max = NULL, $exclude = array())
   {
     $this->dependsOnPHPVersionMin = $min;
@@ -248,6 +296,15 @@ class Pearfarm_PackageSpec
     return $this;
   }
 
+  /**
+   * Set the PEAR installer version dependency info.
+   *
+   * @param string Minimum version.
+   * @param string Maximum version.
+   * @param string Recommended version.
+   * @param array An array of strings of exact versions that the package is *not* compatible with.
+   * @return object Pearfarm_PackageSpec For fluent interface.
+   */
   public function setDependsOnPearInstallerVersion($min, $max = NULL, $recommended = NULL, $exclude = array())
   {
     $this->dependsOnPearInstallerVersionMin = $min;
@@ -258,6 +315,41 @@ class Pearfarm_PackageSpec
     return $this;
   }
 
+  /**
+   * Add an "exectuable" file to your package.
+   *
+   * The file must have already been added to the package; this function just makes a previously included file be tagged
+   * as an executable in your packate so that when installed PEAR will place it in the bin/ directory.
+   *
+   * This function is a high-level abstraction to the package.xml format for convenience reasons.
+   *
+   * Executables added with this function get two replace-tasks added to them:
+   * 1. '/usr/bin/env php' => pear-installation "php_bin" location
+   * 2. '@php_bin@'        => pear-installation "php_bin" location
+   *
+   * This allows you to write your executable script in a way that makes it easy to run locally and when installed via pear
+   * if you write your exectuables so that they have the following shbang line:
+   * <code>
+   * #!/usr/bin/env php
+   * </code>
+   *
+   * And the following "bootstrap" code for require/include of other files:
+   * <code>
+   * if (strpos('@php_bin@', '@php_bin') === 0) {  // not a pear install
+   *   define('PEARFARM_INCLUDE_PREFIX', dirname(__FILE__));
+   *   define('PEARFARM_CMD', 'php pearfarm');
+   * } else {
+   *   define('PEARFARM_INCLUDE_PREFIX', 'pearfarm');
+   *   define('PEARFARM_CMD', 'pearfarm');
+   * }
+   * </code>
+   *
+   * @param string The project-relative path to the executable.
+   * @param string The name the executable should have once installed. Defaults to the name of the file.
+   * @param string One of the Pearfarm_PackageSpec::PLATFORM_* constants specificying which platform this executable runs on.
+   * @return object Pearfarm_PackageSpec For fluent interface.
+   * @throws object Exception If the provided file path hasn't already been added to the spec.
+   */
   public function addExecutable($scriptFilePath, $renameTo = NULL, $platform = self::PLATFORM_ANY)
   {
     if (!isset($this->files[$scriptFilePath])) throw new Exception("File {$scriptFilePath} does not exist.");
@@ -278,11 +370,14 @@ class Pearfarm_PackageSpec
   }
 
   /**
-   * 
+   * Add a package dependency.
+   *
+   * If your package depends on another pear package, this is how to manifest it.
    *
    * @param string The name of the dependency
    * @param string Either a channel name, or a URI.
-   * @return
+   * @param array Options hash. Pass any of required (bool), name, channel, uri, min, max, recommended, recommendedMin, recommendedMax, exclude (array of version strings), conflict (bool).
+   * @return object Pearfarm_PackageSpec For fluent interface.
    */
   public function addPackageDependency($name, $pkgSpec, $options = array())
   {
@@ -317,6 +412,9 @@ class Pearfarm_PackageSpec
     return $this;
   }
 
+  /**
+   * @ignore
+   */
   public function getLicense()
   {
     if (is_array($this->license))
@@ -326,6 +424,9 @@ class Pearfarm_PackageSpec
     return self::$licenseData[$this->license];
   }
 
+  /**
+   * @ignore
+   */
   public function __call($name, $value)
   {
     switch (substr($name, 0, 3)) {
@@ -347,6 +448,9 @@ class Pearfarm_PackageSpec
     throw new Exception("Function $name does not exist.");
   }
 
+  /**
+   * @ignore
+   */
   private function prepareFiles()
   {
     $removeTheseFiles = array();
@@ -369,6 +473,9 @@ class Pearfarm_PackageSpec
     return $this->files;
   }
 
+  /**
+   * Outputs the package.xml file to the location speficied in {@link self::OPT_BASEDIR}
+   */
   public function writePackageFile()
   {
     // http://pear.php.net/manual/en/guide.developers.package2.php
@@ -423,7 +530,7 @@ http://pear.php.net/dtd/package-2.0.xsd"/>', 'SuperSimpleXMLElement');
 
     // build all dir & file blocks
     $this->prepareFiles();
-    $dirs = array('.' => $rootDirObj);    // dirPath => object PackageSpecDir
+    $dirs = array('.' => $rootDirObj);    // dirPath => object Pearfarm_PackageSpecDir
     foreach ($this->files as $filePath => $fileObj) {
       //print "processing $filePath\n";
       $fileDirPath = dirname($filePath);
@@ -550,7 +657,7 @@ http://pear.php.net/dtd/package-2.0.xsd"/>', 'SuperSimpleXMLElement');
    * Fluent interface bootstrap static constructor.
    *
    * @param array Options hash to be passed to constructor.
-   * @return object PackageSpec
+   * @return object Pearfarm_PackageSpec For fluent interface.
    */
   public static function create($options = array())
   {
@@ -558,6 +665,10 @@ http://pear.php.net/dtd/package-2.0.xsd"/>', 'SuperSimpleXMLElement');
   }
 }
 
+/**
+ * @ignore
+ * @package pearfarm
+ */
 abstract class Pearfarm_PackageSpecItem
 {
   protected $nodeName;
@@ -626,6 +737,17 @@ abstract class Pearfarm_PackageSpecItem
   }
 }
 
+/**
+ * A "directory" object within the pearfarm spec.
+ *
+ * Directories are created automatically.
+ *
+ * At this time you cannot add or manipulate directories via pearfarm.spec.
+ *
+ * @internal
+ * @ignore
+ * @package pearfarm
+ */
 class Pearfarm_PackageSpecDir extends Pearfarm_PackageSpecItem
 {
   const BASEINSTALLDIR        = 'baseinstalldir';
@@ -664,7 +786,7 @@ class Pearfarm_PackageSpecDir extends Pearfarm_PackageSpecItem
 
   public function addItem($item)
   {
-    if (!($item instanceof Pearfarm_PackageSpecDir) and !($item instanceof Pearfarm_PackageSpecFile)) throw new Exception("PackageSpecDir can only contain PackageSpecDir and PackageSpecFile objects.");
+    if (!($item instanceof Pearfarm_PackageSpecDir) and !($item instanceof Pearfarm_PackageSpecFile)) throw new Exception("Pearfarm_PackageSpecDir can only contain Pearfarm_PackageSpecDir and Pearfarm_PackageSpecFile objects.");
     $this->items[] = $item;
   }
 
@@ -680,16 +802,41 @@ class Pearfarm_PackageSpecDir extends Pearfarm_PackageSpecItem
   }
 }
 
+/**
+ * A "file" object within the pearfarm spec.
+ *
+ * Files are generally created for you automatically by the higher-level functions, but you can create them yourself if you like and then
+ * add the file with {@link addFile()}.
+ *
+ * The more typical use case is to modify an existing file by calling {@link getFilePath() $spec->getFilePath()}.
+ *
+ * @package pearfarm
+ */
 class Pearfarm_PackageSpecFile extends Pearfarm_PackageSpecItem
 {
   const BASEINSTALLDIR        = 'baseinstalldir';
   const MD5SUM                = 'md5sum';
 
-  // relative path to File
+  /**
+   * @var string The relative (to the project root) path to the file.
+   */
   private $filePath;
+  /**
+   * @var array All of the PEAR replace tasks to run on this file. See {@link addReplaceTask()}.
+   * @ignore
+   * @internal
+   */
   protected $replaceTasks = array();
 
-  public function __construct($filePath, $role = 'php', $options = array())
+  /**
+   * Create a Pearfarm_PackageSpecFile for the given file path.
+   *
+   * @param string The relative (to the project root) path of the file to add to the package.
+   * @param string The role for the given file. One of the Pearfarm_PackageSpecFile::ROLE_* constants. Defaults to ROLE_PHP.
+   * @param array Settings for optional attributes {@link Pearfarm_PackageSpecFile::BASEINSTALLDIR} and {@link Pearfarm_PackageSpecFile::MD5SUM}.
+   * @return object Pearfarm_PackageSpecFile
+   */
+  public function __construct($filePath, $role = Pearfarm_PackageSpec::ROLE_PHP, $options = array())
   {
     parent::__construct('file', array('name', 'role'));
 
@@ -713,18 +860,21 @@ class Pearfarm_PackageSpecFile extends Pearfarm_PackageSpecItem
     }
   }
 
+  /**
+   * @ignore
+   */
   public function __toString()
   {
     return $this->filePath;
   }
 
   /**
-   * Add a <tasks:replace>, see http://pear.php.net/manual/en/guide.developers.package2.tasks.php
+   * Add a <tasks:replace>, see {@link http://pear.php.net/manual/en/guide.developers.package2.tasks.php}
    *
    * @param string one of package-info, pear-config
    * @param string from string, traditionally @search@
    * @param string to string, the "abstract" variable from "type" for the replacement.
-   * @return this for fluent interface
+   * @return object Pearfarm_PackageSpec For fluent interface.
    */
   public function addReplaceTask($type, $from, $to)
   {
@@ -733,11 +883,20 @@ class Pearfarm_PackageSpecFile extends Pearfarm_PackageSpecItem
     return $this;
   }
 
+  /**
+   * Get the file path for this file.
+   *
+   * @return string
+   */
   public function getFilePath()
   {
     return $this->filePath;
   }
 
+  /**
+   * @ignore
+   * @internal
+   */
   public function addXMLAsChild($parentNode)
   {
     $node = parent::addXMLAsChild($parentNode);
@@ -751,6 +910,10 @@ class Pearfarm_PackageSpecFile extends Pearfarm_PackageSpecItem
   }
 }
 
+/**
+ * @ignore
+ * @package pearfarm
+ */
 class SuperSimpleXMLElement extends SimpleXMLElement
 {
   public function addTextNode($entityName, $text)
@@ -761,7 +924,12 @@ class SuperSimpleXMLElement extends SimpleXMLElement
   }
 }
 
-// thanks http://shiflett.org/blog/2007/dec/php-advent-calendar-day-7
+/**
+ * Thanks http://shiflett.org/blog/2007/dec/php-advent-calendar-day-7
+ *
+ * @ignore
+ * @package pearfarm
+ */
 class RecursiveFileIterator extends RecursiveIteratorIterator
 {
   /**
@@ -784,6 +952,10 @@ class RecursiveFileIterator extends RecursiveIteratorIterator
   }
 }
 
+/**
+ * @ignore
+ * @package pearfarm
+ */
 class RecursiveFileRegexFilterIterator extends FilterIterator
 {
   /**
@@ -832,4 +1004,3 @@ class RecursiveFileRegexFilterIterator extends FilterIterator
     return preg_match($this->regex, $normalizedFilePath);
   }
 }
-

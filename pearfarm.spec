@@ -2,7 +2,7 @@
 
 $spec = Pearfarm_PackageSpec::create(array(Pearfarm_PackageSpec::OPT_BASEDIR => dirname(__FILE__), Pearfarm_PackageSpec::OPT_DEBUG => true ))
             ->setName('pearfarm')
-            ->setChannel('apinstein.dev.pearfarm.org')
+            ->setChannel('pearfarm.pearfarm.org')
             ->setSummary('Build and distribute PEAR packages easily.')
             ->setDescription('Pearfarm makes it easy to create PEAR packages for your projects and host them on a channel server.')
             ->setNotes('See http://github.com/fgrehm/pearfarm for changelog, docs, etc.')
