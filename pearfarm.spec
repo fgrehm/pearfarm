@@ -15,10 +15,9 @@ $spec = Pearfarm_PackageSpec::create(array(Pearfarm_PackageSpec::OPT_BASEDIR => 
             ->addMaintainer('lead', 'Fabio Rehm', 'fgrehm', 'fgrehm@gmail.com')
             ->addMaintainer('lead', 'Jonathan Leibiusky', 'xetorthio', 'ionathan@gmail.com')
             ->addMaintainer('lead', 'Scott Davis', 'jetviper21', 'jetviper21@gmail.com ')
-            ->addFilesRegex(array('/src/', '/pearfarm$/'))
+            ->addGitFiles()
             ->addFilesRegex('/test/', 'test')
             ->addFilesRegex('/^README.markdown/', 'doc')
-            ->addExcludeFilesRegex(array('/\.git/'))
             ->addExcludeFiles(array('.gitignore', 'pearfarm.spec'))
             ->addExecutable('pearfarm')
             ;
