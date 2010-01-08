@@ -326,6 +326,7 @@ class Pearfarm_PackageSpec
    * Executables added with this function get two replace-tasks added to them:
    * 1. '/usr/bin/env php' => pear-installation "php_bin" location
    * 2. '@php_bin@'        => pear-installation "php_bin" location
+   * 3. '@pear_directory@' => pear-installation "php_dir" location
    *
    * This allows you to write your executable script in a way that makes it easy to run locally and when installed via pear
    * if you write your exectuables so that they have the following shbang line:
@@ -360,6 +361,7 @@ class Pearfarm_PackageSpec
     $fileObj->setAttribute('baseinstalldir', '/');
     $fileObj->addReplaceTask('pear-config', '/usr/bin/env php', 'php_bin');
     $fileObj->addReplaceTask('pear-config', '@php_bin@', 'php_bin');
+    $fileObj->addReplaceTask('pear-config', '@pear_directory@', 'php_dir');
     if ($renameTo === NULL)
     {
       $renameTo = basename($scriptFilePath);
