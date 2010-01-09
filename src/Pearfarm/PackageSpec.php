@@ -244,6 +244,7 @@ class Pearfarm_PackageSpec
     $this->setVersionFromTagCommand('git tag', $re);
   }
 
+  // http://semver.org/
   public function setVersionFromTagCommand($command, $re = self::SEMANTIC_VERSIONING_REGEX)
   {
     $result = NULL;
