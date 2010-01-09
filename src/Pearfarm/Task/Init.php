@@ -44,6 +44,14 @@ class Pearfarm_Task_Init implements Pearfarm_ITask {
     $summary = 'TODO: One-line summary of your PEAR package';
     $description = 'TODO: Longer description of your PEAR package';
 
+    if (file_exists(getcwd() . '/.git')) {
+      $allFilesAdder = "addGitFiles()";
+    } else if (file_exists(getcwd() . '/.svn')) {
+      $allFilesAdder = "addSvnFiles()";
+    } else {
+      $allFilesAdder = "addFilesRegex('/.*/')";
+    }
+
     return <<<STR
 <?php
 
@@ -59,8 +67,8 @@ class Pearfarm_Task_Init implements Pearfarm_ITask {
              ->setLicense(Pearfarm_PackageSpec::LICENSE_MIT)
              ->setNotes('Initial release.')
              ->addMaintainer('lead', '{$creatorName}', '{$user}', '{$creatorEmail}')
-             ->addGitFiles()
-             ->addExecutable('{$packageName}')
+             ->{$allFilesAdder}
+             //->addExecutable('path/to/myexecutable')  // uncomment if your package has an executable file
              ;
 STR;
   }

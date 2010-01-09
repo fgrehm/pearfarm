@@ -62,7 +62,7 @@ require_once(dirname(__FILE__) . '/../src/Pearfarm/PackageSpec.php');
 class PackageSpecTest extends PHPUnit_Framework_TestCase {
 
   public function setUp() {
-    $this->spec = new Pearfarm_PackageSpec();
+    $this->spec = new Pearfarm_PackageSpec(array(Pearfarm_PackageSpec::OPT_DEBUG => false));
     vfsStreamWrapper::register();
     makeTree(array(
             'root/file.php',
@@ -72,9 +72,7 @@ class PackageSpecTest extends PHPUnit_Framework_TestCase {
             'root/b/',
             'root/c/d/',
     ));
-    showTree('root');
-
-    die();
+    //showTree('root');
   }
 
   public function testCreatesPearSpec() {
@@ -85,6 +83,25 @@ class PackageSpecTest extends PHPUnit_Framework_TestCase {
   }
   public function testAddFilesRegex() {
     $this->markTestIncomplete();
+  }
+  /**
+   * @dataProvider releaseVersionTestData
+   */
+  public function testSetReleaseVersionRegex($re, $tag, $expectedVersion, $expectedStability) {
+    $this->spec->setReleaseVersionRegex($tag, $re);
+    $this->assertEquals($expectedVersion, $this->spec->getReleaseVersion());
+    $this->assertEquals($expectedStability, $this->spec->getReleaseStability());
+  }
+  public function releaseVersionTestData() {
+    return array(
+      array(Pearfarm_PackageSpec::SEMANTIC_VERSIONING_REGEX, 'v0.0.1', '0.0.1', 'beta'),        // assume beta if v<1.0.0
+      array(Pearfarm_PackageSpec::SEMANTIC_VERSIONING_REGEX, 'v1.0.0', '1.0.0', 'stable'),      // assume stable if v>=1.0.0
+      array(Pearfarm_PackageSpec::SEMANTIC_VERSIONING_REGEX, 'v0.0.1devel', '0.0.1', 'devel'),  // test stability parsing
+      array(Pearfarm_PackageSpec::SEMANTIC_VERSIONING_REGEX, 'v0.0.1alpha', '0.0.1', 'alpha'),
+      array(Pearfarm_PackageSpec::SEMANTIC_VERSIONING_REGEX, 'v0.0.1beta', '0.0.1', 'beta'),
+      array(Pearfarm_PackageSpec::SEMANTIC_VERSIONING_REGEX, 'v1.0.1', '1.0.1', 'stable'),
+      array(Pearfarm_PackageSpec::SEMANTIC_VERSIONING_REGEX, 'v1.0.0beta', '1.0.0', 'beta'),
+    );
   }
   // etc
 }

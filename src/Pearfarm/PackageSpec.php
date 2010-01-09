@@ -238,6 +238,79 @@ class Pearfarm_PackageSpec
     return $this;
   }
 
+  const SEMANTIC_VERSIONING_REGEX = '/v([0-9]+\.[0-9]+\.[0-9]+)(.*)/';
+  public function setVersionGit($re = self::SEMANTIC_VERSIONING_REGEX)
+  {
+    $this->setVersionFromTagCommand('git tag', $re);
+  }
+
+  public function setVersionFromTagCommand($command, $re = self::SEMANTIC_VERSIONING_REGEX)
+  {
+    $result = NULL;
+    $output = array();
+    $lastLine = exec("cd {$this->options[self::OPT_BASEDIR]} && {$command}", $output, $result);
+    if ($result != 0) throw( new Exception("Error ($result) running {$command}: " . join("\n", $output)) );
+
+    $this->regexFilter = $re;
+    $matchingData = array_filter($output, array($this, 'regexFilter'));
+    usort($matchingData, 'version_compare');
+    $latest = $output[count($output)-1];
+
+    $this->setReleaseVersionRegex($latest, $re);
+    $this->setApiVersionRegex($latest, $re);
+  }
+
+  public function setReleaseVersionRegex($tag, $re = self::SEMANTIC_VERSIONING_REGEX)
+  {
+    list($version, $stability) = $this->parseVersionTagRegex($tag, $re);
+    $this->setReleaseVersion($version);
+    $this->setReleaseStability($stability);
+  }
+
+  public function setApiVersionRegex($tag, $re = self::SEMANTIC_VERSIONING_REGEX)
+  {
+    list($version, $stability) = $this->parseVersionTagRegex($tag, $re);
+    $this->setApiVersion($version);
+    $this->setApiStability($stability);
+  }
+
+  protected function parseVersionTagRegex($tag, $re = self::SEMANTIC_VERSIONING_REGEX)
+  {
+    $version = $stability = NULL;
+
+    $matches = array();
+    if (preg_match($re, $tag, $matches)) {
+      if (isset($matches[1])) {
+        $version = $matches[1];
+        $this->debug("Determined release version {$version} from {$tag}.");
+
+        if (isset($matches[2]) && $matches[2] !== '') {
+          $stability = $matches[2];
+          $this->debug("Determined release stability {$stability} from {$tag}.");
+        } else {
+          $this->debug("No release stability could be detected from {$tag} / {$re}.");
+          if (version_compare($version, "1.0.0", "<")) {
+            $this->debug("Assuming beta stability for version less than 1.0.0");
+            $stability = "beta";
+          } else {
+            $this->debug("Assuming stable stability for version greater than or equal to 1.0.0");
+            $stability = "stable";
+          }
+        }
+      } else {
+          $this->debug("No release version could be detected from {$tag} / {$re}.");
+      }
+    }
+
+    return array($version, $stability);
+  }
+  
+  private function regexFilter($val)
+  {
+    if (preg_match($this->regexFilter, $val)) return true;
+    return false;
+  }
+
   /**
    * Add all files that svn knows about to the package.
    *
