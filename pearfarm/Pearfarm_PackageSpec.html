@@ -28,9 +28,9 @@
 	<div class="info-box-body">
         		<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">Pearfarm_PackageSpec is a simplified DSL for creating basic pear pacakges.</p>
-<p class="description"><p>Instead of having to learn about the complexities of PEAR you can just specify a few basic facts and Pearfarm will build you a reasonable package.xml.</p><p><strong>If you don't already have a pearfarm.spec file for your project, just run &quot;pearfarm init&quot; and an example spec file will be generated for you.</strong>  Then you need only edit the boilerplate in the pearfarm.spec file and customize it for your needs, using these docs as a reference.</p><p>To build a PEAR package based on your pearfarm.spec, run &quot;pear package&quot;. Pay careful attention to any errors and warnings you see; pearfarm itself  doesn't do much error checking since &quot;pear package&quot; already does a lot.</p><p>NOTE: this code was hacked up quickly one weekend and isn't particularly pretty. I was learning PEAR architecture at the same time. My apologies in advance.</p><p>NOTE: below are the meta-method docs for stuff done via __call. Phpdoc sucks so they don't show up very well. <ul><li>object Pearfarm_PackageSpec setName(string $value): Set the package name.</li><li>object Pearfarm_PackageSpec setChannel(string $value): Set the channel. If you are deploying via pearfarm, this should be &lt;pearfarm-username&gt;.pearfarm.org.</li><li>object Pearfarm_PackageSpec setSummary(string $value): Set the Summary of the pacakge.</li><li>object Pearfarm_PackageSpec setDescription(string $value): Set the detailed Description of the package.</li><li>object Pearfarm_PackageSpec setReleaseVersion(string $value): Set the release version string.</li><li>object Pearfarm_PackageSpec setReleaseStability(string $value): Set the release stability (devel, alpha, beta, stable)</li><li>object Pearfarm_PackageSpec setApiVersion(string $value): Set the API version string.</li><li>object Pearfarm_PackageSpec setApiStability(string $value): Set the API stability (devel, alpha, beta, stable)</li><li>object Pearfarm_PackageSpec setLicense(string $value): Set the license for the library, see Pearfarm_PackageSpec::LICENSE_*</li><li>object Pearfarm_PackageSpec setNotes(string $value): Set the notes for the package. Typically you should include a link to your project web site here.</li></ul></p></p>
+<p class="description"><p>Instead of having to learn about the complexities of PEAR you can just specify a few basic facts and Pearfarm will build you a reasonable package.xml.</p><p><strong>If you don't already have a pearfarm.spec file for your project, just run &quot;pearfarm init&quot; and an example spec file will be generated for you.</strong>  Then you need only edit the boilerplate in the pearfarm.spec file and customize it for your needs, using these docs as a reference.</p><p>To build a PEAR package based on your pearfarm.spec, run &quot;pear package&quot;. Pay careful attention to any errors and warnings you see; pearfarm itself  doesn't do much error checking since &quot;pear package&quot; already does a lot.</p><p>NOTE: this code was hacked up quickly one weekend and isn't particularly pretty. I was learning PEAR architecture at the same time. My apologies in advance.</p><p>NOTE: below are the meta-method docs for stuff done via __call. Phpdoc sucks so they don't show up very well. <ul><li>object Pearfarm_PackageSpec setName(string $value): Set the package name.</li><li>object Pearfarm_PackageSpec setChannel(string $value): Set the channel. If you are deploying via pearfarm, this should be &lt;pearfarm-username&gt;.pearfarm.org.</li><li>object Pearfarm_PackageSpec setSummary(string $value): Set the Summary of the pacakge.</li><li>object Pearfarm_PackageSpec setDescription(string $value): Set the detailed Description of the package.</li><li>object Pearfarm_PackageSpec setReleaseVersion(string $value): Set the release version string.</li><li>object Pearfarm_PackageSpec setReleaseStability(string $value): Set the release stability (devel, alpha, beta, stable)</li><li>object Pearfarm_PackageSpec setApiVersion(string $value): Set the API version string.</li><li>object Pearfarm_PackageSpec setApiStability(string $value): Set the API stability (devel, alpha, beta, stable)</li><li>object Pearfarm_PackageSpec setNotes(string $value): Set the notes for the package. Typically you should include a link to your project web site here.</li></ul></p></p>
 		<p class="notes">
-			Located in <a class="field" href="_PackageSpec.php.html">/PackageSpec.php</a> (line <span class="field">39</span>)
+			Located in <a class="field" href="_PackageSpec.php.html">/PackageSpec.php</a> (line <span class="field">38</span>)
 		</p>
 		
 				
@@ -57,7 +57,42 @@
 			<div class="const-summary">
 								<div class="const-title">
 					<img src="../media/images/Constant.png" alt=" " />
-					<a href="#LICENSE_MIT" title="details" class="const-name">LICENSE_MIT</a> = 					<span class="var-type"> 'mit'</span>
+					<a href="#LICENSE_APACHE" title="details" class="const-name">LICENSE_APACHE</a> = 					<span class="var-type"> 'APACHE'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#LICENSE_BSD" title="details" class="const-name">LICENSE_BSD</a> = 					<span class="var-type"> 'BSD'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#LICENSE_GPL" title="details" class="const-name">LICENSE_GPL</a> = 					<span class="var-type"> 'GPL'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#LICENSE_GPL3" title="details" class="const-name">LICENSE_GPL3</a> = 					<span class="var-type"> 'GPL3'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#LICENSE_LGPL" title="details" class="const-name">LICENSE_LGPL</a> = 					<span class="var-type"> 'LGPL'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#LICENSE_LGPL3" title="details" class="const-name">LICENSE_LGPL3</a> = 					<span class="var-type"> 'LGPL3'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#LICENSE_MIT" title="details" class="const-name">LICENSE_MIT</a> = 					<span class="var-type"> 'MIT'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../media/images/Constant.png" alt=" " />
+					<a href="#LICENSE_PHP" title="details" class="const-name">LICENSE_PHP</a> = 					<span class="var-type"> 'PHP'</span>
 
 				</div>
 								<div class="const-title">
@@ -267,7 +302,7 @@
 										<a href="#create" title="details" class="method-name">create</a>
 											([<span class="var-type">array</span>&nbsp;<span class="var-name">$options</span> = <span class="var-default">array()</span>])
 									</div>
-																																																				<div class="method-definition">
+																																																												<div class="method-definition">
 					<img src="../media/images/Constructor.png" alt=" "/>
 											<span class="method-result">Pearfarm_PackageSpec</span>
 										<a href="#__construct" title="details" class="method-name">__construct</a>
@@ -353,6 +388,12 @@
 									</div>
 																<div class="method-definition">
 					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+										<a href="#setLicense" title="details" class="method-name">setLicense</a>
+											(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$license</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$licenseURI</span> = <span class="var-default">NULL</span>])
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
 											<span class="method-result">void</span>
 										<a href="#writePackageFile" title="details" class="method-name">writePackageFile</a>
 										()
@@ -385,7 +426,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$apiStability</span>
-			 = <span class="var-default"> NULL</span>			(line <span class="line-number">65</span>)
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">71</span>)
 		</span>
 	</div>
 
@@ -407,7 +448,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$apiVersion</span>
-			 = <span class="var-default"> NULL</span>			(line <span class="line-number">64</span>)
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">70</span>)
 		</span>
 	</div>
 
@@ -429,7 +470,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$channel</span>
-			 = <span class="var-default"> NULL</span>			(line <span class="line-number">59</span>)
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">65</span>)
 		</span>
 	</div>
 
@@ -451,7 +492,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$dependsOnExtensions</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">80</span>)
+			 = <span class="var-default">array()</span>			(line <span class="line-number">86</span>)
 		</span>
 	</div>
 
@@ -473,7 +514,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$dependsOnPearInstallerVersionExclude</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">78</span>)
+			 = <span class="var-default">array()</span>			(line <span class="line-number">84</span>)
 		</span>
 	</div>
 
@@ -495,7 +536,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$dependsOnPearInstallerVersionMax</span>
-			 = <span class="var-default"> NULL</span>			(line <span class="line-number">76</span>)
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">82</span>)
 		</span>
 	</div>
 
@@ -517,7 +558,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$dependsOnPearInstallerVersionMin</span>
-			 = <span class="var-default"> '1.4.0'</span>			(line <span class="line-number">75</span>)
+			 = <span class="var-default"> '1.4.0'</span>			(line <span class="line-number">81</span>)
 		</span>
 	</div>
 
@@ -539,7 +580,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$dependsOnPearInstallerVersionRecommended</span>
-			 = <span class="var-default"> NULL</span>			(line <span class="line-number">77</span>)
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">83</span>)
 		</span>
 	</div>
 
@@ -561,7 +602,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$dependsOnPEARPackages</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">81</span>)
+			 = <span class="var-default">array()</span>			(line <span class="line-number">87</span>)
 		</span>
 	</div>
 
@@ -583,7 +624,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$dependsOnPHPVersionExclude</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">73</span>)
+			 = <span class="var-default">array()</span>			(line <span class="line-number">79</span>)
 		</span>
 	</div>
 
@@ -605,7 +646,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$dependsOnPHPVersionMax</span>
-			 = <span class="var-default"> NULL</span>			(line <span class="line-number">72</span>)
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">78</span>)
 		</span>
 	</div>
 
@@ -627,7 +668,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$dependsOnPHPVersionMin</span>
-			 = <span class="var-default"> '5.0.0'</span>			(line <span class="line-number">71</span>)
+			 = <span class="var-default"> '5.0.0'</span>			(line <span class="line-number">77</span>)
 		</span>
 	</div>
 
@@ -649,7 +690,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$description</span>
-			 = <span class="var-default"> NULL</span>			(line <span class="line-number">61</span>)
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">67</span>)
 		</span>
 	</div>
 
@@ -671,7 +712,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$excludeFilesRegexs</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">85</span>)
+			 = <span class="var-default">array()</span>			(line <span class="line-number">91</span>)
 		</span>
 	</div>
 
@@ -693,7 +734,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$executables</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">86</span>)
+			 = <span class="var-default">array()</span>			(line <span class="line-number">92</span>)
 		</span>
 	</div>
 
@@ -715,7 +756,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$files</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">84</span>)
+			 = <span class="var-default">array()</span>			(line <span class="line-number">90</span>)
 		</span>
 	</div>
 
@@ -737,7 +778,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$license</span>
-			 = <span class="var-default"> NULL</span>			(line <span class="line-number">66</span>)
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">72</span>)
 		</span>
 	</div>
 
@@ -759,7 +800,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$maintainers</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">68</span>)
+			 = <span class="var-default">array()</span>			(line <span class="line-number">74</span>)
 		</span>
 	</div>
 
@@ -781,7 +822,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$name</span>
-			 = <span class="var-default"> NULL</span>			(line <span class="line-number">58</span>)
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">64</span>)
 		</span>
 	</div>
 
@@ -803,7 +844,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$notes</span>
-			 = <span class="var-default"> NULL</span>			(line <span class="line-number">67</span>)
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">73</span>)
 		</span>
 	</div>
 
@@ -825,7 +866,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$options</span>
-			 = <span class="var-default">array()</span>			(line <span class="line-number">55</span>)
+			 = <span class="var-default">array()</span>			(line <span class="line-number">61</span>)
 		</span>
 	</div>
 
@@ -847,7 +888,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$releaseStability</span>
-			 = <span class="var-default"> NULL</span>			(line <span class="line-number">63</span>)
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">69</span>)
 		</span>
 	</div>
 
@@ -869,7 +910,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$releaseVersion</span>
-			 = <span class="var-default"> NULL</span>			(line <span class="line-number">62</span>)
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">68</span>)
 		</span>
 	</div>
 
@@ -891,7 +932,7 @@
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$summary</span>
-			 = <span class="var-default"> NULL</span>			(line <span class="line-number">60</span>)
+			 = <span class="var-default"> NULL</span>			(line <span class="line-number">66</span>)
 		</span>
 	</div>
 
@@ -925,7 +966,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/StaticMethod.png" />
-		<span class="method-title">static create</span> (line <span class="line-number">662</span>)
+		<span class="method-title">static create</span> (line <span class="line-number">744</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -956,7 +997,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Constructor.png" />
-		<span class="method-title">Constructor __construct</span> (line <span class="line-number">97</span>)
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">110</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -986,7 +1027,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">addExcludeFiles</span> (line <span class="line-number">211</span>)
+		<span class="method-title">addExcludeFiles</span> (line <span class="line-number">224</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1017,7 +1058,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">addExcludeFilesRegex</span> (line <span class="line-number">195</span>)
+		<span class="method-title">addExcludeFilesRegex</span> (line <span class="line-number">208</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1048,19 +1089,55 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">addExecutable</span> (line <span class="line-number">353</span>)
+		<span class="method-title">addExecutable</span> (line <span class="line-number">407</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">Add an &quot;exectuable&quot; file to your package.</p>
-<p class="description"><p>The file must have already been added to the package; this function just makes a previously included file be tagged  as an executable in your packate so that when installed PEAR will place it in the bin/ directory.</p><p>This function is a high-level abstraction to the package.xml format for convenience reasons.</p><p>Executables added with this function get two replace-tasks added to them: <ol><li>'/usr/bin/env php' =&gt; pear-installation &quot;php_bin&quot; location</li><li>'@php_bin@'        =&gt; pear-installation &quot;php_bin&quot; location</li></ol>  This allows you to write your executable script in a way that makes it easy to run locally and when installed via pear  if you write your exectuables so that they have the following shbang line:  <div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-comm">#!/usr/bin/env&nbsp;php</span></div></li>
-</ol></div></p><p>And the following &quot;bootstrap&quot; code for require/include of other files:  <div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-key">if&nbsp;</span><span class="src-sym">(</span><a href="http://www.php.net/strpos">strpos</a><span class="src-sym">(</span><span class="src-str">'@php_bin@'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'@php_bin'</span><span class="src-sym">)&nbsp;</span>===&nbsp;<span class="src-num">0</span><span class="src-sym">)&nbsp;</span><span class="src-sym">{&nbsp;&nbsp;</span><span class="src-comm">//&nbsp;not&nbsp;a&nbsp;pear&nbsp;install</span></div></li>
+<p class="description"><p>The file must have already been added to the package; this function just makes a previously included file be tagged  as an executable in your packate so that when installed PEAR will place it in the bin/ directory.</p><p>This function is a high-level abstraction to the package.xml format for convenience reasons.</p><p>Executables added with this function get two replace-tasks added to them: <ol><li>'/usr/bin/env php' =&gt; pear-installation &quot;php_bin&quot; location</li><li>'@php_bin@'        =&gt; pear-installation &quot;php_bin&quot; location</li><li>'@pear_directory@' =&gt; pear-installation &quot;php_dir&quot; location</li></ol>  This allows you to write your executable script in a way that makes it easy to run locally and when installed via pear  if you write your exectuables so that they have the following shbang line:  <div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-comm">#!/usr/bin/env&nbsp;php</span></div></li>
+</ol></div></p><p>Here is example PHP code of making your executable run properly from download and PEAR installs:  <div class="src-code"><ol><li><div class="src-line">&nbsp;<span class="src-key">if&nbsp;</span><span class="src-sym">(</span><a href="http://www.php.net/strpos">strpos</a><span class="src-sym">(</span><span class="src-str">'@php_bin@'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'@php_bin'</span><span class="src-sym">)&nbsp;</span>===&nbsp;<span class="src-num">0</span><span class="src-sym">)&nbsp;</span><span class="src-sym">{&nbsp;&nbsp;</span><span class="src-comm">//&nbsp;not&nbsp;a&nbsp;pear&nbsp;install</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/define">define</a><span class="src-sym">(</span><span class="src-str">'PEARFARM_INCLUDE_PREFIX'</span><span class="src-sym">,&nbsp;</span><span class="src-id">dirname</span><span class="src-sym">(</span>__FILE__<span class="src-sym">))</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/define">define</a><span class="src-sym">(</span><span class="src-str">'PEARFARM_CMD'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'php&nbsp;pearfarm'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;<span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><span class="src-sym">{</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/define">define</a><span class="src-sym">(</span><span class="src-str">'PEARFARM_INCLUDE_PREFIX'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'pearfarm'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/define">define</a><span class="src-sym">(</span><span class="src-str">'PEARFARM_CMD'</span><span class="src-sym">,&nbsp;</span><span class="src-str">'pearfarm'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
 <li><div class="src-line">&nbsp;<span class="src-sym">}</span></div></li>
+</ol></div></p><p>Here is example shell script code of making your executable run properly from download and PEAR installs:  <div class="src-code"><ol><li><div class="src-line">&nbsp;&nbsp;<span class="src-id">PROGRAM_RUN_FROM_DIR</span>=`pwd`</div></li>
+<li><div class="src-line">&nbsp;&nbsp;<span class="src-id">PEAR_INSTALL_DIR</span>=<span class="src-str">&quot;@pear_directory@&quot;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;<span class="src-key">if&nbsp;</span><span class="src-sym">[&nbsp;</span>$<span class="src-sym">{</span><span class="src-id">PEAR_INSTALL_DIR</span>:<span class="src-num">0</span>:<span class="src-num">15</span><span class="src-sym">}&nbsp;</span>==&nbsp;<span class="src-str">&quot;@pear_directory&quot;&nbsp;</span><span class="src-sym">]&nbsp;</span><span class="src-sym">;&nbsp;</span><span class="src-id">then</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">#&nbsp;is&nbsp;not&nbsp;pear&nbsp;install</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">#&nbsp;we&nbsp;never&nbsp;really&nbsp;expect&nbsp;PROJECT_HOME&nbsp;to&nbsp;be&nbsp;set...&nbsp;we&nbsp;get&nbsp;this&nbsp;info&nbsp;from&nbsp;the&nbsp;path&nbsp;to&nbsp;this&nbsp;executable</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">#&nbsp;echo&nbsp;&quot;WARNING:&nbsp;PROJECT_HOME&nbsp;environment&nbsp;not&nbsp;set.&nbsp;Attempting&nbsp;to&nbsp;guess.&quot;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">#&nbsp;try&nbsp;to&nbsp;find&nbsp;myproject</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">##&nbsp;resolve&nbsp;links&nbsp;-&nbsp;$0&nbsp;may&nbsp;be&nbsp;a&nbsp;symlink</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">PRG</span>=<span class="src-str">&quot;$0&quot;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">progname</span>=`basename&nbsp;&quot;$0&quot;`</div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">#&nbsp;need&nbsp;this&nbsp;for&nbsp;relative&nbsp;symlinks</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">dirname_prg</span>=`dirname&nbsp;&quot;<span class="src-var">$PRG</span>&quot;`</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">cd&nbsp;</span><span class="src-str">&quot;</span><span class="src-str"><span class="src-var">$dirname_prg</span></span><span class="src-str">&quot;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">while&nbsp;</span><span class="src-sym">[&nbsp;</span>-<span class="src-id">h&nbsp;</span><span class="src-str">&quot;</span><span class="src-str"><span class="src-var">$PRG</span></span><span class="src-str">&quot;&nbsp;</span><span class="src-sym">]&nbsp;</span><span class="src-sym">;&nbsp;</span>do</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">ls</span>=`ls&nbsp;-ld&nbsp;&quot;<span class="src-var">$PRG</span>&quot;`</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/link">link</a>=`expr&nbsp;&quot;<span class="src-var">$ls</span>&quot;&nbsp;:&nbsp;'.*-&gt;&nbsp;\(.*\)$'`</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">if&nbsp;</span><span class="src-id">expr&nbsp;</span><span class="src-str">&quot;</span><span class="src-str"><span class="src-var">$link</span></span><span class="src-str">&quot;&nbsp;</span>:&nbsp;<span class="src-str">'/.*'&nbsp;</span>&gt;&nbsp;/<span class="src-id">dev</span>/<span class="src-id">null</span><span class="src-sym">;&nbsp;</span><span class="src-id">then</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">PRG</span>=<span class="src-str">&quot;</span><span class="src-str"><span class="src-var">$link</span></span><span class="src-str">&quot;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">else</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">PRG</span>=`dirname&nbsp;&quot;<span class="src-var">$PRG</span>&quot;`<span class="src-str">&quot;</span><span class="src-str">/<span class="src-var">$link</span></span><span class="src-str">&quot;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">fi</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">done</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">cd&nbsp;</span><span class="src-str">&quot;</span><span class="src-str"><span class="src-var">$PROGRAM_RUN_FROM_DIR</span></span><span class="src-str">&quot;</span></div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">PROJECT_HOME</span>=`dirname&nbsp;&quot;<span class="src-var">$PRG</span>&quot;`/..</div></li>
+<li><div class="src-line">&nbsp;</div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">#&nbsp;make&nbsp;it&nbsp;fully&nbsp;qualified</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">PROJECT_HOME</span>=`cd&nbsp;&quot;<span class="src-var">$PROJECT_HOME</span>&quot;&nbsp;&amp;&amp;&nbsp;pwd`</div></li>
+<li><div class="src-line">&nbsp;&nbsp;<span class="src-key">else</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-comm">#&nbsp;is&nbsp;a&nbsp;pear&nbsp;install</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id">PROJECT_HOME</span>=<span class="src-str">&quot;@pear_directory@/myproject&quot;</span></div></li>
+<li><div class="src-line">&nbsp;&nbsp;<span class="src-id">fi</span></div></li>
 </ol></div></p></p>
 	<ul class="tags">
 				<li><span class="field">return:</span> For fluent interface.</li>
@@ -1095,7 +1172,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">addFile</span> (line <span class="line-number">121</span>)
+		<span class="method-title">addFile</span> (line <span class="line-number">134</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1126,7 +1203,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">addFilesRegex</span> (line <span class="line-number">157</span>)
+		<span class="method-title">addFilesRegex</span> (line <span class="line-number">170</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1163,7 +1240,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">addFilesSimple</span> (line <span class="line-number">137</span>)
+		<span class="method-title">addFilesSimple</span> (line <span class="line-number">150</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1201,7 +1278,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">addGitFiles</span> (line <span class="line-number">229</span>)
+		<span class="method-title">addGitFiles</span> (line <span class="line-number">242</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1228,7 +1305,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">addMaintainer</span> (line <span class="line-number">276</span>)
+		<span class="method-title">addMaintainer</span> (line <span class="line-number">289</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1271,7 +1348,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">addPackageDependency</span> (line <span class="line-number">382</span>)
+		<span class="method-title">addPackageDependency</span> (line <span class="line-number">437</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1309,7 +1386,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">addSvnFiles</span> (line <span class="line-number">247</span>)
+		<span class="method-title">addSvnFiles</span> (line <span class="line-number">260</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1336,7 +1413,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">getFile</span> (line <span class="line-number">180</span>)
+		<span class="method-title">getFile</span> (line <span class="line-number">193</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1367,7 +1444,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">setDependsOnPearInstallerVersion</span> (line <span class="line-number">308</span>)
+		<span class="method-title">setDependsOnPearInstallerVersion</span> (line <span class="line-number">321</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1407,7 +1484,7 @@
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">setDependsOnPHPVersion</span> (line <span class="line-number">290</span>)
+		<span class="method-title">setDependsOnPHPVersion</span> (line <span class="line-number">303</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1439,12 +1516,47 @@
 		
 			
 	</div>
-<a name="methodwritePackageFile" id="writePackageFile"><!-- --></a>
+<a name="methodsetLicense" id="setLicense"><!-- --></a>
 <div class="oddrow">
 	
 	<div class="method-header">
 		<img src="../media/images/Method.png" />
-		<span class="method-title">writePackageFile</span> (line <span class="line-number">479</span>)
+		<span class="method-title">setLicense</span> (line <span class="line-number">485</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Set the license for the package.</p>
+<p class="description"><p>There are three forms:</p><p><ol><li>setLicense(Pearfarm_PackageSpec::LICENSE_MIT)</li><li>setLicense(array('name' =&gt; 'MIT', 'uri' =&gt; 'http://www.opensource.org/licenses/mit-license.php'))</li><li>setLicense('MIT', 'http://www.opensource.org/licenses/mit-license.php')</li></ol></p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> For fluent interface.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../pearfarm/Pearfarm_PackageSpec.html">object Pearfarm_PackageSpec</a></span>
+		<span class="method-name">
+			setLicense
+		</span>
+					(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$license</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$licenseURI</span> = <span class="var-default">NULL</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$license</span><span class="var-description">: Form #1: string, one of the Pearfarm_PackageSpec::LICENSE_* constants.               Form #2: array, in form array('name' =&gt; 'MIT', 'url' =&gt; 'http://www.opensource.org/licenses/mit-license.php')               Form #3: string, Name of license</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$licenseURI</span><span class="var-description">: Used only with Form #3, URI of license.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodwritePackageFile" id="writePackageFile"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">writePackageFile</span> (line <span class="line-number">561</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1482,15 +1594,127 @@
 							
 					</div>
 		<div class="info-box-body">
-			<a name="constLICENSE_MIT" id="LICENSE_MIT"><!-- --></A>
+			<a name="constLICENSE_APACHE" id="LICENSE_APACHE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LICENSE_APACHE</span>
+			 = <span class="const-default"> 'APACHE'</span>
+			(line <span class="line-number">47</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLICENSE_BSD" id="LICENSE_BSD"><!-- --></A>
 <div class="evenrow">
 
 	<div class="const-header">
 		<img src="../media/images/Variable.png" />
 		<span class="const-title">
-			<span class="const-name">LICENSE_MIT</span>
-			 = <span class="const-default"> 'mit'</span>
+			<span class="const-name">LICENSE_BSD</span>
+			 = <span class="const-default"> 'BSD'</span>
 			(line <span class="line-number">41</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLICENSE_GPL" id="LICENSE_GPL"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LICENSE_GPL</span>
+			 = <span class="const-default"> 'GPL'</span>
+			(line <span class="line-number">43</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLICENSE_GPL3" id="LICENSE_GPL3"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LICENSE_GPL3</span>
+			 = <span class="const-default"> 'GPL3'</span>
+			(line <span class="line-number">45</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLICENSE_LGPL" id="LICENSE_LGPL"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LICENSE_LGPL</span>
+			 = <span class="const-default"> 'LGPL'</span>
+			(line <span class="line-number">44</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLICENSE_LGPL3" id="LICENSE_LGPL3"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LICENSE_LGPL3</span>
+			 = <span class="const-default"> 'LGPL3'</span>
+			(line <span class="line-number">46</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLICENSE_MIT" id="LICENSE_MIT"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LICENSE_MIT</span>
+			 = <span class="const-default"> 'MIT'</span>
+			(line <span class="line-number">40</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLICENSE_PHP" id="LICENSE_PHP"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LICENSE_PHP</span>
+			 = <span class="const-default"> 'PHP'</span>
+			(line <span class="line-number">42</span>)
 		</span>
 	</div>
 
@@ -1506,7 +1730,7 @@
 		<span class="const-title">
 			<span class="const-name">OPT_BASEDIR</span>
 			 = <span class="const-default"> 'basedir'</span>
-			(line <span class="line-number">52</span>)
+			(line <span class="line-number">58</span>)
 		</span>
 	</div>
 
@@ -1522,7 +1746,7 @@
 		<span class="const-title">
 			<span class="const-name">OPT_DEBUG</span>
 			 = <span class="const-default"> 'debug'</span>
-			(line <span class="line-number">53</span>)
+			(line <span class="line-number">59</span>)
 		</span>
 	</div>
 
@@ -1538,7 +1762,7 @@
 		<span class="const-title">
 			<span class="const-name">PLATFORM_ANY</span>
 			 = <span class="const-default"> 'any'</span>
-			(line <span class="line-number">49</span>)
+			(line <span class="line-number">55</span>)
 		</span>
 	</div>
 
@@ -1554,7 +1778,7 @@
 		<span class="const-title">
 			<span class="const-name">PLATFORM_WIN</span>
 			 = <span class="const-default"> 'windows'</span>
-			(line <span class="line-number">50</span>)
+			(line <span class="line-number">56</span>)
 		</span>
 	</div>
 
@@ -1570,7 +1794,7 @@
 		<span class="const-title">
 			<span class="const-name">ROLE_DATA</span>
 			 = <span class="const-default"> 'data'</span>
-			(line <span class="line-number">47</span>)
+			(line <span class="line-number">53</span>)
 		</span>
 	</div>
 
@@ -1586,7 +1810,7 @@
 		<span class="const-title">
 			<span class="const-name">ROLE_DOC</span>
 			 = <span class="const-default"> 'doc'</span>
-			(line <span class="line-number">45</span>)
+			(line <span class="line-number">51</span>)
 		</span>
 	</div>
 
@@ -1602,7 +1826,7 @@
 		<span class="const-title">
 			<span class="const-name">ROLE_PHP</span>
 			 = <span class="const-default"> 'php'</span>
-			(line <span class="line-number">43</span>)
+			(line <span class="line-number">49</span>)
 		</span>
 	</div>
 
@@ -1618,7 +1842,7 @@
 		<span class="const-title">
 			<span class="const-name">ROLE_SCRIPT</span>
 			 = <span class="const-default"> 'script'</span>
-			(line <span class="line-number">44</span>)
+			(line <span class="line-number">50</span>)
 		</span>
 	</div>
 
@@ -1634,7 +1858,7 @@
 		<span class="const-title">
 			<span class="const-name">ROLE_TEST</span>
 			 = <span class="const-default"> 'test'</span>
-			(line <span class="line-number">46</span>)
+			(line <span class="line-number">52</span>)
 		</span>
 	</div>
 
@@ -1647,7 +1871,7 @@
 	</div>
 	
 	<p class="notes" id="credit">
-		Documentation generated on Thu, 07 Jan 2010 16:42:49 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+		Documentation generated on Tue, 12 Jan 2010 21:04:29 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
 </html>
