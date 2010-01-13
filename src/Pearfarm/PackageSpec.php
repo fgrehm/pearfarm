@@ -733,7 +733,10 @@ http://pear.php.net/dtd/package-2.0.xsd"/>', 'SuperSimpleXMLElement');
       $xml->addChild('phprelease');
     }
 
-    file_put_contents("{$this->options[self::OPT_BASEDIR]}/package.xml", $xml->asXML());
+
+    $dom = dom_import_simplexml($xml)->ownerDocument;
+    $dom->formatOutput = true;
+    file_put_contents("{$this->options[self::OPT_BASEDIR]}/package.xml", $dom->saveXML());
   }
 
   /**
