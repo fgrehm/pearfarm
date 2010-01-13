@@ -347,7 +347,7 @@ class Pearfarm_PackageSpec
    * #!/usr/bin/env php
    * </code>
    *
-   * And the following "bootstrap" code for require/include of other files:
+   * Here is example PHP code of making your executable run properly from download and PEAR installs:
    * <code>
    * if (strpos('@php_bin@', '@php_bin') === 0) {  // not a pear install
    *   define('PEARFARM_INCLUDE_PREFIX', dirname(__FILE__));
@@ -356,6 +356,46 @@ class Pearfarm_PackageSpec
    *   define('PEARFARM_INCLUDE_PREFIX', 'pearfarm');
    *   define('PEARFARM_CMD', 'pearfarm');
    * }
+   * </code>
+   *
+   * Here is example shell script code of making your executable run properly from download and PEAR installs:
+   * <code>
+   *  PROGRAM_RUN_FROM_DIR=`pwd`
+   *  PEAR_INSTALL_DIR="@pear_directory@"
+   *  if [ ${PEAR_INSTALL_DIR:0:15} == "@pear_directory" ] ; then
+   *    # is not pear install
+   *    # we never really expect PROJECT_HOME to be set... we get this info from the path to this executable
+   *    # echo "WARNING: PROJECT_HOME environment not set. Attempting to guess."
+   * 
+   *    # try to find myproject
+   *    
+   *    ## resolve links - $0 may be a symlink
+   *    PRG="$0"
+   *    progname=`basename "$0"`
+   * 
+   *    # need this for relative symlinks
+   *    dirname_prg=`dirname "$PRG"`
+   *    cd "$dirname_prg"
+   *    
+   *    while [ -h "$PRG" ] ; do
+   *      ls=`ls -ld "$PRG"`
+   *      link=`expr "$ls" : '.*-> \(.*\)$'`
+   *      if expr "$link" : '/.*' > /dev/null; then
+   *          PRG="$link"
+   *      else
+   *          PRG=`dirname "$PRG"`"/$link"
+   *      fi
+   *    done
+   *    cd "$PROGRAM_RUN_FROM_DIR"
+   *    
+   *    PROJECT_HOME=`dirname "$PRG"`/..
+   * 
+   *    # make it fully qualified
+   *    PROJECT_HOME=`cd "$PROJECT_HOME" && pwd`
+   *  else
+   *    # is a pear install
+   *    PROJECT_HOME="@pear_directory@/myproject"
+   *  fi
    * </code>
    *
    * @param string The project-relative path to the executable.
