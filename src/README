@@ -1,2 +1,7 @@
 To build API docs for pearfarm.spec, run:
-phpdoc -t phpdocs -ti "pearfarm.spec" --output HTML:frames:earthli  -f Pearfarm/PackageSpec.php 
+<from root>
+phpdoc -t ~/phpdocs -ti "pearfarm.spec" --output HTML:frames:earthli  -f src/Pearfarm/PackageSpec.php 
+git co gh-pages
+rsync --archive ~/phpdocs/ ./
+# test and commit
+git co master
