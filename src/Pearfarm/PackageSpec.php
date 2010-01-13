@@ -492,6 +492,7 @@ class Pearfarm_PackageSpec
     {
       $this->license = array('name' => $license, 'uri' => $licenseURI);
     }
+    return $this;
   }
 
   /**
