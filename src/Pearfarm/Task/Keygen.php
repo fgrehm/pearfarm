@@ -2,12 +2,12 @@
 
 /* vim: set expandtab tabstop=2 shiftwidth=2: */
 
-class Pearfarm_Task_Keygen implements Pearfarm_ITask {
+class Pearfarm_Task_Keygen extends Pearfarm_AbstractTask implements Pearfarm_ITask {
   public function run($args) {
     if (isset($args[2])) {
       $privateKeyFile = $args[2];
     } else {
-      $privateKeyFile = getenv('HOME') . '/.ssh/id_rsa';
+      $privateKeyFile = $this->config[Pearfarm_AbstractTask::CONFIG_KEYFILE];
     }
 
     print "Generating public key file from private key at {$privateKeyFile}...\n";
