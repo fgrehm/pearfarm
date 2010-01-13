@@ -32,13 +32,19 @@
  * - object Pearfarm_PackageSpec setReleaseStability(string $value): Set the release stability (devel, alpha, beta, stable)
  * - object Pearfarm_PackageSpec setApiVersion(string $value): Set the API version string.
  * - object Pearfarm_PackageSpec setApiStability(string $value): Set the API stability (devel, alpha, beta, stable)
- * - object Pearfarm_PackageSpec setLicense(string $value): Set the license for the library, see Pearfarm_PackageSpec::LICENSE_*
  * - object Pearfarm_PackageSpec setNotes(string $value): Set the notes for the package. Typically you should include a link to your project web site here.
  * @package pearfarm
  */
 class Pearfarm_PackageSpec
 {
-  const LICENSE_MIT           = 'mit';
+  const LICENSE_MIT           = 'MIT';
+  const LICENSE_BSD           = 'BSD';
+  const LICENSE_PHP           = 'PHP';
+  const LICENSE_GPL           = 'GPL';
+  const LICENSE_LGPL          = 'LGPL';
+  const LICENSE_GPL3          = 'GPL3';
+  const LICENSE_LGPL3         = 'LGPL3';
+  const LICENSE_APACHE        = 'APACHE';
 
   const ROLE_PHP              = 'php';
   const ROLE_SCRIPT           = 'script';
@@ -86,7 +92,14 @@ class Pearfarm_PackageSpec
   protected $executables          = array();
 
   private static $licenseData = array(
-      self::LICENSE_MIT => array('name' => 'MIT', 'uri' => 'http://www.opensource.org/licenses/mit-license.html')
+      self::LICENSE_MIT     => array('name' => 'MIT', 'uri' => 'http://www.opensource.org/licenses/mit-license.html'),
+      self::LICENSE_BSD     => array('name' => 'BSD', 'uri' => 'http://www.opensource.org/licenses/bsd-license.php'),
+      self::LICENSE_PHP     => array('name' => 'PHP', 'uri' => 'http://www.opensource.org/licenses/php-license.php'),
+      self::LICENSE_GPL     => array('name' => 'GPL', 'uri' => 'http://www.opensource.org/licenses/gpl-license.php'),
+      self::LICENSE_LGPL    => array('name' => 'LGPL', 'uri' => 'http://www.opensource.org/licenses/lgpl-license.php'),
+      self::LICENSE_GPL3    => array('name' => 'GPL3', 'uri' => 'http://www.opensource.org/licenses/gpl3-license.php'),
+      self::LICENSE_LGPL3   => array('name' => 'LGPL3', 'uri' => 'http://www.opensource.org/licenses/lgpl3-license.php'),
+      self::LICENSE_APACHE  => array('name' => 'APACHE', 'uri' => 'http://www.opensource.org/licenses/apache-license.php'),
       );
 
   /**
@@ -412,6 +425,33 @@ class Pearfarm_PackageSpec
     $this->dependsOnPEARPackages[] = $depInfo;
 
     return $this;
+  }
+
+  /**
+   * Set the license for the package.
+   *
+   * There are three forms:
+   *
+   * 1. setLicense(Pearfarm_PackageSpec::LICENSE_MIT)
+   * 2. setLicense(array('name' => 'MIT', 'uri' => 'http://www.opensource.org/licenses/mit-license.php'))
+   * 3. setLicense('MIT', 'http://www.opensource.org/licenses/mit-license.php')
+   *
+   * @param mixed Form #1: string, one of the Pearfarm_PackageSpec::LICENSE_* constants.
+   *              Form #2: array, in form array('name' => 'MIT', 'url' => 'http://www.opensource.org/licenses/mit-license.php')
+   *              Form #3: string, Name of license
+   * @param string Used only with Form #3, URI of license.
+   * @return object Pearfarm_PackageSpec For fluent interface.
+   */
+  public function setLicense($license, $licenseURI = NULL)
+  {
+    if (is_null($licenseURI))
+    {
+      $this->license = $license;
+    }
+    else
+    {
+      $this->license = array('name' => $license, 'uri' => $licenseURI);
+    }
   }
 
   /**
