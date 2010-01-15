@@ -16,9 +16,11 @@ DEPENDENCIES
 =======
 1. PHP >= 5
 
-2. cURL support enabled, for ubuntu this means:
+2. cURL support enabled
+	ubuntu:
     sudo apt-get install php5-curl
-
+	mac ports:
+		sudo port install php5-curl
 
 EXISTING PROJECTS
 =======
