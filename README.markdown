@@ -8,7 +8,9 @@ INSTALATION
 
  $ pear install pearfarm-0.1.0.tgz
 
+OR
 
+ $ pear install pearfarm.pearfarm.org/pearfarm
 
 DEPENDENCIES
 =======
