@@ -266,10 +266,9 @@ class Pearfarm_PackageSpec
 
     $filesOnly = array();
     foreach ($output as $svnItem) {
-      if (substr($svnItem, -1) === '/') continue; // skip dirs
-      {
-        $filesOnly[] = $svnItem;
-      }
+      if (!is_file($svnItem)) continue; // skip dirs
+
+      $filesOnly[] = $svnItem;
     }
 
     $this->addFilesSimple($output);
