@@ -271,7 +271,7 @@ class Pearfarm_PackageSpec
       $filesOnly[] = $svnItem;
     }
 
-    $this->addFilesSimple($output);
+    $this->addFilesSimple($filesOnly);
 
     return $this;
   }
