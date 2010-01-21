@@ -20,4 +20,5 @@ $spec = Pearfarm_PackageSpec::create(array(Pearfarm_PackageSpec::OPT_BASEDIR => 
             ->addFilesRegex('/^README.markdown/', 'doc')
             ->addExcludeFiles(array('.gitignore', 'pearfarm.spec'))
             ->addExecutable('pearfarm')
+            ->addExecutable('pearfarm.bat')
             ;

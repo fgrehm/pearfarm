@@ -16,7 +16,8 @@ function Pearfarm_Autoloader($class) {
   $fileContainingClass = str_replace('_', '/', str_replace('\\', '/', $class)) . '.php';
   $tryFilePath =  "{$prefix}/src/{$fileContainingClass}";
 
-  if ($prefix[0] === '/') {
+//if prefix is a full path it will start with / in linux and w something like C: on windows
+  if ($prefix[0] === '/' || $prefix[1] == ':') {
     if (file_exists($tryFilePath)) {
       require $tryFilePath;
       return true;

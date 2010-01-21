@@ -616,7 +616,6 @@ http://pear.php.net/dtd/package-2.0.xsd"/>', 'SuperSimpleXMLElement');
     foreach ($this->files as $filePath => $fileObj) {
       //print "processing $filePath\n";
       $fileDirPath = dirname($filePath);
-
       // make sure all dirs up to this point are represented
       $allDirs = explode(DIRECTORY_SEPARATOR, ltrim($fileDirPath, DIRECTORY_SEPARATOR));
       $dirPath = NULL;
@@ -627,7 +626,6 @@ http://pear.php.net/dtd/package-2.0.xsd"/>', 'SuperSimpleXMLElement');
           // create directory
           $dirObj = new Pearfarm_PackageSpecDir($dirPath);
           $dirs[$dirPath] = $dirObj;
-          // wire directory into hierarchy
           $parentDir = $dirs[dirname($dirPath)];
           //print "adding dir $dirPath to dir {$parentDir}\n";
           $parentDir->addItem($dirObj);
@@ -926,7 +924,7 @@ class Pearfarm_PackageSpecFile extends Pearfarm_PackageSpecItem
     parent::__construct('file', array('name', 'role'));
 
     // internal stuff
-    $this->filePath = $filePath;
+    $this->filePath = str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', '/', $filePath));
 
     // required attrs
     $this->setAttribute('name', basename($filePath));
