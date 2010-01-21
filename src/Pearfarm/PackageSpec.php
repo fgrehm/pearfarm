@@ -413,6 +413,7 @@ class Pearfarm_PackageSpec
     $fileObj->setAttribute('baseinstalldir', '/');
     $fileObj->addReplaceTask('pear-config', '/usr/bin/env php', 'php_bin');
     $fileObj->addReplaceTask('pear-config', '@php_bin@', 'php_bin');
+    $fileObj->addReplaceTask('pear-config', '@bin_dir@', 'bin_dir');
     $fileObj->addReplaceTask('pear-config', '@pear_directory@', 'php_dir');
     if ($renameTo === NULL)
     {
