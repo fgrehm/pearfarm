@@ -4,9 +4,11 @@ INSTALATION
 
  $ cd pearfarm
 
+ $ pear channel-discover pearfarm.pearfarm.org
+
  $ php pearfarm build
 
- $ pear install pearfarm-0.1.0.tgz
+ $ pear install pearfarm-*.tgz
 
 OR
 
