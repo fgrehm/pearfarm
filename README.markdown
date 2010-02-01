@@ -18,11 +18,9 @@ DEPENDENCIES
 =======
 1. PHP >= 5
 
-2. cURL support enabled
-	ubuntu:
-    sudo apt-get install php5-curl
-	mac ports:
-		sudo port install php5-curl
+2. cURL support enabled  
+    **Ubuntu**: _sudo apt-get install php5-curl_  
+    **Mac ports**: _sudo port install php5-curl_
 
 EXISTING PROJECTS
 =======
@@ -33,7 +31,7 @@ EXISTING PROJECTS
 
 3. update generated pearfarm.spec file
 
-3. run 'pearfarm build' to build package .tgz
+4. run 'pearfarm build' to build package .tgz
 
 
 Enjoy!
