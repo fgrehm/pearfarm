@@ -277,6 +277,32 @@ class Pearfarm_PackageSpec
   }
 
   /**
+   * Add all files that hg knows about to the package.
+   *
+   * @return object Pearfarm_PackageSpec For fluent interface.
+   * @throws
+   */
+  public function addHgFiles()
+  {
+    $result = NULL;
+    $output = array();
+    $lastLine = exec("hg status --all", $output, $result);
+    if ($result != 0) throw( new Exception("Error ($result) running hg status --all: " . join("\n", $output)) );
+
+    $filesOnly = array();
+    foreach ($output as $hgItem) {
+      // Only include 'C' (clean), or 'M' (previously added but modified)
+      // files as indicated by mercurial
+      if ( ! preg_match("/^(M|C)\s/", $hgItem)) continue; // skip Ignored Files
+      $filesOnly[] = preg_replace("/(^(M|C)\s)/", "", $hgItem);
+    }
+
+    $this->addFilesSimple($filesOnly);
+
+    return $this;
+  }
+
+  /**
    * Add a maintainer.
    *
    * @param string Type
