@@ -293,7 +293,7 @@ class Pearfarm_PackageSpec
     foreach ($output as $hgItem) {
       // Only include 'C' (clean), or 'M' (previously added but modified)
       // files as indicated by mercurial
-      if ( ! preg_match("/^(M|C)\s/", $hgItem)) continue; // skip Ignored Files
+      if ( ! preg_match("/^(M|C)\s(?!\.hgignore)/", $hgItem)) continue; // skip Ignored Files
       $filesOnly[] = preg_replace("/(^(M|C)\s)/", "", $hgItem);
     }
 
